@@ -1,6 +1,6 @@
 import './style.css';
 
-const CALENDLY_HREF = 'https://calendly.com/elianelarre/30';
+const BOOKING_HREF = 'https://cal.com/elianelarre/appel-decouverte';
 
 /** @param {HTMLElement} nav */
 function initNav(nav) {
@@ -34,8 +34,8 @@ function initNav(nav) {
     if (window.innerWidth > 900) setOpen(false);
   });
 
-  // Ensure Calendly links are consistent (sanity check in dev)
-  document.querySelectorAll(`a[href="${CALENDLY_HREF}"]`).forEach((a) => {
+  // Ensure booking CTA links are consistent (sanity check in dev)
+  document.querySelectorAll(`a[href="${BOOKING_HREF}"]`).forEach((a) => {
     a.setAttribute('rel', 'noopener noreferrer');
     if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
   });
