@@ -460,21 +460,18 @@ button:focus-visible {
 }
 
 @media (min-width: 901px) {
-  /* Looser desktop framing: oversized img + overflow clip lets cover show more of the portrait. */
+  /* Experiment mode: keep the full portrait visible on desktop (no cover cropping). */
   .hero-photo {
-    overflow: hidden;
+    background: #050507;
   }
 
   .hero-img {
-    width: 124%;
-    height: 124%;
-    max-width: none;
-    position: absolute;
-    left: -12%;
-    /* Slightly less negative than left: keeps a bit more of the top of the photo in frame */
-    top: -9%;
-    /* High anchor in the source —42% was cropping forehead; ~6–10% keeps hair/forehead */
-    object-position: center 7%;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    position: static;
+    object-fit: contain;
+    object-position: center top;
   }
 }
 
