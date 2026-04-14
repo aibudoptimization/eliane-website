@@ -94,14 +94,17 @@
         <div class="hero-visual">
           <p class="sr-only">Portrait d’Éliane.</p>
           <div class="hero-photo">
-            <img
-              class="hero-img"
-              src="/images/eliane-hero.jpg"
-              alt=""
-              width="900"
-              height="1125"
-              fetchpriority="high"
-            />
+            <picture>
+              <source type="image/webp" srcset="/images/eliane-hero.webp" />
+              <img
+                class="hero-img"
+                src="/images/eliane-hero.jpg"
+                alt=""
+                width="2400"
+                height="3000"
+                fetchpriority="high"
+              />
+            </picture>
           </div>
           <div class="hero-accent-bar" aria-hidden="true"></div>
         </div>

@@ -450,6 +450,12 @@ button:focus-visible {
   inset: 0;
 }
 
+.hero-photo picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .hero-img {
   display: block;
   width: 100%;
@@ -460,17 +466,17 @@ button:focus-visible {
 }
 
 @media (min-width: 901px) {
-  /* Experiment mode: keep the full portrait visible on desktop (no cover cropping). */
   .hero-photo {
     background: #050507;
   }
 
+  /* Match studio portrait framing: keep top/headroom and upper-body crop like the reference art */
   .hero-img {
     width: 100%;
     height: 100%;
     max-width: 100%;
     position: static;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center top;
   }
 }
