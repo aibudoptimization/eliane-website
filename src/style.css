@@ -435,23 +435,16 @@ button:focus-visible {
   animation: hero-entrance 0.65s ease 0.28s forwards;
 }
 
-.hero-slides {
+.hero-photo {
   position: absolute;
   inset: 0;
 }
 
-.hero-slide {
-  position: absolute;
-  inset: 0;
+.hero-img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.2s ease;
-}
-
-.hero-slide.is-active {
-  opacity: 1;
 }
 
 .hero-accent-bar {
@@ -1392,7 +1385,4 @@ button:focus-visible {
     transform: none;
   }
 
-  .hero-slide {
-    transition: none;
-  }
 }
