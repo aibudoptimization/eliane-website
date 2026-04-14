@@ -471,8 +471,10 @@ button:focus-visible {
     max-width: none;
     position: absolute;
     left: -12%;
-    top: -12%;
-    object-position: center 42%;
+    /* Slightly less negative than left: keeps a bit more of the top of the photo in frame */
+    top: -9%;
+    /* High anchor in the source —42% was cropping forehead; ~6–10% keeps hair/forehead */
+    object-position: center 7%;
   }
 }
 
