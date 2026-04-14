@@ -365,6 +365,16 @@ button:focus-visible {
   }
 }
 
+/* Fade only (no transform) so the photo stays sharp — transform on the image stack can look soft in some browsers */
+@keyframes hero-entrance-visual {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .hero-copy .hero-tag,
 .hero-copy h1,
 .hero-copy .hero-lead,
@@ -432,26 +442,37 @@ button:focus-visible {
   min-height: 420px;
   background: var(--beige-deep);
   opacity: 0;
-  animation: hero-entrance 0.65s ease 0.28s forwards;
+  animation: hero-entrance-visual 0.65s ease 0.28s forwards;
 }
 
-.hero-slides {
+.hero-photo {
   position: absolute;
   inset: 0;
 }
 
-.hero-slide {
-  position: absolute;
-  inset: 0;
+.hero-img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.2s ease;
+  /* Portrait subject sits high in frame; anchor above center so forehead/hair stay in view */
+  object-position: center 22%;
 }
 
-.hero-slide.is-active {
-  opacity: 1;
+@media (min-width: 901px) {
+  /* Experiment mode: keep the full portrait visible on desktop (no cover cropping). */
+  .hero-photo {
+    background: #050507;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    position: static;
+    object-fit: contain;
+    object-position: center top;
+  }
 }
 
 .hero-accent-bar {
@@ -1392,7 +1413,4 @@ button:focus-visible {
     transform: none;
   }
 
-  .hero-slide {
-    transition: none;
-  }
 }

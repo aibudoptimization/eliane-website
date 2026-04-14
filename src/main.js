@@ -1,6 +1,6 @@
 import './style.css';
 
-const CALENDLY_HREF = 'https://calendly.com/elianelarre/30';
+const BOOKING_HREF = 'https://cal.com/elianelarre/appel-decouverte';
 
 /** @param {HTMLElement} nav */
 function initNav(nav) {
@@ -34,27 +34,11 @@ function initNav(nav) {
     if (window.innerWidth > 900) setOpen(false);
   });
 
-  // Ensure Calendly links are consistent (sanity check in dev)
-  document.querySelectorAll(`a[href="${CALENDLY_HREF}"]`).forEach((a) => {
+  // Ensure booking CTA links are consistent (sanity check in dev)
+  document.querySelectorAll(`a[href="${BOOKING_HREF}"]`).forEach((a) => {
     a.setAttribute('rel', 'noopener noreferrer');
     if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
   });
-}
-
-/** @param {HTMLElement} root */
-function initHeroSlides(root) {
-  const slides = root.querySelectorAll('.hero-slide');
-  if (slides.length < 2) return;
-
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-
-  let i = 0;
-  window.setInterval(() => {
-    slides[i].classList.remove('is-active');
-    i = (i + 1) % slides.length;
-    slides[i].classList.add('is-active');
-  }, 7000);
 }
 
 function initReveal() {
@@ -108,9 +92,6 @@ function initFaq(root) {
 
 const nav = document.getElementById('site-nav');
 if (nav) initNav(nav);
-
-const hero = document.querySelector('[data-hero-slides]');
-if (hero) initHeroSlides(hero);
 
 initReveal();
 
