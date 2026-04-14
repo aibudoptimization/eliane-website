@@ -460,8 +460,19 @@ button:focus-visible {
 }
 
 @media (min-width: 901px) {
+  /* Looser desktop framing: oversized img + overflow clip lets cover show more of the portrait. */
+  .hero-photo {
+    overflow: hidden;
+  }
+
   .hero-img {
-    object-position: center 8%;
+    width: 124%;
+    height: 124%;
+    max-width: none;
+    position: absolute;
+    left: -12%;
+    top: -12%;
+    object-position: center 42%;
   }
 }
 
