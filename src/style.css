@@ -365,6 +365,16 @@ button:focus-visible {
   }
 }
 
+/* Fade only (no transform) so the photo stays sharp — transform on the image stack can look soft in some browsers */
+@keyframes hero-entrance-visual {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .hero-copy .hero-tag,
 .hero-copy h1,
 .hero-copy .hero-lead,
@@ -432,7 +442,7 @@ button:focus-visible {
   min-height: 420px;
   background: var(--beige-deep);
   opacity: 0;
-  animation: hero-entrance 0.65s ease 0.28s forwards;
+  animation: hero-entrance-visual 0.65s ease 0.28s forwards;
 }
 
 .hero-photo {
