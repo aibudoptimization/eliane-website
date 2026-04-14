@@ -671,7 +671,7 @@ button:focus-visible {
 .media-frame {
   position: relative;
   aspect-ratio: 4 / 5;
-  border-radius: 2px;
+  border-radius: clamp(1.25rem, 2vw, 2rem);
   overflow: hidden;
   background: var(--beige-deep);
   box-shadow: 0 24px 48px rgba(26, 20, 16, 0.08);
@@ -1070,14 +1070,15 @@ button:focus-visible {
 /* —— Inclus —— */
 .inclus-layout {
   display: grid;
-  grid-template-columns: 1fr 220px;
+  grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: start;
   margin-bottom: 2.5rem;
 }
 
-.inclus-layout .media-frame {
-  aspect-ratio: 3 / 4;
+.media-frame--inclus-banner img {
+  /* Portrait source in 21:9: keep face + forearms on bar centered in crop */
+  object-position: 50% 42%;
 }
 
 .incl-grid {
@@ -1126,10 +1127,6 @@ button:focus-visible {
 @media (max-width: 800px) {
   .inclus-layout {
     grid-template-columns: 1fr;
-  }
-
-  .inclus-layout .media-frame {
-    max-width: 280px;
   }
 
   .incl-grid {
