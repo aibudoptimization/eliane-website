@@ -672,8 +672,10 @@ button:focus-visible {
 .imagine-grid--text-only {
   grid-template-columns: 1fr;
   align-items: start;
-  max-width: 42rem;
-  margin-inline: auto;
+}
+
+.imagine-grid--text-only .lead {
+  max-width: none;
 }
 
 /* Lets the copy column shrink in grid; avoids awkward wraps before nowrap */
