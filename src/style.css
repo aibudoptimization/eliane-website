@@ -345,6 +345,14 @@ button:focus-visible {
   padding-top: var(--nav-h);
 }
 
+@media (min-width: 901px) {
+  .hero {
+    /* First screen: fill viewport (fixed nav sits above; padding keeps copy clear of bar) */
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
 .hero-copy {
   display: flex;
   flex-direction: column;
@@ -470,6 +478,15 @@ button:focus-visible {
     background: #050507;
   }
 
+  .hero h1 {
+    font-size: clamp(2.75rem, 5vw, 4.75rem);
+  }
+
+  .hero-lead {
+    font-size: 1.125rem;
+    max-width: 30rem;
+  }
+
   /* Match studio portrait framing: keep top/headroom and upper-body crop like the reference art */
   .hero-img {
     width: 100%;
@@ -478,6 +495,10 @@ button:focus-visible {
     position: static;
     object-fit: cover;
     object-position: center top;
+  }
+
+  .hero .hero-visual {
+    min-height: 0;
   }
 }
 
