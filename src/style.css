@@ -983,52 +983,9 @@ button:focus-visible {
   margin-top: 1.75rem;
 }
 
-/* —— Pillars —— */
-.pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2px;
-  margin-top: 3rem;
-  background: rgba(26, 20, 16, 0.08);
-}
-
-.pillar {
-  background: var(--white);
-  padding: 2.5rem 2rem;
-  transition: background 0.25s;
-}
-
-.pillar:hover {
-  background: var(--beige);
-}
-
-.pillar-num {
-  font-family: var(--font-serif);
-  font-size: 3rem;
-  font-weight: 400;
-  color: var(--lavender);
-  line-height: 1;
-  margin-bottom: 1rem;
-}
-
-.pillar h3 {
-  font-size: 1.0625rem;
-  font-weight: 500;
-  color: var(--ink);
-  margin-bottom: 0.65rem;
-  line-height: 1.3;
-}
-
-.pillar p {
-  font-size: 0.875rem;
-  line-height: 1.75;
-  color: var(--mid);
-}
-
-@media (max-width: 700px) {
-  .pillars-grid {
-    grid-template-columns: 1fr;
-  }
+.poids-libres-list {
+  margin-top: 2.5rem;
+  max-width: 42rem;
 }
 
 /* —— Programme —— */
