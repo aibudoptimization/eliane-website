@@ -924,6 +924,24 @@ button:focus-visible {
   max-width: 42rem;
 }
 
+@media (min-width: 701px) {
+  .fit-paired-header-row,
+  .fit-pair-row {
+    gap: 0;
+  }
+
+  .fit-paired-th:first-child,
+  .fit-pair-cell:first-child {
+    padding-right: clamp(1.25rem, 3.5vw, 2.25rem);
+    border-right: 1px solid rgba(26, 20, 16, 0.1);
+  }
+
+  .fit-paired-th:last-child,
+  .fit-pair-cell:last-child {
+    padding-left: clamp(1.25rem, 3.5vw, 2.25rem);
+  }
+}
+
 @media (max-width: 700px) {
   .fit-paired-header-row {
     grid-template-columns: 1fr;
