@@ -689,6 +689,14 @@ button:focus-visible {
   object-fit: cover;
 }
 
+.imagine-section-sub {
+  margin-top: 2.25rem;
+}
+
+.imagine-list--after-sub {
+  margin-top: 1.15rem;
+}
+
 .imagine-list {
   list-style: none;
   margin-top: 2rem;
