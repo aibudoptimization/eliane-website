@@ -29,12 +29,11 @@
         </ul>
       </nav>
       <a
-        class="nav-cta"
+        class="nav-cta nav-cta--outline"
         href="https://cal.com/elianelarre/appel-decouverte"
         target="_blank"
         rel="noopener noreferrer"
- >Appel découverte</a
-      >
+        >Appel découverte</a>
       <button
         type="button"
         class="nav-toggle"
@@ -70,7 +69,9 @@
           <h1>
             Ton corps a<br />
             toujours été capable.<br />
-            <em>Il lui manquait<br />la bonne approche.</em>
+            <span class="hero-headline-pull"
+              ><em>Il lui manquait<br />la bonne approche.</em></span
+            >
           </h1>
           <p class="hero-lead">
             Un accompagnement privé sur mesure, conçu pour les femmes qui ont déjà tout essayé — et qui sont prêtes pour
@@ -82,9 +83,9 @@
               href="https://cal.com/elianelarre/appel-decouverte"
               target="_blank"
               rel="noopener noreferrer"
-              >Appel découverte</a
-            >
-            <a class="btn btn-ghost" href="#presentiel">Pourquoi le présentiel</a>
+              >Appel découverte</a>
+            <a class="btn btn-ghost hero-secondary-cta" href="#presentiel"
+              >Pourquoi le présentiel<span class="hero-ghost-arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
         <div class="hero-visual">
@@ -143,212 +144,260 @@
       </div>
 
       <section class="section section-warm" id="introduction">
-        <div class="section-inner">
-          <div class="imagine-grid imagine-grid--text-only">
-            <div class="reveal" data-reveal>
-              <span class="eyebrow">Introduction</span>
-              <h2>Accompagnement personnalisé <em>en présentiel à Montréal</em></h2>
-              <p class="lead">
-                J'offre un accompagnement personnalisé avec séances en présentiel pour t'aider à progresser de façon
-                structurée, sécuritaire et adaptée à tes objectifs.
-              </p>
-              <span class="eyebrow imagine-section-sub">Ce que j'offre</span>
-              <ul class="imagine-list imagine-list--after-sub">
-                <li><strong>Accompagnement personnalisé</strong></li>
-                <li>Programme conçu selon <strong>tes objectifs</strong> et <strong>ton niveau</strong></li>
-                <li>
-                  <strong>Accès à moi 7 jours sur 7</strong> via chat pour tes questions et ton soutien
-                </li>
-                <li><strong>1 séance en présentiel par semaine</strong> (en moyenne)</li>
-                <li>Journal alimentaire et conseils adaptés à <strong>tes objectifs</strong></li>
-                <li>Accès à une <strong>application</strong> pour suivre ta progression</li>
-                <li><strong>Prise de composition corporelle</strong></li>
-                <li><strong>Guide restaurant</strong> : comment faire les bons choix</li>
-              </ul>
+        <div class="section-inner intro-stack">
+          <div class="intro-top reveal" data-reveal>
+            <span class="eyebrow eyebrow--with-anchor">Introduction</span>
+            <h2>Accompagnement personnalisé <br /><em>en présentiel à Montréal</em></h2>
+            <p class="lead intro-subhead">
+              J'offre un accompagnement personnalisé avec séances en présentiel pour t'aider à progresser de façon
+              structurée, sécuritaire et adaptée à tes objectifs.
+            </p>
+          </div>
+          <div class="intro-bottom">
+            <div class="intro-photo reveal" data-reveal>
+              <div class="intro-photo-frame">
+                <img
+                  class="intro-photo-img"
+                  src="/images/eliane-intro-training.png"
+                  alt="Éliane, entraîneure personnelle à Montréal, s'entraînant avec un haltère en salle."
+                  width="682"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
+            <span class="intro-column-rule" aria-hidden="true"></span>
+            <aside class="intro-aside reveal" data-reveal>
+              <p class="intro-benefits-kicker">Ce que tu reçois</p>
+              <div class="intro-benefits">
+                <div class="intro-benefits-group">
+                  <p class="intro-group-label" id="intro-g-programme">Le programme</p>
+                  <ul class="intro-list" aria-labelledby="intro-g-programme">
+                    <li><strong>Accompagnement personnalisé</strong></li>
+                    <li>Programme conçu selon <strong>tes objectifs</strong> et <strong>ton niveau</strong></li>
+                    <li><strong>1 séance en présentiel par semaine</strong> (en moyenne)</li>
+                  </ul>
+                </div>
+                <div class="intro-benefits-group">
+                  <p class="intro-group-label" id="intro-g-suivi">Le suivi</p>
+                  <ul class="intro-list" aria-labelledby="intro-g-suivi">
+                    <li>
+                      <strong>Accès à moi 7 jours sur 7</strong> via chat pour tes questions et ton soutien
+                    </li>
+                    <li>Accès à une <strong>application</strong> pour suivre ta progression</li>
+                    <li><strong>Prise de composition corporelle</strong></li>
+                  </ul>
+                </div>
+                <div class="intro-benefits-group">
+                  <p class="intro-group-label" id="intro-g-nutrition">La nutrition</p>
+                  <ul class="intro-list" aria-labelledby="intro-g-nutrition">
+                    <li>Journal alimentaire et conseils adaptés à <strong>tes objectifs</strong></li>
+                    <li><strong>Guide restaurant</strong> : comment faire les bons choix</li>
+                  </ul>
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
       <div class="cta-inline">
         <div class="cta-inline-inner">
-          <p>Prête à voir si c'est <em>la bonne prochaine étape pour toi ?</em></p>
-          <a
-            class="btn btn-primary"
-            href="https://cal.com/elianelarre/appel-decouverte"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Appel découverte</a
-          >
+          <h2 class="cta-inline-headline reveal" data-reveal>
+            Prête à voir si c'est <em>la bonne prochaine étape pour toi</em>&nbsp;?
+          </h2>
+          <div class="cta-inline-actions reveal" data-reveal>
+            <a
+              class="btn cta-inline-btn"
+              href="https://cal.com/elianelarre/appel-decouverte"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Oui, je veux en savoir plus&nbsp;!</a
+            >
+            <p class="cta-inline-reassure">15 min · sans engagement · gratuit</p>
+          </div>
         </div>
       </div>
 
-      <section class="section section-muted">
+      <section class="section section-muted" id="ce-quil-faut-savoir">
         <div class="section-inner">
           <div class="reveal" data-reveal>
-            <h2>Pour toi / <em>pas pour toi</em></h2>
+            <h2 id="fit-bridge-heading">Ce qu'il faut savoir <em>avant de commencer</em></h2>
           </div>
           <div
-            class="fit-paired"
-            role="table"
-            aria-label="Pour toi et pas pour toi, critères côte à côte"
+            class="fit-bridge"
+            role="region"
+            aria-labelledby="fit-bridge-heading"
           >
-            <div class="fit-paired-header reveal" data-reveal role="rowgroup">
-              <div role="row" class="fit-paired-header-row">
-                <div role="columnheader" class="fit-paired-th">
-                  <h3 class="fit-col-title fit-col-title--yes">Cet accompagnement est pour toi si…</h3>
-                </div>
-                <div role="columnheader" class="fit-paired-th">
-                  <h3 class="fit-col-title fit-col-title--no">Cet accompagnement n'est pas pour toi si…</h3>
-                </div>
+            <p class="fit-bridge-lead">
+              Un accompagnement privé n'est pas pour tout le monde — et c'est tant mieux. Voici comment savoir si c'est
+              fait pour toi.
+            </p>
+            <div class="fit-bridge-layout">
+              <div class="fit-bridge-card fit-bridge-card--yes reveal" data-reveal>
+                <p class="fit-bridge-kicker fit-bridge-kicker--yes" id="fit-kicker-yes">C'est pour toi si…</p>
+                <ul class="fit-bridge-list fit-bridge-list--yes" aria-labelledby="fit-kicker-yes">
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--check" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M5.5 12.5 10 17 18.5 6.5"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu veux commencer à t'entraîner sur de bonnes bases</span>
+                    </div>
+                  </li>
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--check" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M5.5 12.5 10 17 18.5 6.5"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu stagnes depuis plusieurs mois</span>
+                    </div>
+                  </li>
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--check" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M5.5 12.5 10 17 18.5 6.5"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu ne sais pas comment atteindre tes objectifs</span>
+                    </div>
+                  </li>
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--check" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M5.5 12.5 10 17 18.5 6.5"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu veux apprendre et comprendre, pas seulement appliquer</span>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </div>
-            <div class="fit-pair-rows" role="rowgroup">
-              <div class="fit-pair-row reveal" data-reveal role="row">
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--check" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M5.5 12.5 10 17 18.5 6.5"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu veux commencer à t'entraîner sur de bonnes bases</span>
-                  </div>
-                </div>
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--cross" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M7 7 17 17M17 7 7 17"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu cherches une solution miracle</span>
-                  </div>
-                </div>
-              </div>
-              <div class="fit-pair-row reveal" data-reveal role="row">
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--check" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M5.5 12.5 10 17 18.5 6.5"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu stagnes depuis plusieurs mois</span>
-                  </div>
-                </div>
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--cross" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M7 7 17 17M17 7 7 17"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu n'as pas de temps à investir</span>
-                  </div>
-                </div>
-              </div>
-              <div class="fit-pair-row reveal" data-reveal role="row">
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--check" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M5.5 12.5 10 17 18.5 6.5"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu ne sais pas comment atteindre tes objectifs</span>
-                  </div>
-                </div>
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--cross" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M7 7 17 17M17 7 7 17"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu ne peux pas te déplacer à Montréal</span>
-                  </div>
-                </div>
-              </div>
-              <div class="fit-pair-row reveal" data-reveal role="row">
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--check" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M5.5 12.5 10 17 18.5 6.5"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu veux apprendre et comprendre, pas seulement appliquer</span>
-                  </div>
-                </div>
-                <div role="cell" class="fit-pair-cell">
-                  <div class="fit-item">
-                    <span class="fit-icon fit-icon--cross" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
-                        <path
-                          d="M7 7 17 17M17 7 7 17"
-                          stroke="currentColor"
-                          stroke-width="1.35"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>tu veux un programme basé principalement sur des machines</span>
-                  </div>
-                </div>
+              <div class="fit-bridge-card fit-bridge-card--no reveal" data-reveal>
+                <p class="fit-bridge-kicker fit-bridge-kicker--no" id="fit-kicker-no">Ce n'est pas pour toi si…</p>
+                <ul class="fit-bridge-list fit-bridge-list--no" aria-labelledby="fit-kicker-no">
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--cross fit-icon--cross-muted" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M7 7 17 17M17 7 7 17"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu ne peux pas te déplacer à Montréal</span>
+                    </div>
+                  </li>
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--cross fit-icon--cross-muted" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M7 7 17 17M17 7 7 17"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu n'as pas de temps à investir</span>
+                    </div>
+                  </li>
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--cross fit-icon--cross-muted" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M7 7 17 17M17 7 7 17"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu cherches une solution miracle</span>
+                    </div>
+                  </li>
+                  <li class="fit-bridge-row">
+                    <div class="fit-item">
+                      <span class="fit-icon fit-icon--cross fit-icon--cross-muted" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M7 7 17 17M17 7 7 17"
+                            stroke="currentColor"
+                            stroke-width="1.35"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>tu veux un programme basé principalement sur des machines</span>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
           <div class="mission-block reveal" data-reveal>
-            <span class="eyebrow">Ta mission / ton approche</span>
-            <h3 class="mission-title">Mon approche</h3>
-            <p class="mission-lead">
-              Ma mission est de t'aider à instaurer des habitudes de vie durables.
-            </p>
-            <p class="mission-text">
-              Chaque programme est conçu pour évoluer à ton rythme, selon tes besoins et tes objectifs. Les changements
-              durables demandent du temps et de la constance. Mon rôle est de t'accompagner de façon soutenue pour
-              t'aider à obtenir des résultats concrets.
-            </p>
+            <h2 class="mission-heading">Mon approche</h2>
+            <div class="mission-body">
+              <div class="mission-copy">
+                <p class="mission-manifesto">
+                  Ma mission est de t'aider à instaurer des habitudes de vie durables.
+                </p>
+                <p class="mission-text">
+                  Chaque programme est conçu pour évoluer à ton rythme, selon tes besoins et tes objectifs. Les changements
+                  durables demandent du temps et de la constance. Mon rôle est de t'accompagner de façon soutenue pour
+                  t'aider à obtenir des résultats concrets.
+                </p>
+              </div>
+              <div class="mission-photo">
+                <div class="mission-photo-frame">
+                  <img
+                    class="mission-photo-img"
+                    src="/images/eliane-mission-sled-push.png"
+                    alt="Éliane, entraîneure personnelle à Montréal, en poussée de traîneau dans un gym sombre à l'éclairage contrasté."
+                    width="1024"
+                    height="819"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
