@@ -981,13 +981,14 @@ button:focus-visible {
   grid-template-columns: 1fr;
   gap: 2rem;
   align-items: start;
+  overflow: visible;
 }
 
 .intro-column-rule {
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .intro-column-rule {
     display: flex;
     justify-content: center;
@@ -1004,11 +1005,26 @@ button:focus-visible {
     align-self: stretch;
     background: rgba(85, 39, 114, 0.4);
   }
+
+  .intro-bottom {
+    grid-template-columns: minmax(0, 0.9fr) 5rem minmax(0, 1.1fr);
+    gap: 0;
+    align-items: start;
+  }
+
+  .intro-photo {
+    min-width: 0;
+  }
+
+  .intro-aside {
+    min-width: 0;
+  }
 }
 
 .intro-aside {
   min-width: 0;
   text-align: left;
+  overflow: visible;
 }
 
 .intro-benefits-heading {
@@ -1133,39 +1149,7 @@ button:focus-visible {
   object-position: center 28%;
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  .intro-bottom {
-    grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr);
-    gap: 0;
-    align-items: start;
-  }
-
-  .intro-photo {
-    min-width: 0;
-  }
-
-  .intro-aside {
-    min-width: 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .intro-bottom {
-    grid-template-columns: minmax(0, 0.9fr) 5rem minmax(0, 1.1fr);
-    gap: 0;
-    align-items: start;
-  }
-
-  .intro-photo {
-    min-width: 0;
-  }
-
-  .intro-aside {
-    min-width: 0;
-  }
-}
-
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .intro-stack {
     gap: 2rem;
   }
