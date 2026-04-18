@@ -1,4 +1,5 @@
 import './style.css';
+import { initIntroPhotoDock } from './intro-photo-dock.js';
 import { createIcons } from 'lucide';
 import Eye from 'lucide/dist/esm/icons/eye.js';
 import ShieldCheck from 'lucide/dist/esm/icons/shield-check.js';
@@ -301,6 +302,11 @@ const nav = document.getElementById('site-nav');
 if (nav) initNav(nav);
 
 initReveal();
+
+const teardownIntroPhotoDock = initIntroPhotoDock();
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => teardownIntroPhotoDock());
+}
 
 initPresentielLucideIcons();
 initPresentielStaticMap();
