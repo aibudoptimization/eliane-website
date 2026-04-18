@@ -49,6 +49,13 @@ body {
   overflow-x: hidden;
 }
 
+@supports (overflow-x: clip) {
+  body {
+    /* clip suppresses horizontal bleed without the scroll containment that breaks position:sticky */
+    overflow-x: clip;
+  }
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -1027,6 +1034,22 @@ button:focus-visible {
   }
 }
 
+/* Bottom-anchored sticky image (two-column intro only); disabled for reduced motion & <768px */
+@media (min-width: 768px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .intro-photo {
+      position: sticky;
+      bottom: 1.5rem;
+      align-self: start;
+      z-index: 1;
+    }
+
+    .intro-photo-frame {
+      max-height: calc(100vh - 120px);
+    }
+  }
+}
+
 .intro-aside {
   min-width: 0;
   text-align: left;
@@ -1141,6 +1164,10 @@ button:focus-visible {
 }
 
 .intro-photo {
+  min-width: 0;
+}
+
+.intro-photo-reveal {
   min-width: 0;
 }
 
