@@ -1077,6 +1077,34 @@ button:focus-visible {
   color: var(--ink);
 }
 
+.intro-footnote-ref {
+  font-size: 0.7em;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 0.06em;
+}
+
+.intro-benefits-footnote {
+  margin: 1.25rem 0 0;
+  max-width: 22rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.intro-benefits-footnote .intro-footnote-ref--lead {
+  margin-left: 0;
+  margin-right: 0.2em;
+  font-size: 1em;
+  vertical-align: baseline;
+  font-style: italic;
+}
+
 .intro-photo {
   min-width: 0;
 }
