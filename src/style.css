@@ -1047,8 +1047,9 @@ button:focus-visible {
 }
 
 .intro-list li {
-  position: relative;
-  padding-left: 1.65rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
   font-size: 1.0625rem;
   line-height: 1.6;
   color: var(--mid);
@@ -1056,11 +1057,10 @@ button:focus-visible {
 
 .intro-list li::before {
   content: '';
-  position: absolute;
-  left: 0;
-  top: 0.42rem;
+  flex-shrink: 0;
   width: 1rem;
   height: 1rem;
+  margin-top: 0.42rem;
   background-color: var(--plum);
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M13.78 4.22a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0L2.22 7.78a.75.75 0 1 1 1.06-1.06L6.5 10l5.72-5.72a.75.75 0 0 1 1.06 0z'/%3E%3C/svg%3E");
   mask-size: contain;
@@ -1070,6 +1070,11 @@ button:focus-visible {
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
+}
+
+.intro-list__body {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .intro-list strong {
