@@ -1011,17 +1011,19 @@ button:focus-visible {
   text-align: left;
 }
 
-.intro-benefits-kicker {
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--mid);
+.intro-benefits-heading {
+  margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 2.5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
 }
 
 .intro-benefits {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .intro-benefits-group + .intro-benefits-group {
