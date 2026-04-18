@@ -46,14 +46,7 @@ body {
   background: var(--beige);
   color: var(--ink);
   line-height: 1.5;
-  overflow-x: hidden;
-}
-
-@supports (overflow-x: clip) {
-  body {
-    /* clip suppresses horizontal bleed without the scroll containment that breaks position:sticky */
-    overflow-x: clip;
-  }
+  /* overflow-x must stay visible — hidden/clip on body breaks position:sticky descendants site-wide */
 }
 
 img {
@@ -1037,10 +1030,21 @@ button:focus-visible {
 /* Bottom-anchored sticky image (two-column intro only); disabled for reduced motion & <768px */
 @media (min-width: 768px) {
   @media (prefers-reduced-motion: no-preference) {
+    /* Grid row height = text column; stretch photo cell so sticky has vertical runway. Sticky on
+       .intro-photo-sticky keeps .reveal transform off the positioned node. */
     .intro-photo {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .intro-photo-sticky {
+      position: -webkit-sticky;
       position: sticky;
       bottom: 1.5rem;
-      align-self: start;
+      align-self: flex-start;
+      width: 100%;
       z-index: 1;
     }
 
@@ -1164,6 +1168,10 @@ button:focus-visible {
 }
 
 .intro-photo {
+  min-width: 0;
+}
+
+.intro-photo-sticky {
   min-width: 0;
 }
 
