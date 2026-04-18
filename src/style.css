@@ -1423,9 +1423,8 @@ button:focus-visible {
   color: var(--mid);
 }
 
-.mission-instagram-link {
+.arrow-text-link {
   display: inline-block;
-  margin-top: clamp(2rem, 4vw, 2.5rem);
   font-family: var(--font-sans);
   font-size: clamp(0.9375rem, 0.35vw + 0.9rem, 1rem);
   font-weight: 500;
@@ -1439,16 +1438,20 @@ button:focus-visible {
     text-decoration-thickness 0.2s ease;
 }
 
-.mission-instagram-link:hover {
+.mission-instagram-link {
+  margin-top: clamp(2rem, 4vw, 2.5rem);
+}
+
+.arrow-text-link:hover {
   color: var(--plum-hover);
   text-decoration-thickness: 2px;
 }
 
-.mission-instagram-link .hero-ghost-arrow {
+.arrow-text-link .hero-ghost-arrow {
   transition: transform 0.2s ease;
 }
 
-.mission-instagram-link:hover .hero-ghost-arrow {
+.arrow-text-link:hover .hero-ghost-arrow {
   transform: translateX(4px);
 }
 
@@ -1514,24 +1517,193 @@ button:focus-visible {
 }
 
 /* —— Pourquoi le présentiel —— */
-.presentiel-lead {
-  font-size: 1.0625rem;
-  line-height: 1.85;
-  color: var(--mid);
-  max-width: 42rem;
-  margin-bottom: 1rem;
+#presentiel.section {
+  padding-block: calc(var(--pad-y) - clamp(0.75rem, 1.5vw, 1rem));
 }
 
-.presentiel-text {
+.presentiel-intro {
   font-size: 1rem;
   line-height: 1.85;
   color: var(--mid);
-  max-width: 42rem;
-  margin-bottom: 0;
+  max-width: 40rem;
+  margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
 }
 
-.presentiel-cta {
-  margin-top: 1.75rem;
+.presentiel-mid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: clamp(2.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.presentiel-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.75rem, 3vw, 2.5rem);
+  margin: 0;
+  padding: 0;
+}
+
+.presentiel-benefit-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  min-width: 0;
+}
+
+.presentiel-benefit__icon {
+  display: block;
+  flex-shrink: 0;
+  width: 2.125rem;
+  height: 2.125rem;
+  margin: 0 0 clamp(1rem, 2vw, 1.25rem);
+  color: var(--plum);
+  stroke-width: 1.5;
+}
+
+.presentiel-benefit__title {
+  font-family: var(--font-sans);
+  font-size: clamp(1.125rem, 0.8vw + 1rem, 1.375rem);
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0 0 0.5rem;
+}
+
+.presentiel-benefit__text {
+  margin: 0;
+  font-size: clamp(0.9375rem, 0.2vw + 0.9rem, 1rem);
+  line-height: 1.5;
+  color: var(--mid);
+}
+
+.presentiel-location-card {
+  background: #fdfaf5;
+  border-radius: clamp(16px, 2vw, 24px);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(85, 39, 114, 0.12);
+}
+
+.presentiel-location-card__eyebrow {
+  display: block;
+  margin: 0 0 clamp(0.5rem, 1vw, 0.65rem);
+}
+
+.presentiel-location-card__name {
+  font-family: var(--font-sans);
+  font-size: clamp(1.25rem, 1.5vw + 1rem, 1.5rem);
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 clamp(0.75rem, 1.2vw, 1rem);
+}
+
+.presentiel-location-card__address {
+  margin: 0 0 clamp(1.15rem, 2vw, 1.35rem);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--mid);
+}
+
+.presentiel-location-card__map {
+  margin: 0 0 clamp(1.15rem, 2vw, 1.35rem);
+}
+
+.presentiel-location-card__map-link {
+  display: block;
+  border-radius: clamp(12px, 1.5vw, 16px);
+  overflow: hidden;
+  background: var(--beige-deep);
+  line-height: 0;
+}
+
+.presentiel-location-card__map-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  aspect-ratio: 480 / 280;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.presentiel-location-card__map-img.is-loaded {
+  opacity: 1;
+}
+
+.presentiel-location-card__map--fallback .presentiel-location-card__map-img {
+  display: none;
+}
+
+.presentiel-location-card__map--fallback .presentiel-location-card__map-fallback {
+  display: block;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--mid);
+  text-align: center;
+}
+
+.presentiel-location-card__map--fallback .presentiel-location-card__map-link {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.presentiel-location-card__map-fallback code {
+  font-size: 0.8125rem;
+}
+
+.presentiel-location-card__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.presentiel-closing {
+  margin: clamp(3.25rem, 5vw, 4rem) 0 clamp(3rem, 4vw, 3.5rem);
+  max-width: none;
+}
+
+.presentiel-closing em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  line-height: 1.45;
+  color: var(--plum);
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .presentiel-mid {
+    gap: 2.5rem;
+  }
+
+  .presentiel-closing em {
+    font-size: clamp(1.25rem, 2vw, 1.375rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .presentiel-mid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .presentiel-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .presentiel-benefit__icon {
+    width: 2rem;
+    height: 2rem;
+  }
 }
 
 .poids-libres-list {
@@ -1992,19 +2164,19 @@ button:focus-visible {
     transform: none;
   }
 
-  .mission-instagram-link {
+  .arrow-text-link {
     transition: none;
   }
 
-  .mission-instagram-link:hover {
+  .arrow-text-link:hover {
     text-decoration-thickness: 1px;
   }
 
-  .mission-instagram-link .hero-ghost-arrow {
+  .arrow-text-link .hero-ghost-arrow {
     transition: none;
   }
 
-  .mission-instagram-link:hover .hero-ghost-arrow {
+  .arrow-text-link:hover .hero-ghost-arrow {
     transform: none;
   }
 

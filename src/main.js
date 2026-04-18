@@ -1,6 +1,61 @@
 import './style.css';
+import { createIcons } from 'lucide';
+import Eye from 'lucide/dist/esm/icons/eye.js';
+import ShieldCheck from 'lucide/dist/esm/icons/shield-check.js';
+import CalendarCheck from 'lucide/dist/esm/icons/calendar-check.js';
+import Activity from 'lucide/dist/esm/icons/activity.js';
 
 const BOOKING_HREF = 'https://cal.com/elianelarre/appel-decouverte';
+
+/** Biner Training — 220 Bd Crémazie O; center matches Google Maps place resolution for maps.app.goo.gl/c1V1Re3Guj8ZF6mEA */
+const BINER_STATIC_MAP_CENTER = '45.5385897,-73.6430173';
+
+function initPresentielLucideIcons() {
+  const root = document.getElementById('presentiel');
+  if (!root) return;
+  createIcons({
+    icons: { Eye, ShieldCheck, CalendarCheck, Activity },
+    attrs: {
+      width: 34,
+      height: 34,
+      'stroke-width': 1.5,
+    },
+    root,
+  });
+}
+
+function initPresentielStaticMap() {
+  const img = document.querySelector('[data-presentiel-static-map]');
+  if (!img) return;
+
+  const wrap = document.querySelector('[data-presentiel-map-wrap]');
+  const fallback = document.querySelector('[data-presentiel-map-fallback]');
+  const key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+  const showFallback = () => {
+    if (img.parentNode) img.remove();
+    wrap?.classList.add('presentiel-location-card__map--fallback');
+    fallback?.removeAttribute('hidden');
+  };
+
+  if (!key) {
+    showFallback();
+    return;
+  }
+
+  const url = new URL('https://maps.googleapis.com/maps/api/staticmap');
+  url.searchParams.set('center', BINER_STATIC_MAP_CENTER);
+  url.searchParams.set('zoom', '16');
+  url.searchParams.set('size', '480x280');
+  url.searchParams.set('markers', `size:mid|color:0x552772|${BINER_STATIC_MAP_CENTER}`);
+  url.searchParams.set('key', key);
+
+  const markLoaded = () => img.classList.add('is-loaded');
+  img.addEventListener('load', markLoaded);
+  img.addEventListener('error', showFallback);
+  img.src = url.toString();
+  if (img.complete && img.naturalWidth > 0) markLoaded();
+}
 
 /** @param {HTMLElement} nav */
 function initNav(nav) {
@@ -94,6 +149,9 @@ const nav = document.getElementById('site-nav');
 if (nav) initNav(nav);
 
 initReveal();
+
+initPresentielLucideIcons();
+initPresentielStaticMap();
 
 const faq = document.querySelector('[data-faq]');
 if (faq) initFaq(faq);
