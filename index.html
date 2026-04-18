@@ -24,7 +24,32 @@
       <nav aria-label="Navigation principale">
         <ul class="nav-desktop">
           <li><a href="#introduction">Introduction</a></li>
-          <li><a href="#programme">Programme</a></li>
+          <li class="nav-dropdown" data-nav-dropdown>
+            <button
+              type="button"
+              class="nav-dropdown-trigger"
+              id="nav-offres-trigger"
+              data-nav-dropdown-trigger
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-controls="nav-offres-menu"
+            >
+              Offres
+            </button>
+            <div
+              class="nav-dropdown-panel"
+              id="nav-offres-menu"
+              data-nav-dropdown-panel
+              role="menu"
+              aria-labelledby="nav-offres-trigger"
+              hidden
+            >
+              <div class="nav-dropdown-panel__surface">
+                <a href="/offres/offre-1" class="nav-dropdown-link" role="menuitem" data-nav-dropdown-item>Offre 1</a>
+                <a href="/offres/offre-2" class="nav-dropdown-link" role="menuitem" data-nav-dropdown-item>Offre 2</a>
+              </div>
+            </div>
+          </li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </nav>
