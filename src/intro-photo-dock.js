@@ -1,9 +1,11 @@
 /**
- * Bottom-anchored "dock" for the introduction training photo (≥768px, no reduced motion).
- * States: above (flow) → docked (fixed to viewport bottom) → below (absolute at cell bottom).
+ * Tablet-only (768–1023px) top-anchored dock for the intro training photo.
+ * States: above (flow) → docked (fixed below nav) → below (absolute at cell bottom).
+ * Disabled for prefers-reduced-motion and outside the tablet width range.
  */
 
-const OFFSET_PX = 24;
+const BREATHING_PX = 24;
+const VIEWPORT_BOTTOM_MARGIN_PX = 8;
 
 /**
  * @returns {() => void} teardown
@@ -12,11 +14,11 @@ export function initIntroPhotoDock() {
   const section = document.getElementById('introduction');
   if (!section) return () => {};
 
-  const container = section.querySelector('.intro-bottom');
   const cell = section.querySelector('.intro-photo');
   const sticky = section.querySelector('.intro-photo-sticky');
   const text = section.querySelector('.intro-aside');
-  if (!container || !cell || !sticky || !text) return () => {};
+  const navEl = document.querySelector('.site-nav');
+  if (!cell || !sticky || !text) return () => {};
 
   const placeholder = document.createElement('div');
   placeholder.className = 'intro-photo-dock-placeholder';
@@ -28,10 +30,30 @@ export function initIntroPhotoDock() {
   let rafId = 0;
   let attached = false;
 
-  const mq768 = window.matchMedia('(min-width: 768px)');
+  const mqTablet = window.matchMedia('(min-width: 768px) and (max-width: 1023px)');
   const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  const enabled = () => mq768.matches && !mqReduce.matches;
+  const enabled = () => mqTablet.matches && !mqReduce.matches;
+
+  function readTopOffset() {
+    let navH = 0;
+    if (navEl) {
+      navH = navEl.getBoundingClientRect().height;
+    }
+    if (!navH || navH < 32) {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue('--nav-h').trim();
+      if (raw.endsWith('rem')) {
+        const rem = parseFloat(raw);
+        const fs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        navH = rem * fs;
+      } else if (raw.endsWith('px')) {
+        navH = parseFloat(raw);
+      } else {
+        navH = 72;
+      }
+    }
+    return Math.round(navH + BREATHING_PX);
+  }
 
   function clearStyles() {
     sticky.style.cssText = '';
@@ -49,13 +71,19 @@ export function initIntroPhotoDock() {
       return;
     }
 
+    const topOffset = readTopOffset();
     const vh = window.innerHeight;
-    const dockLine = vh - OFFSET_PX;
-    const cellR = cell.getBoundingClientRect();
-    const textR = text.getBoundingClientRect();
     const h = sticky.offsetHeight;
-    const canDock = h < dockLine - 1;
-    const textStill = textR.bottom > dockLine + 0.5;
+    const textR = text.getBoundingClientRect();
+
+    const canDock = h <= vh - topOffset - VIEWPORT_BOTTOM_MARGIN_PX;
+    const dockedImageBottom = topOffset + h;
+    const textStill = textR.bottom > dockedImageBottom + 0.5;
+
+    const slotTop =
+      state === 'docked' && placeholder.offsetHeight > 0
+        ? placeholder.getBoundingClientRect().top
+        : sticky.getBoundingClientRect().top;
 
     let next = state;
 
@@ -66,10 +94,9 @@ export function initIntroPhotoDock() {
     } else if (state === 'below') {
       next = 'docked';
     } else if (state === 'docked') {
-      next = cellR.top + h > dockLine + 1 ? 'above' : 'docked';
+      next = slotTop > topOffset + 1 ? 'above' : 'docked';
     } else {
-      const sr = sticky.getBoundingClientRect();
-      next = sr.bottom <= dockLine ? 'docked' : 'above';
+      next = slotTop < topOffset ? 'docked' : 'above';
     }
 
     state = next;
@@ -83,11 +110,11 @@ export function initIntroPhotoDock() {
       cell.style.position = '';
       const cr = cell.getBoundingClientRect();
       sticky.style.setProperty('position', 'fixed');
-      sticky.style.setProperty('bottom', `${OFFSET_PX}px`);
+      sticky.style.setProperty('top', `${topOffset}px`);
+      sticky.style.setProperty('bottom', 'auto');
       sticky.style.setProperty('left', `${cr.left}px`);
       sticky.style.setProperty('width', `${cr.width}px`);
       sticky.style.setProperty('z-index', '1');
-      sticky.style.setProperty('top', 'auto');
       sticky.style.setProperty('right', 'auto');
       placeholder.style.height = `${h}px`;
       placeholder.style.minHeight = `${h}px`;
@@ -143,12 +170,12 @@ export function initIntroPhotoDock() {
     }
   }
 
-  mq768.addEventListener('change', syncAttachment);
+  mqTablet.addEventListener('change', syncAttachment);
   mqReduce.addEventListener('change', syncAttachment);
   syncAttachment();
 
   return () => {
-    mq768.removeEventListener('change', syncAttachment);
+    mqTablet.removeEventListener('change', syncAttachment);
     mqReduce.removeEventListener('change', syncAttachment);
     detachListeners();
     clearStyles();

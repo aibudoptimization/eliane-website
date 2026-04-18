@@ -1027,8 +1027,8 @@ button:focus-visible {
   }
 }
 
-/* Intro photo column: full row height for JS bottom-dock; no CSS position:sticky (see intro-photo-dock.js) */
-@media (min-width: 768px) {
+/* Intro photo column: full row height for tablet JS top-dock only; no CSS position:sticky (see intro-photo-dock.js) */
+@media (min-width: 768px) and (max-width: 1023px) {
   @media (prefers-reduced-motion: no-preference) {
     .intro-photo {
       align-self: stretch;
