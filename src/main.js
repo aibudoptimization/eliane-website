@@ -58,6 +58,156 @@ function initPresentielStaticMap() {
 }
 
 /** @param {HTMLElement} nav */
+function initNavDesktopDropdowns(nav) {
+  const roots = nav.querySelectorAll('[data-nav-dropdown]');
+  if (!roots.length) return;
+
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  roots.forEach((root) => {
+    const trigger = root.querySelector('[data-nav-dropdown-trigger]');
+    const panel = root.querySelector('[data-nav-dropdown-panel]');
+    const items = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('[data-nav-dropdown-item]')]);
+    if (!trigger || !panel || !items.length) return;
+
+    let leaveTimer = 0;
+
+    const clearLeaveTimer = () => {
+      if (leaveTimer) {
+        window.clearTimeout(leaveTimer);
+        leaveTimer = 0;
+      }
+    };
+
+    const isExpanded = () => trigger.getAttribute('aria-expanded') === 'true';
+
+    const finishClose = () => {
+      panel.setAttribute('hidden', '');
+    };
+
+    const open = () => {
+      clearLeaveTimer();
+      if (isExpanded()) return;
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.removeAttribute('hidden');
+      requestAnimationFrame(() => {
+        root.classList.add('is-open');
+      });
+    };
+
+    const close = () => {
+      clearLeaveTimer();
+      if (!isExpanded()) return;
+      trigger.setAttribute('aria-expanded', 'false');
+      root.classList.remove('is-open');
+      if (reduceMotion()) {
+        finishClose();
+        return;
+      }
+      const onEnd = (e) => {
+        if (e.target !== panel) return;
+        panel.removeEventListener('transitionend', onEnd);
+        finishClose();
+      };
+      panel.addEventListener('transitionend', onEnd);
+      window.setTimeout(() => {
+        panel.removeEventListener('transitionend', onEnd);
+        if (!isExpanded()) finishClose();
+      }, 300);
+    };
+
+    const scheduleCloseFromPointerLeave = () => {
+      clearLeaveTimer();
+      leaveTimer = window.setTimeout(() => {
+        leaveTimer = 0;
+        if (!root.contains(document.activeElement)) close();
+      }, 200);
+    };
+
+    root.addEventListener('mouseenter', () => {
+      clearLeaveTimer();
+      open();
+    });
+    root.addEventListener('mouseleave', scheduleCloseFromPointerLeave);
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isExpanded()) close();
+      else open();
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        if (isExpanded()) close();
+        else open();
+        return;
+      }
+      if (e.key === 'Escape') {
+        if (!isExpanded()) return;
+        e.preventDefault();
+        close();
+        trigger.focus();
+        return;
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!isExpanded()) open();
+        requestAnimationFrame(() => items[0]?.focus());
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!isExpanded()) open();
+        requestAnimationFrame(() => items[items.length - 1]?.focus());
+      }
+    });
+
+    items.forEach((item, index) => {
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          close();
+          trigger.focus();
+          return;
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (index >= items.length - 1) items[0]?.focus();
+          else items[index + 1]?.focus();
+          return;
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (index === 0) trigger.focus();
+          else items[index - 1]?.focus();
+        }
+      });
+    });
+
+    document.addEventListener(
+      'pointerdown',
+      (e) => {
+        if (!isExpanded()) return;
+        if (root.contains(/** @type {Node} */ (e.target))) return;
+        close();
+      },
+      true,
+    );
+
+    document.addEventListener('focusin', (e) => {
+      if (!isExpanded()) return;
+      if (root.contains(/** @type {Node} */ (e.target))) return;
+      close();
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 900) close();
+    });
+  });
+}
+
+/** @param {HTMLElement} nav */
 function initNav(nav) {
   const toggle = document.querySelector('[data-nav-toggle]');
   const panel = document.querySelector('[data-nav-panel]');
@@ -88,6 +238,8 @@ function initNav(nav) {
   window.addEventListener('resize', () => {
     if (window.innerWidth > 900) setOpen(false);
   });
+
+  initNavDesktopDropdowns(nav);
 
   // Ensure booking CTA links are consistent (sanity check in dev)
   document.querySelectorAll(`a[href="${BOOKING_HREF}"]`).forEach((a) => {
