@@ -113,7 +113,7 @@ function initNavDesktopDropdowns(nav) {
       window.setTimeout(() => {
         panel.removeEventListener('transitionend', onEnd);
         if (!isExpanded()) finishClose();
-      }, 300);
+      }, 280);
     };
 
     const scheduleCloseFromPointerLeave = () => {
