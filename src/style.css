@@ -2335,10 +2335,30 @@ button:focus-visible {
   transform: none;
 }
 
+/*
+ * Intro training photo: never use transform on this subtree — some engines still tie sticky
+ * to the nearest transformed box; opacity-only keeps scroll-reveal without transform.
+ */
+.intro-photo-reveal.reveal {
+  opacity: 0;
+  transform: none;
+  transition: opacity 0.65s ease;
+}
+
+.intro-photo-reveal.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  .intro-photo-reveal.reveal {
+    opacity: 1;
     transition: none;
   }
 
