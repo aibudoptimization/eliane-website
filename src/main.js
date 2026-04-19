@@ -1,4 +1,5 @@
 import './style.css';
+import './cal-embed.js';
 import { initIntroPhotoDock } from './intro-photo-dock.js';
 import { initCookieConsent } from './cookie-consent.js';
 import { createIcons } from 'lucide';
@@ -6,8 +7,6 @@ import Eye from 'lucide/dist/esm/icons/eye.js';
 import ShieldCheck from 'lucide/dist/esm/icons/shield-check.js';
 import CalendarCheck from 'lucide/dist/esm/icons/calendar-check.js';
 import Activity from 'lucide/dist/esm/icons/activity.js';
-
-const BOOKING_HREF = 'https://cal.com/elianelarre/appel-decouverte';
 
 /** Biner Training — 220 Bd Crémazie O; center matches Google Maps place resolution for maps.app.goo.gl/c1V1Re3Guj8ZF6mEA */
 const BINER_STATIC_MAP_CENTER = '45.5385897,-73.6430173';
@@ -242,12 +241,6 @@ function initNav(nav) {
   });
 
   initNavDesktopDropdowns(nav);
-
-  // Ensure booking CTA links are consistent (sanity check in dev)
-  document.querySelectorAll(`a[href="${BOOKING_HREF}"]`).forEach((a) => {
-    a.setAttribute('rel', 'noopener noreferrer');
-    if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
-  });
 }
 
 function initReveal() {

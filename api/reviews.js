@@ -68,7 +68,6 @@ export default async function handler(req, res) {
   }
 
   const redactedKey = `${apiKey.slice(0, 6)}...`;
-  console.log("Google Places key prefix:", redactedKey);
 
   const requestUrl = new URL(`${GOOGLE_PLACES_BASE_URL}/${encodeURIComponent(placeId)}`);
   requestUrl.searchParams.set("languageCode", "fr");
@@ -87,12 +86,13 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Google Places API error:", {
-        status: response.status,
-        statusText: response.statusText,
-        bodySnippet: errorText.slice(0, 500),
-      });
+      const errorBody = await response.text();
+      console.error("[GOOGLE ERROR] Status:", response.status);
+      console.error("[GOOGLE ERROR] Body:", errorBody);
+      console.error(
+        "[GOOGLE ERROR] Headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
       return res.status(502).json({ error: "Upstream Google Places API error." });
     }
 
