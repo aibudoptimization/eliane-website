@@ -2138,6 +2138,12 @@ button:focus-visible {
   color: rgba(90, 80, 72, 0.38);
 }
 
+.poids-libres-cta-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(3rem, 5vw, 4rem);
+}
+
 .poids-libres-divider__line {
   width: 3.5rem;
   height: 1px;
