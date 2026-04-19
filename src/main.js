@@ -1,5 +1,6 @@
 import './style.css';
 import { initIntroPhotoDock } from './intro-photo-dock.js';
+import { initCookieConsent } from './cookie-consent.js';
 import { createIcons } from 'lucide';
 import Eye from 'lucide/dist/esm/icons/eye.js';
 import ShieldCheck from 'lucide/dist/esm/icons/shield-check.js';
@@ -313,3 +314,5 @@ initPresentielStaticMap();
 
 const faq = document.querySelector('[data-faq]');
 if (faq) initFaq(faq);
+
+initCookieConsent();

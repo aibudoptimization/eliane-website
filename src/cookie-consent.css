@@ -1,0 +1,193 @@
+#cc-main {
+  --cc-bg: var(--beige);
+  --cc-primary-color: var(--ink);
+  --cc-btn-primary-bg: var(--plum);
+  --cc-btn-primary-color: var(--white);
+  --cc-btn-primary-border-color: var(--plum);
+  --cc-btn-primary-hover-bg: var(--plum-hover);
+  --cc-btn-primary-hover-border-color: var(--plum-hover);
+  --cc-btn-primary-hover-color: var(--white);
+  --cc-btn-secondary-bg: transparent;
+  --cc-btn-secondary-color: var(--plum);
+  --cc-btn-secondary-border-color: var(--plum);
+  --cc-btn-secondary-hover-bg: rgba(85, 39, 114, 0.1);
+  --cc-btn-secondary-hover-border-color: var(--plum-hover);
+  --cc-btn-secondary-hover-color: var(--plum-hover);
+  --cc-toggle-on-bg: var(--plum);
+  --cc-toggle-off-bg: #a9a3a0;
+  --cc-toggle-on-knob-bg: var(--white);
+  --cc-toggle-off-knob-bg: var(--white);
+  --cc-font-family: var(--font-sans);
+}
+
+#cc-main .cm,
+#cc-main .pm {
+  border-radius: 12px;
+  box-shadow: 0 16px 34px rgba(26, 20, 16, 0.2);
+  border: 1px solid rgba(90, 80, 72, 0.22);
+}
+
+#cc-main .cm {
+  max-width: 420px;
+  margin: 24px;
+  animation: cookie-consent-enter 260ms ease-out both;
+}
+
+#cc-main .pm {
+  animation: cookie-consent-enter 260ms ease-out both;
+}
+
+#cc-main .pm-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cc-main .pm.pm--box {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  max-height: calc(100vh - 48px) !important;
+  top: 24px !important;
+  bottom: 24px !important;
+  transform: none !important;
+}
+
+#cc-main .pm__body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  border-bottom: 1px solid rgba(90, 80, 72, 0.15);
+  box-shadow:
+    inset 0 -10px 12px -12px rgba(26, 20, 16, 0.24),
+    inset 0 10px 12px -12px rgba(26, 20, 16, 0.1);
+}
+
+#cc-main .cm__title,
+#cc-main .pm__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+#cc-main .cm__desc,
+#cc-main .pm__section-desc {
+  color: var(--mid);
+}
+
+#cc-main .cm__btn,
+#cc-main .pm__btn {
+  min-height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+#cc-main .pm__footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: var(--beige);
+  border-top: 1px solid rgba(90, 80, 72, 0.2);
+  flex-shrink: 0 !important;
+}
+
+#cc-main .cm__btn--secondary,
+#cc-main .pm__btn--secondary {
+  border-width: 1px;
+}
+
+#cc-main .cm__btn--close,
+#cc-main .pm__close-btn {
+  color: var(--mid);
+}
+
+#cc-main .cc-link,
+#cc-main .pm__section-title {
+  color: var(--plum);
+}
+
+#cc-main .pm__section--toggle .pm__section-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+#cc-main .cm__footer a,
+#cc-main .pm__footer a {
+  color: var(--plum);
+}
+
+#cc-main .cm__btn[data-role='show'] {
+  border: none;
+  background: transparent;
+  color: var(--plum);
+  text-decoration: underline;
+  padding-inline: 0;
+  min-height: auto;
+}
+
+#cc-main .cm__btn[data-role='show']:hover {
+  color: var(--plum-hover);
+}
+
+#cc-main .cm-wrapper--hidden .cm,
+#cc-main .pm-wrapper--hidden .pm {
+  animation: cookie-consent-exit 220ms ease-in both;
+}
+
+@keyframes cookie-consent-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cookie-consent-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  #cc-main .cm {
+    max-width: none;
+    width: auto;
+    margin: 0 16px 16px;
+  }
+
+  #cc-main .cm__btns,
+  #cc-main .pm__btns {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  #cc-main .cm__btn,
+  #cc-main .pm__btn {
+    width: 100%;
+  }
+
+  #cc-main .pm.pm--box {
+    max-height: calc(100vh - 16px) !important;
+    top: 8px !important;
+    bottom: 8px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cc-main .cm,
+  #cc-main .pm,
+  #cc-main .cm-wrapper--hidden .cm,
+  #cc-main .pm-wrapper--hidden .pm {
+    animation: none !important;
+  }
+}
