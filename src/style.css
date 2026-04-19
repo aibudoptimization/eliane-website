@@ -102,7 +102,7 @@ button:focus-visible {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 500;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -205,7 +205,7 @@ button:focus-visible {
   position: absolute;
   top: 100%;
   left: 50%;
-  z-index: 110;
+  z-index: 520;
   min-width: 11rem;
   padding-top: 0.35rem;
   transform: translateX(-50%) translateY(-6px);
@@ -350,6 +350,7 @@ button:focus-visible {
   top: var(--nav-h);
   left: 0;
   right: 0;
+  z-index: 510;
   padding: 1.25rem var(--pad-x) 1.5rem;
   background: var(--white);
   border-bottom: 1px solid rgba(26, 20, 16, 0.08);
@@ -2810,4 +2811,18 @@ button:focus-visible {
     transform: none;
   }
 
+}
+
+/* —— Cal.com embed modal —— above fixed .site-nav (z-index: 500) and nav dropdown (520) */
+cal-modal-box,
+cal-modal-box * {
+  z-index: 99999 !important;
+}
+
+/*
+ * Cal may set data-cal-namespace on injected hosts. Exclude our booking <a>/<button>
+ * (they use the same attribute) so we do not alter their stacking.
+ */
+[data-cal-namespace="appel-decouverte"]:not(a):not(button) {
+  z-index: 99999 !important;
 }

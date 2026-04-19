@@ -6,4 +6,6 @@ dist
 # Secrets / local env (never commit real keys)
 .env
 .env.local
+.env*.local
 .env.*.local
+.vercel
