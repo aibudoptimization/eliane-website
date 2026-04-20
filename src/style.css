@@ -3188,6 +3188,15 @@ cal-modal-box * {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
   }
+
+  /* Offre signature page: DOM = current first for mobile; desktop = Tremplin left, Signature right */
+  .offer-compare-columns--signature-page .offer-compare-col--other {
+    order: 1;
+  }
+
+  .offer-compare-columns--signature-page .offer-compare-col--current {
+    order: 2;
+  }
 }
 
 .offer-compare-col {

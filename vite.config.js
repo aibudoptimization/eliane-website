@@ -5,6 +5,7 @@ const TRAILING_SLASH_REDIRECT_ROUTES = [
   '/politique-de-confidentialite',
   '/conditions-utilisation',
   '/offres/le-tremplin',
+  '/offres/offre-signature',
 ];
 
 function trailingSlashRedirectPlugin() {
@@ -48,6 +49,7 @@ export default defineConfig({
         politiqueDeConfidentialite: resolve(__dirname, 'politique-de-confidentialite/index.html'),
         conditionsUtilisation: resolve(__dirname, 'conditions-utilisation/index.html'),
         offresLeTremplin: resolve(__dirname, 'offres/le-tremplin/index.html'),
+        offresOffreSignature: resolve(__dirname, 'offres/offre-signature/index.html'),
       },
       output: {
         manualChunks: undefined,
