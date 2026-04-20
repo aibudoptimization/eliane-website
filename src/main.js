@@ -131,13 +131,22 @@ function initNavDesktopDropdowns(nav) {
     });
     root.addEventListener('mouseleave', scheduleCloseFromPointerLeave);
 
+    const triggerIsLink = trigger.tagName === 'A';
+
     trigger.addEventListener('click', (e) => {
+      if (triggerIsLink) {
+        close();
+        return;
+      }
       e.stopPropagation();
       if (isExpanded()) close();
       else open();
     });
 
     trigger.addEventListener('keydown', (e) => {
+      if (triggerIsLink && (e.key === ' ' || e.key === 'Spacebar')) {
+        return;
+      }
       if (e.key === ' ' || e.key === 'Spacebar') {
         e.preventDefault();
         if (isExpanded()) close();
@@ -307,5 +316,41 @@ initPresentielStaticMap();
 
 const faq = document.querySelector('[data-faq]');
 if (faq) initFaq(faq);
+
+/** Sticky discovery CTA: show after scroll threshold; hide when footer is visible. */
+function initOfferStickyCta() {
+  const el = document.querySelector('[data-offer-sticky-cta]');
+  const footer = document.querySelector('.site-footer');
+  if (!el || !footer) return;
+
+  const SCROLL_THRESHOLD = 500;
+
+  let footerVisible = false;
+
+  const apply = () => {
+    const scrollPast = window.scrollY > SCROLL_THRESHOLD;
+    const visible = scrollPast && !footerVisible;
+    el.classList.toggle('is-visible', visible);
+    el.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    if (visible) el.removeAttribute('tabindex');
+    else el.setAttribute('tabindex', '-1');
+  };
+
+  window.addEventListener('scroll', apply, { passive: true });
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      const e = entries[0];
+      footerVisible = !!(e && e.isIntersecting);
+      apply();
+    },
+    { threshold: 0, rootMargin: '0px' },
+  );
+  io.observe(footer);
+
+  apply();
+}
+
+initOfferStickyCta();
 
 initCookieConsent();

@@ -1,14 +1,19 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 
-const LEGAL_ROUTES = ['/politique-de-confidentialite', '/conditions-utilisation'];
+const TRAILING_SLASH_REDIRECT_ROUTES = [
+  '/politique-de-confidentialite',
+  '/conditions-utilisation',
+  '/offres/le-tremplin',
+  '/offres/offre-signature',
+];
 
-function cleanRouteRedirectPlugin() {
+function trailingSlashRedirectPlugin() {
   const redirect = (middlewares) => {
     middlewares.use((req, res, next) => {
       if (!req.url) return next();
       const path = req.url.split('?')[0];
-      if (LEGAL_ROUTES.includes(path)) {
+      if (TRAILING_SLASH_REDIRECT_ROUTES.includes(path)) {
         res.statusCode = 302;
         res.setHeader('Location', `${path}/`);
         res.end();
@@ -19,7 +24,7 @@ function cleanRouteRedirectPlugin() {
   };
 
   return {
-    name: 'legal-clean-route-redirect',
+    name: 'trailing-slash-route-redirect',
     configureServer(server) {
       redirect(server.middlewares);
     },
@@ -31,7 +36,7 @@ function cleanRouteRedirectPlugin() {
 
 export default defineConfig({
   appType: 'mpa',
-  plugins: [cleanRouteRedirectPlugin()],
+  plugins: [trailingSlashRedirectPlugin()],
   root: '.',
   publicDir: 'public',
   build: {
@@ -43,6 +48,8 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         politiqueDeConfidentialite: resolve(__dirname, 'politique-de-confidentialite/index.html'),
         conditionsUtilisation: resolve(__dirname, 'conditions-utilisation/index.html'),
+        offresLeTremplin: resolve(__dirname, 'offres/le-tremplin/index.html'),
+        offresOffreSignature: resolve(__dirname, 'offres/offre-signature/index.html'),
       },
       output: {
         manualChunks: undefined,
