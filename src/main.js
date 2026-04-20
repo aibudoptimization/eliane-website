@@ -131,13 +131,22 @@ function initNavDesktopDropdowns(nav) {
     });
     root.addEventListener('mouseleave', scheduleCloseFromPointerLeave);
 
+    const triggerIsLink = trigger.tagName === 'A';
+
     trigger.addEventListener('click', (e) => {
+      if (triggerIsLink) {
+        close();
+        return;
+      }
       e.stopPropagation();
       if (isExpanded()) close();
       else open();
     });
 
     trigger.addEventListener('keydown', (e) => {
+      if (triggerIsLink && (e.key === ' ' || e.key === 'Spacebar')) {
+        return;
+      }
       if (e.key === ' ' || e.key === 'Spacebar') {
         e.preventDefault();
         if (isExpanded()) close();
