@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Une formule d'un mois pour démarrer avec structure, clarté et accompagnement."
+    />
+    <title>Le Tremplin — Éliane Larre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body class="offer-page">
+    <a class="skip-link" href="#contenu-principal">Passer au contenu</a>
+
+    <header class="site-nav" id="site-nav" data-nav>
+      <a class="nav-logo" href="/#accueil" aria-label="Éliane Larre — Accueil"><em>Éliane Larre</em></a>
+      <nav aria-label="Navigation principale">
+        <ul class="nav-desktop">
+          <li><a href="/#introduction">Introduction</a></li>
+          <li class="nav-dropdown" data-nav-dropdown>
+            <a
+              href="/#offres"
+              class="nav-dropdown-trigger"
+              id="nav-offres-trigger"
+              data-nav-dropdown-trigger
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-controls="nav-offres-menu"
+            >
+              Offres
+              <svg
+                class="nav-dropdown-chevron"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M6 9l6 6 6-6"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+            <div
+              class="nav-dropdown-panel"
+              id="nav-offres-menu"
+              data-nav-dropdown-panel
+              role="menu"
+              aria-labelledby="nav-offres-trigger"
+              hidden
+            >
+              <div class="nav-dropdown-panel__surface">
+                <a href="/offres/le-tremplin" class="nav-dropdown-link" role="menuitem" data-nav-dropdown-item
+                  >Offre 1 — Le Tremplin</a
+                >
+                <a href="/offres/offre-signature" class="nav-dropdown-link" role="menuitem" data-nav-dropdown-item
+                  >Offre 2 — Offre signature</a
+                >
+              </div>
+            </div>
+          </li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <a
+        class="nav-cta nav-cta--outline"
+        href="https://cal.com/elianelarre/appel-decouverte"
+        data-cal-link="elianelarre/appel-decouverte"
+        data-cal-namespace="appel-decouverte"
+        data-cal-config='{"layout":"month_view"}'
+        >Appel découverte</a>
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-expanded="false"
+        aria-controls="nav-mobile"
+        data-nav-toggle
+        aria-label="Ouvrir le menu"
+      >
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <div class="nav-mobile-panel" id="nav-mobile" data-nav-panel hidden>
+      <ul>
+        <li><a href="/#introduction" data-nav-link>Introduction</a></li>
+        <li><a href="/#offres" data-nav-link>Offres</a></li>
+        <li><a href="/offres/le-tremplin" data-nav-link>Offre 1 — Le Tremplin</a></li>
+        <li><a href="/offres/offre-signature" data-nav-link>Offre 2 — Offre signature</a></li>
+        <li><a href="/#faq" data-nav-link>FAQ</a></li>
+      </ul>
+      <a
+        class="btn btn-primary nav-mobile-cta"
+        href="https://cal.com/elianelarre/appel-decouverte"
+        data-cal-link="elianelarre/appel-decouverte"
+        data-cal-namespace="appel-decouverte"
+        data-cal-config='{"layout":"month_view"}'
+        data-nav-link
+        >Appel découverte</a
+      >
+    </div>
+
+    <main id="contenu-principal" class="offer-main">
+      <section class="offer-hero">
+        <div class="offer-hero-inner">
+          <a class="offer-back-link" href="/#offres">← Retour aux offres</a>
+          <p class="offer-hero-eyebrow">Formule 1 mois</p>
+          <h1 class="offer-hero-title">Le Tremplin</h1>
+          <p class="offer-hero-subtitle">
+            <em>Pour démarrer avec structure, clarté et accompagnement.</em>
+          </p>
+          <p class="offer-hero-pitch">
+            Une formule d'un mois pensée pour celles qui veulent démarrer avec un plan clair, personnalisé et un
+            encadrement de proximité. Tu bénéficies d'une rencontre initiale en présentiel de 2 heures, de ton programme
+            d'entraînement personnalisé, d'un accès à moi 7/7 par message durant 4 semaines, d'ajustements de ton
+            programme au besoin, ainsi que d'un appel bilan de 45 minutes en fin de mois.
+          </p>
+          <div class="offer-hero-actions">
+            <a
+              class="btn btn-primary"
+              href="https://cal.com/elianelarre/appel-decouverte"
+              data-cal-link="elianelarre/appel-decouverte"
+              data-cal-namespace="appel-decouverte"
+              data-cal-config='{"layout":"month_view"}'
+              >Appel découverte</a
+            >
+            <a class="arrow-text-link offer-hero-secondary" href="#comparaison"
+              >Comparer les offres<span class="hero-ghost-arrow" aria-hidden="true">→</span></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="offer-section offer-section--muted" aria-labelledby="offer-ideal-heading">
+        <div class="offer-section-inner">
+          <p class="eyebrow">Pour qui</p>
+          <h2 class="offer-section-title" id="offer-ideal-heading">Cette offre est idéale si tu veux…</h2>
+          <ul class="offres-feature-list offer-list-block">
+            <li>Avoir un programme personnalisé à tes objectifs</li>
+            <li>Avoir accès à moi 7/7 via messages pour tes questions et ajustements</li>
+            <li>Bâtir une base solide avant de poursuivre de façon plus autonome</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="offer-section" aria-labelledby="offer-includes-heading">
+        <div class="offer-section-inner offer-section-inner--wide">
+          <p class="eyebrow">Ce que tu reçois</p>
+          <h2 class="offer-section-title" id="offer-includes-heading">Ce que comprend l'offre</h2>
+          <div class="offer-includes-grid">
+            <div class="offer-include-group">
+              <p class="offer-include-label" id="offer-inc-rencontre">La rencontre</p>
+              <ul class="offres-feature-list" aria-labelledby="offer-inc-rencontre">
+                <li>1 rencontre initiale en présentiel de 2 heures</li>
+                <li>Présentation et ajustements du programme d'entraînement</li>
+              </ul>
+            </div>
+            <div class="offer-include-group">
+              <p class="offer-include-label" id="offer-inc-programme">Le programme</p>
+              <ul class="offres-feature-list" aria-labelledby="offer-inc-programme">
+                <li>Programme d'entraînement personnalisé</li>
+                <li>Ajustable durant les 4 semaines selon tes commentaires et résultats</li>
+                <li>Tests physiques et mesures de départ</li>
+                <li>Prises de la composition corporelle</li>
+              </ul>
+            </div>
+            <div class="offer-include-group">
+              <p class="offer-include-label" id="offer-inc-app">L'application</p>
+              <ul class="offres-feature-list" aria-labelledby="offer-inc-app">
+                <li>Accès à ton programme</li>
+                <li>Suivi de tes charges</li>
+                <li>Messagerie directe 7/7</li>
+                <li>Questionnaire « check-in de la semaine » chaque semaine</li>
+                <li>Ajustements du programme au besoin via tes commentaires</li>
+              </ul>
+            </div>
+            <div class="offer-include-group">
+              <p class="offer-include-label" id="offer-inc-bilan">Le bilan</p>
+              <ul class="offres-feature-list" aria-labelledby="offer-inc-bilan">
+                <li>1 appel bilan de 45 minutes à la fin des 4 semaines</li>
+                <li>Questionnaire préalablement complété</li>
+                <li>Résumé et recommandations pour la suite</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="offer-section offer-section--muted" aria-labelledby="offer-for-you-heading">
+        <div class="offer-section-inner">
+          <p class="eyebrow">Tu te reconnais ?</p>
+          <h2 class="offer-section-title" id="offer-for-you-heading">Cette offre est pour toi si…</h2>
+          <ul class="offres-feature-list offer-list-block">
+            <li>Tu t'entraînes déjà, mais tu manques de structure</li>
+            <li>Tu veux avoir accès à ton entraîneure pour répondre à toutes tes questions 7 jours sur 7</li>
+            <li>Tu es constante depuis plusieurs mois ou années</li>
+            <li>Tu n'as pas besoin d'une séance en présentiel chaque semaine pour progresser</li>
+            <li>Tu es capable d'exécuter tes entraînements de façon autonome</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="offer-section" id="comparaison" aria-labelledby="offer-compare-heading">
+        <div class="offer-section-inner">
+          <p class="eyebrow">Comparaison</p>
+          <h2 class="offer-section-title" id="offer-compare-heading">Comparer les deux offres</h2>
+
+          <div class="offer-compare" data-offer-compare>
+            <button
+              type="button"
+              class="offer-compare-toggle"
+              data-offer-compare-toggle
+              aria-expanded="false"
+              aria-controls="offer-compare-panel"
+              id="offer-compare-btn"
+            >
+              <span class="offer-compare-toggle__text">Afficher la comparaison</span>
+              <svg
+                class="offer-compare-chevron"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 9l6 6 6-6"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <div
+              class="offer-compare-panel-wrap"
+              data-offer-compare-panel-wrap
+              aria-hidden="true"
+              id="offer-compare-panel"
+              role="region"
+              aria-labelledby="offer-compare-btn"
+            >
+              <div class="offer-compare-panel-inner">
+                <div class="offer-compare-columns">
+                  <div class="offer-compare-col offer-compare-col--current">
+                    <p class="offer-compare-kicker offer-compare-kicker--current">Offre actuelle</p>
+                    <h3 class="offer-compare-col-title">Le Tremplin</h3>
+                    <p class="offer-compare-col-sub">1 mois</p>
+                    <ul class="offres-feature-list offer-compare-list">
+                      <li>Tu t'entraînes déjà ou t'es déjà entraînée dans le passé</li>
+                      <li>Tu es autonome et déjà constante</li>
+                      <li>Tu ne peux pas facilement intégrer du présentiel chaque semaine</li>
+                      <li>Tu veux briser un plateau</li>
+                    </ul>
+                  </div>
+                  <div class="offer-compare-col">
+                    <p class="offer-compare-kicker">Autre offre</p>
+                    <h3 class="offer-compare-col-title">Offre signature</h3>
+                    <p class="offer-compare-col-sub">3 mois</p>
+                    <ul class="offres-feature-list offer-compare-list">
+                      <li>Tu ne t'es jamais entraînée</li>
+                      <li>Tu veux une transformation plus complète</li>
+                      <li>Tu as besoin de plus d'encadrement</li>
+                      <li>Tu veux bénéficier de séances en présentiel</li>
+                      <li>Tu veux être suivie de façon plus rapprochée</li>
+                      <li>Tu veux installer des habitudes solides sur le long terme</li>
+                    </ul>
+                    <a class="arrow-text-link offer-compare-other-link" href="/offres/offre-signature"
+                      >Voir cette offre<span class="hero-ghost-arrow" aria-hidden="true">→</span></a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <a
+      class="offer-sticky-cta"
+      href="https://cal.com/elianelarre/appel-decouverte"
+      data-cal-link="elianelarre/appel-decouverte"
+      data-cal-namespace="appel-decouverte"
+      data-cal-config='{"layout":"month_view"}'
+      data-offer-sticky-cta
+      aria-label="Réserver un appel découverte"
+      aria-hidden="true"
+      tabindex="-1"
+      >Commencer maintenant</a
+    >
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <section class="footer-col footer-col--brand" aria-label="Marque Éliane Larre">
+          <p class="footer-brand"><em>Éliane Larre</em></p>
+          <p class="footer-tagline">Entraîneure personnelle privée</p>
+          <p class="footer-location">Montréal, Québec</p>
+        </section>
+
+        <nav class="footer-col footer-col--nav" aria-label="Navigation pied de page">
+          <h3 class="footer-title">Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="/#introduction">Introduction</a></li>
+            <li>
+              <a href="/#offres">Offres</a>
+              <ul class="footer-sublinks">
+                <li><a href="/offres/le-tremplin">Offre 1 — Le Tremplin</a></li>
+                <li><a href="/offres/offre-signature">Offre 2 — Offre signature</a></li>
+              </ul>
+            </li>
+            <li><a href="/#faq">FAQ</a></li>
+            <li>
+              <a
+                href="https://cal.com/elianelarre/appel-decouverte"
+                data-cal-link="elianelarre/appel-decouverte"
+                data-cal-namespace="appel-decouverte"
+                data-cal-config='{"layout":"month_view"}'
+                >Appel découverte</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <section class="footer-col footer-col--contact" aria-labelledby="footer-contact-heading">
+          <h3 class="footer-title" id="footer-contact-heading">Contact</h3>
+          <address class="footer-contact-list">
+            <a href="mailto:contact@eliane-larre.com">contact@eliane-larre.com</a>
+            <a
+              class="footer-ig-link"
+              href="https://www.instagram.com/eliane.au.naturel"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram @elianelarre (nouvel onglet)"
+            >
+              <svg class="footer-ig-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 11-2.881 0 1.44 1.44 0 012.881 0z"
+                />
+              </svg>
+            </a>
+          </address>
+        </section>
+
+        <nav class="footer-col footer-col--legal" aria-label="Liens légaux">
+          <h3 class="footer-title">Légal</h3>
+          <ul class="footer-links">
+            <li><a href="/politique-de-confidentialite">Politique de confidentialité</a></li>
+            <li><a href="/conditions-utilisation">Conditions d'utilisation</a></li>
+            <li><a href="#" data-cookie-preferences-link>Gérer mes préférences de témoins</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-bottom-copy">© 2026 Éliane Larre. Tous droits réservés.</p>
+        <p class="footer-bottom-credit">
+          <a href="https://wfwonder.com/" target="_blank" rel="noopener noreferrer">WorkflowWonder ✦</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

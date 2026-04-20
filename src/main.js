@@ -317,4 +317,60 @@ initPresentielStaticMap();
 const faq = document.querySelector('[data-faq]');
 if (faq) initFaq(faq);
 
+/** Collapsible comparison block (offer detail pages). */
+function initOfferCompare() {
+  const root = document.querySelector('[data-offer-compare]');
+  if (!root) return;
+  const btn = root.querySelector('[data-offer-compare-toggle]');
+  const wrap = root.querySelector('[data-offer-compare-panel-wrap]');
+  const textEl = btn?.querySelector('.offer-compare-toggle__text');
+  if (!btn || !wrap || !textEl) return;
+
+  btn.addEventListener('click', () => {
+    const open = !root.classList.contains('is-open');
+    root.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    wrap.setAttribute('aria-hidden', open ? 'false' : 'true');
+    wrap.classList.toggle('is-expanded', open);
+    textEl.textContent = open ? 'Masquer la comparaison' : 'Afficher la comparaison';
+  });
+}
+
+/** Sticky discovery CTA: show after scroll threshold; hide when footer is visible. */
+function initOfferStickyCta() {
+  const el = document.querySelector('[data-offer-sticky-cta]');
+  const footer = document.querySelector('.site-footer');
+  if (!el || !footer) return;
+
+  const SCROLL_THRESHOLD = 500;
+
+  let footerVisible = false;
+
+  const apply = () => {
+    const scrollPast = window.scrollY > SCROLL_THRESHOLD;
+    const visible = scrollPast && !footerVisible;
+    el.classList.toggle('is-visible', visible);
+    el.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    if (visible) el.removeAttribute('tabindex');
+    else el.setAttribute('tabindex', '-1');
+  };
+
+  window.addEventListener('scroll', apply, { passive: true });
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      const e = entries[0];
+      footerVisible = !!(e && e.isIntersecting);
+      apply();
+    },
+    { threshold: 0, rootMargin: '0px' },
+  );
+  io.observe(footer);
+
+  apply();
+}
+
+initOfferCompare();
+initOfferStickyCta();
+
 initCookieConsent();
