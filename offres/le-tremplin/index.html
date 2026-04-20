@@ -116,7 +116,6 @@
     <main id="contenu-principal" class="offer-main">
       <section class="offer-hero">
         <div class="offer-hero-inner">
-          <a class="offer-back-link" href="/#offres">← Retour aux offres</a>
           <p class="offer-hero-eyebrow">Formule 1 mois</p>
           <h1 class="offer-hero-title">Le Tremplin</h1>
           <p class="offer-hero-subtitle">
@@ -168,9 +167,11 @@
                 <p class="offer-process-card__kicker">La rencontre</p>
               </div>
               <h3 class="offer-process-card__title" id="offer-card-01-title">Rencontre initiale</h3>
-              <ul class="offres-feature-list offer-process-card__list" aria-labelledby="offer-card-01-title">
+              <ul class="offer-line-list offer-process-card__list" aria-labelledby="offer-card-01-title">
                 <li>1 rencontre initiale en présentiel de 2 heures</li>
                 <li>Présentation et ajustements du programme d'entraînement</li>
+                <li>Tests physiques et mesures de départ</li>
+                <li>Prises de la composition corporelle</li>
               </ul>
             </article>
             <article class="offer-process-card" aria-labelledby="offer-card-02-title">
@@ -180,11 +181,9 @@
                 <p class="offer-process-card__kicker">Le programme</p>
               </div>
               <h3 class="offer-process-card__title" id="offer-card-02-title">Programme personnalisé</h3>
-              <ul class="offres-feature-list offer-process-card__list" aria-labelledby="offer-card-02-title">
+              <ul class="offer-line-list offer-process-card__list" aria-labelledby="offer-card-02-title">
                 <li>Programme d'entraînement personnalisé</li>
                 <li>Ajustable durant les 4 semaines selon tes commentaires et résultats</li>
-                <li>Tests physiques et mesures de départ</li>
-                <li>Prises de la composition corporelle</li>
               </ul>
             </article>
             <article class="offer-process-card" aria-labelledby="offer-card-03-title">
@@ -194,7 +193,7 @@
                 <p class="offer-process-card__kicker">L'application</p>
               </div>
               <h3 class="offer-process-card__title" id="offer-card-03-title">Accès à l'application</h3>
-              <ul class="offres-feature-list offer-process-card__list" aria-labelledby="offer-card-03-title">
+              <ul class="offer-line-list offer-process-card__list" aria-labelledby="offer-card-03-title">
                 <li>Accès à ton programme</li>
                 <li>Suivi de tes charges</li>
                 <li>Messagerie directe 7/7</li>
@@ -209,7 +208,7 @@
                 <p class="offer-process-card__kicker">Le bilan</p>
               </div>
               <h3 class="offer-process-card__title" id="offer-card-04-title">Appel bilan</h3>
-              <ul class="offres-feature-list offer-process-card__list" aria-labelledby="offer-card-04-title">
+              <ul class="offer-line-list offer-process-card__list" aria-labelledby="offer-card-04-title">
                 <li>1 appel bilan de 45 minutes à la fin des 4 semaines</li>
                 <li>Questionnaire préalablement complété</li>
                 <li>Résumé et recommandations pour la suite</li>
@@ -223,7 +222,7 @@
         <div class="offer-section-inner">
           <p class="eyebrow">Tu te reconnais ?</p>
           <h2 class="offer-section-title" id="offer-for-you-heading">Cette offre est pour toi si…</h2>
-          <ul class="offres-feature-list offer-list-block offres-feature-list--on-plum">
+          <ul class="offer-list-dots offer-list-block">
             <li>Tu t'entraînes déjà, mais tu manques de structure</li>
             <li>Tu veux avoir accès à ton entraîneure pour répondre à toutes tes questions 7 jours sur 7</li>
             <li>Tu es constante depuis plusieurs mois ou années</li>
@@ -238,73 +237,33 @@
           <p class="eyebrow">Comparaison</p>
           <h2 class="offer-section-title" id="offer-compare-heading">Comparer les deux offres</h2>
 
-          <div class="offer-compare" data-offer-compare>
-            <button
-              type="button"
-              class="offer-compare-toggle"
-              data-offer-compare-toggle
-              aria-expanded="false"
-              aria-controls="offer-compare-panel"
-              id="offer-compare-btn"
-            >
-              <span class="offer-compare-toggle__text">Afficher la comparaison</span>
-              <svg
-                class="offer-compare-chevron"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
+          <div class="offer-compare-columns">
+            <div class="offer-compare-col offer-compare-col--current">
+              <p class="offer-compare-kicker offer-compare-kicker--current">Offre actuelle</p>
+              <h3 class="offer-compare-col-title">Le Tremplin</h3>
+              <p class="offer-compare-col-sub">1 mois</p>
+              <ul class="offres-feature-list offer-compare-list">
+                <li>Tu t'entraînes déjà ou t'es déjà entraînée dans le passé</li>
+                <li>Tu es autonome et déjà constante</li>
+                <li>Tu ne peux pas facilement intégrer du présentiel chaque semaine</li>
+                <li>Tu veux briser un plateau</li>
+              </ul>
+            </div>
+            <div class="offer-compare-col">
+              <p class="offer-compare-kicker">Autre offre</p>
+              <h3 class="offer-compare-col-title">Offre signature</h3>
+              <p class="offer-compare-col-sub">3 mois</p>
+              <ul class="offres-feature-list offer-compare-list">
+                <li>Tu ne t'es jamais entraînée</li>
+                <li>Tu veux une transformation plus complète</li>
+                <li>Tu as besoin de plus d'encadrement</li>
+                <li>Tu veux bénéficier de séances en présentiel</li>
+                <li>Tu veux être suivie de façon plus rapprochée</li>
+                <li>Tu veux installer des habitudes solides sur le long terme</li>
+              </ul>
+              <a class="arrow-text-link offer-compare-other-link" href="/offres/offre-signature"
+                >Voir cette offre<span class="hero-ghost-arrow" aria-hidden="true">→</span></a
               >
-                <path
-                  d="M6 9l6 6 6-6"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-            <div
-              class="offer-compare-panel-wrap"
-              data-offer-compare-panel-wrap
-              aria-hidden="true"
-              id="offer-compare-panel"
-              role="region"
-              aria-labelledby="offer-compare-btn"
-            >
-              <div class="offer-compare-panel-inner">
-                <div class="offer-compare-columns">
-                  <div class="offer-compare-col offer-compare-col--current">
-                    <p class="offer-compare-kicker offer-compare-kicker--current">Offre actuelle</p>
-                    <h3 class="offer-compare-col-title">Le Tremplin</h3>
-                    <p class="offer-compare-col-sub">1 mois</p>
-                    <ul class="offres-feature-list offer-compare-list">
-                      <li>Tu t'entraînes déjà ou t'es déjà entraînée dans le passé</li>
-                      <li>Tu es autonome et déjà constante</li>
-                      <li>Tu ne peux pas facilement intégrer du présentiel chaque semaine</li>
-                      <li>Tu veux briser un plateau</li>
-                    </ul>
-                  </div>
-                  <div class="offer-compare-col">
-                    <p class="offer-compare-kicker">Autre offre</p>
-                    <h3 class="offer-compare-col-title">Offre signature</h3>
-                    <p class="offer-compare-col-sub">3 mois</p>
-                    <ul class="offres-feature-list offer-compare-list">
-                      <li>Tu ne t'es jamais entraînée</li>
-                      <li>Tu veux une transformation plus complète</li>
-                      <li>Tu as besoin de plus d'encadrement</li>
-                      <li>Tu veux bénéficier de séances en présentiel</li>
-                      <li>Tu veux être suivie de façon plus rapprochée</li>
-                      <li>Tu veux installer des habitudes solides sur le long terme</li>
-                    </ul>
-                    <a class="arrow-text-link offer-compare-other-link" href="/offres/offre-signature"
-                      >Voir cette offre<span class="hero-ghost-arrow" aria-hidden="true">→</span></a
-                    >
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

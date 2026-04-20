@@ -317,25 +317,6 @@ initPresentielStaticMap();
 const faq = document.querySelector('[data-faq]');
 if (faq) initFaq(faq);
 
-/** Collapsible comparison block (offer detail pages). */
-function initOfferCompare() {
-  const root = document.querySelector('[data-offer-compare]');
-  if (!root) return;
-  const btn = root.querySelector('[data-offer-compare-toggle]');
-  const wrap = root.querySelector('[data-offer-compare-panel-wrap]');
-  const textEl = btn?.querySelector('.offer-compare-toggle__text');
-  if (!btn || !wrap || !textEl) return;
-
-  btn.addEventListener('click', () => {
-    const open = !root.classList.contains('is-open');
-    root.classList.toggle('is-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    wrap.setAttribute('aria-hidden', open ? 'false' : 'true');
-    wrap.classList.toggle('is-expanded', open);
-    textEl.textContent = open ? 'Masquer la comparaison' : 'Afficher la comparaison';
-  });
-}
-
 /** Sticky discovery CTA: show after scroll threshold; hide when footer is visible. */
 function initOfferStickyCta() {
   const el = document.querySelector('[data-offer-sticky-cta]');
@@ -370,7 +351,6 @@ function initOfferStickyCta() {
   apply();
 }
 
-initOfferCompare();
 initOfferStickyCta();
 
 initCookieConsent();
