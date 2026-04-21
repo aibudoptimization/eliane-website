@@ -592,7 +592,7 @@ button:focus-visible {
 }
 
 .hero-headline-pull {
-  display: block;
+  display: inline;
 }
 
 .hero-headline-pull em {
@@ -679,18 +679,14 @@ button:focus-visible {
     max-width: 30rem;
   }
 
-  /* Editorial overlap: stay flush-left with lines above; extend right past column onto portrait */
   .hero-headline-pull {
     position: relative;
     z-index: 2;
-    display: block;
-    min-width: 100%;
-    width: max-content;
-    max-width: none;
+    display: inline;
   }
 
   .hero-headline-pull em {
-    white-space: nowrap;
+    white-space: normal;
     color: var(--lavender);
   }
 
@@ -725,6 +721,7 @@ button:focus-visible {
   }
 
   .hero-headline-pull {
+    display: inline;
     width: auto;
     min-width: 0;
     max-width: none;
@@ -745,6 +742,7 @@ button:focus-visible {
 /* Narrow viewports: normal wrap, no column overflow (per spec <768px; stacked hero uses this from 900px down) */
 @media (max-width: 767px) {
   .hero-headline-pull {
+    display: inline;
     width: auto;
     min-width: 0;
   }

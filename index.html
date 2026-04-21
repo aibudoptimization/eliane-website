@@ -116,17 +116,14 @@
     <main id="contenu-principal">
       <section class="hero" id="accueil">
         <div class="hero-copy">
-          <p class="hero-tag">Entraîneure personnelle privée · Montréal</p>
+          <p class="hero-tag">Entraîneure personnelle • Montréal</p>
           <h1>
-            Ton corps a<br />
-            toujours été capable.<br />
-            <span class="hero-headline-pull"
-              ><em>Il lui manquait<br />la bonne approche.</em></span
-            >
+            Un service personnalisé en présentiel pour t'aider à progresser
+            <span class="hero-headline-pull"><em>de façon claire et durable</em></span>.
           </h1>
           <p class="hero-lead">
-            Un accompagnement privé sur mesure, conçu pour les femmes qui ont déjà tout essayé — et qui sont prêtes pour
-            quelque chose de différent.
+            Un accompagnement sur mesure, conçu pour toi qui crois avoir tout essayé, mais qui n'arrives toujours pas à
+            atteindre tes objectifs et à les maintenir.
           </p>
           <div class="hero-actions">
             <a
@@ -144,7 +141,9 @@
           <p class="sr-only">Portrait d’Éliane.</p>
           <div class="hero-photo">
             <picture>
-              <source type="image/webp" srcset="/images/eliane-hero.webp" />
+              <source media="(max-width: 767px)" srcset="/images/hero-mobile.jpg" />
+              <source media="(max-width: 1279px)" srcset="/images/hero-tablet.jpg" />
+              <source type="image/webp" media="(min-width: 1280px)" srcset="/images/eliane-hero.webp" />
               <img
                 class="hero-img"
                 src="/images/eliane-hero.jpg"
