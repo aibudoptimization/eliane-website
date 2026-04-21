@@ -708,7 +708,7 @@ button:focus-visible {
 /* Mobile/tablet hero assets (<1280px picture sources): frame portrait without excess headroom */
 @media (max-width: 1279px) {
   .hero-img {
-    object-position: center 20%;
+    object-position: center 15%;
   }
 }
 
