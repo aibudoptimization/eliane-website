@@ -705,10 +705,10 @@ button:focus-visible {
   }
 }
 
-/* Mobile/tablet hero assets (<1280px picture sources): anchor from top so the portrait head is not cropped */
+/* Mobile/tablet hero assets (<1280px picture sources): balance headroom vs forehead crop */
 @media (max-width: 1279px) {
   .hero-img {
-    object-position: center top;
+    object-position: center 25%;
   }
 }
 
