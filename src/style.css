@@ -157,6 +157,23 @@ button:focus-visible {
   color: var(--plum);
 }
 
+/* Offres: dropdown only ≥1280px; 901–1279px uses flat top-level links (.nav-offres-flat-md) */
+.nav-offres-flat-md {
+  display: none;
+}
+
+@media (min-width: 901px) and (max-width: 1279px) {
+  .nav-offres-flat-md {
+    display: revert;
+  }
+}
+
+@media (max-width: 1279px) {
+  .nav-offres-dropdown--lg {
+    display: none;
+  }
+}
+
 /* Desktop “Offres” dropdown (markup lives in .nav-desktop; hidden <901px with the rest) */
 .nav-dropdown {
   position: relative;
@@ -245,11 +262,11 @@ button:focus-visible {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 20px;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 0.6875rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  text-transform: none;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   line-height: 1.35;
   color: var(--mid);
   transition:
