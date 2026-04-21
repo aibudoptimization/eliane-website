@@ -705,13 +705,6 @@ button:focus-visible {
   }
 }
 
-/* Mobile/tablet hero assets (<1280px picture sources): frame portrait without excess headroom */
-@media (max-width: 1279px) {
-  .hero-img {
-    object-position: center 5%;
-  }
-}
-
 .hero-accent-bar {
   position: absolute;
   bottom: 0;
@@ -756,6 +749,41 @@ button:focus-visible {
 
   .hero-headline-pull em {
     white-space: normal;
+  }
+}
+
+/* Exploratory (may revert): full natural hero image <1280px — no crop; desktop (≥1280) unchanged */
+@media (max-width: 1279px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero .hero-visual {
+    order: -1;
+    min-height: 0;
+    max-height: none;
+    height: auto;
+  }
+
+  .hero-photo {
+    position: static;
+    height: auto;
+  }
+
+  .hero-photo picture {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: initial;
+    object-position: initial;
+    position: static;
   }
 }
 
