@@ -705,6 +705,13 @@ button:focus-visible {
   }
 }
 
+/* Mobile/tablet hero assets (<1280px picture sources): anchor from top so the portrait head is not cropped */
+@media (max-width: 1279px) {
+  .hero-img {
+    object-position: center top;
+  }
+}
+
 .hero-accent-bar {
   position: absolute;
   bottom: 0;
