@@ -212,7 +212,7 @@ function initNavDesktopDropdowns(nav) {
     });
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth <= 900) close();
+      if (window.innerWidth < 1280) close();
     });
   });
 }
