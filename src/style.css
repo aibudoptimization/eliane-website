@@ -3107,6 +3107,12 @@ button:focus-visible {
 
 }
 
+/* —— Cal.com CTA: embed script still loading (iOS Safari race guard) —— */
+.is-cal-loading {
+  opacity: 0.65;
+  cursor: wait;
+}
+
 /* —— Cal.com embed modal —— above fixed .site-nav (z-index: 500) and nav dropdown (520) */
 cal-modal-box,
 cal-modal-box * {
