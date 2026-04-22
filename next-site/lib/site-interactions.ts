@@ -291,23 +291,62 @@ function initNav(nav: HTMLElement): () => void {
   };
 }
 
+function revealElementIntersectsViewport(el: HTMLElement): boolean {
+  const rect = el.getBoundingClientRect();
+  const vh = window.innerHeight;
+  return rect.top < vh && rect.bottom > 0;
+}
+
 function initReveal(): () => void {
-  const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
-  if (!els.length) return () => {};
+  let io: IntersectionObserver | null = null;
+  let rafSetup = 0;
+  let rafRecheck = 0;
+  let cancelled = false;
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("is-visible");
-        io.unobserve(e.target);
+  const setup = () => {
+    if (cancelled) return;
+    const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (!els.length) return;
+
+    const markIfInView = (el: HTMLElement) => {
+      if (el.classList.contains("is-visible")) return true;
+      if (!revealElementIntersectsViewport(el)) return false;
+      el.classList.add("is-visible");
+      return true;
+    };
+
+    io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("is-visible");
+          io?.unobserve(e.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -5% 0px" },
+    );
+
+    els.forEach((el) => {
+      if (markIfInView(el)) return;
+      io!.observe(el);
+    });
+
+    rafRecheck = requestAnimationFrame(() => {
+      if (cancelled || !io) return;
+      els.forEach((el) => {
+        if (markIfInView(el)) io!.unobserve(el);
       });
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -5% 0px" },
-  );
+    });
+  };
 
-  els.forEach((el) => io.observe(el));
-  return () => io.disconnect();
+  rafSetup = requestAnimationFrame(setup);
+
+  return () => {
+    cancelled = true;
+    cancelAnimationFrame(rafSetup);
+    cancelAnimationFrame(rafRecheck);
+    io?.disconnect();
+  };
 }
 
 function initFaq(root: Element): () => void {

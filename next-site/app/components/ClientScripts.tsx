@@ -5,7 +5,14 @@ import { mountSiteInteractions } from "@/lib/site-interactions";
 
 export default function ClientScripts() {
   useEffect(() => {
-    return mountSiteInteractions();
+    let teardown: (() => void) | undefined;
+    const rafId = requestAnimationFrame(() => {
+      teardown = mountSiteInteractions();
+    });
+    return () => {
+      cancelAnimationFrame(rafId);
+      teardown?.();
+    };
   }, []);
 
   return null;
