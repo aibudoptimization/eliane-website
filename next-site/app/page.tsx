@@ -1,115 +1,85 @@
-const faqStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "À qui s'adresse ce programme ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ce service s'adresse aux personnes qui ont déjà essayé de s'entraîner sans obtenir de résultats durables. Aux personnes qui veulent commencer à s'entraîner de façon sécuritaire. Peu importe ton niveau de départ, je pars de là où tu en es."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Où ont lieu les séances ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Les séances ont lieu au Biner Training, situé au 220 boulevard Crémazie Ouest, à Montréal."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Quel équipement est utilisé ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "J'ai plus de dix ans d'expérience avec les poids libres : haltères, ballons, bandes élastiques. Ton programme est conçu selon l'équipement disponible et adapté à tes besoins spécifiques."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Est,ce que le programme inclut un volet nutrition ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Oui. J'offre une analyse de ton alimentation ainsi que des conseils concrets et réalistes, selon l'offre choisie. Les recommandations nutritionnelles sont de nature générale et ne constituent pas un plan alimentaire personnalisé prescrit par un professionnel de la santé."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Comment obtenir les détails sur l'investissement ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Comme chaque situation est différente, je préfère en discuter directement avec toi pour m'assurer que l'accompagnement correspond bien à tes besoins avant de parler des modalités. Réserve un appel découverte, on prend le temps d'en parler ensemble."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Que se passe,t,il après les 12 semaines ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "La dernière séance est consacrée à faire le bilan et à planifier la suite selon tes objectifs. Des formules de suivi mensuel sont disponibles pour les clientes qui souhaitent continuer leur progression."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Quelle offre devrais,je choisir, Le Tremplin ou l'Offre signature ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Le Tremplin est idéale si tu t'entraînes déjà, que tu es autonome et constante, et que tu cherches à briser un plateau. L'Offre signature est conçue pour celles qui veulent une transformation plus complète, un encadrement hebdomadaire en présentiel, et installer des habitudes solides sur le long terme. Si tu hésites, réserve un appel découverte : on regarde ensemble ce qui te convient le mieux."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Combien de temps durent les séances ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "La rencontre initiale du Tremplin dure 2 heures. Dans l'Offre signature, les séances hebdomadaires en présentiel durent environ 60 minutes."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Comment se déroule la première rencontre ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "La première rencontre se fait en présentiel au Biner Training. On prend le temps de faire des tests physiques, des mesures de départ et une prise de la composition corporelle. On revoit ensemble ton programme d'entraînement et on fait les premiers ajustements selon ton profil."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Est,ce que je peux m'entraîner si j'ai une blessure ou une condition médicale ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Chaque situation est unique. Lors de l'appel découverte, on prend le temps d'en discuter pour voir comment adapter l'accompagnement à ta réalité. Dans certains cas, un avis médical peut être recommandé avant de commencer."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Est,ce que les séances sont privées ou en groupe ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Les séances sont entièrement privées. Tu travailles uniquement avec moi, dans un espace dédié au Biner Training."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Puis,je poursuivre l'accompagnement après l'offre initiale ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Oui. Des formules de suivi mensuel sont disponibles pour les clientes qui souhaitent continuer leur progression après la fin de leur accompagnement initial."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Est,ce que tu accompagnes des femmes enceintes ou en post,partum ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Oui, avec certaines précautions. Je recommande d'obtenir un avis médical préalable avant de débuter ou de reprendre l'entraînement. On en discute lors de l'appel découverte pour adapter l'accompagnement à ta situation."
-        }
-      }
-    ]
-  } as const;
+import { PortableText, type PortableTextComponents } from '@portabletext/react'
+import { client } from '@/sanity/client'
+import { urlFor } from '@/sanity/imageUrl'
+import {
+  HOMEPAGE_QUERY,
+  HOMEPAGE_OFFERS_QUERY,
+  FAQS_QUERY,
+  SITE_SETTINGS_QUERY,
+} from '@/sanity/queries'
 
-export default function Home() {
+const heroHeadlineComponents: PortableTextComponents = {
+  marks: {
+    em: ({ children }) => (
+      <span className="hero-headline-pull">
+        <em>{children}</em>
+      </span>
+    ),
+    strong: ({ children }) => <strong>{children}</strong>,
+  },
+  block: {
+    normal: ({ children }) => <>{children}</>,
+  },
+}
+
+const introHeadlineComponents: PortableTextComponents = {
+  marks: {
+    em: ({ children }) => <em>{children}</em>,
+    strong: ({ children }) => <strong>{children}</strong>,
+  },
+  block: {
+    normal: ({ children }) => <>{children}</>,
+  },
+}
+
+const freeWeightsBulletComponents: PortableTextComponents = {
+  marks: {
+    strong: ({ children }) => <strong>{children}</strong>,
+    em: ({ children }) => <em>{children}</em>,
+  },
+  block: {
+    normal: ({ children }) => <>{children}</>,
+  },
+}
+
+export default async function Home() {
+  const [homePage, homepageOffers, faqs, siteSettings] = await Promise.all([
+    client.fetch(HOMEPAGE_QUERY),
+    client.fetch(HOMEPAGE_OFFERS_QUERY),
+    client.fetch(FAQS_QUERY),
+    client.fetch(SITE_SETTINGS_QUERY),
+  ])
+
+  const calBookingUrl =
+    siteSettings?.calBookingUrl ?? 'https://cal.com/elianelarre/appel-decouverte'
+  const calNamespace =
+    siteSettings?.calNamespace ?? 'elianelarre/appel-decouverte'
+  const calNamespaceSlug =
+    calNamespace.split('/').pop() || 'appel-decouverte'
+  const contactEmail = siteSettings?.contactEmail ?? 'info@elianelarre.com'
+  const instagramUrl =
+    siteSettings?.instagramUrl ?? 'https://www.instagram.com/eliane.au.naturel'
+
+  const heroImageSrc =
+    homePage?.heroImage?.asset != null
+      ? urlFor(homePage.heroImage).width(1200).url()
+      : '/images/eliane-hero.jpg'
+
+  const introImageSrc =
+    homePage?.introImage?.asset != null
+      ? urlFor(homePage.introImage).width(1200).url()
+      : '/images/eliane-intro-training.png'
+
+  const approachImageSrc =
+    homePage?.approachImage?.asset != null
+      ? urlFor(homePage.approachImage).width(1400).url()
+      : '/images/eliane-mission-sled-push.png'
+
+  const freeWeightsImageSrc =
+    homePage?.freeWeightsImage?.asset != null
+      ? urlFor(homePage.freeWeightsImage).width(1200).url()
+      : '/images/eliane-poids-libres.png'
+
   return (
     <main id="contenu-principal">
       
@@ -117,19 +87,28 @@ export default function Home() {
               <div className="hero-copy">
                 <p className="hero-tag">Entraîneure personnelle • Montréal</p>
                 <h1>
-                  Un service personnalisé en présentiel pour t'aider à progresser
-                  <span className="hero-headline-pull"><em>de façon claire et durable</em></span>.
+                  {Array.isArray(homePage?.heroHeadline) && homePage.heroHeadline.length > 0 ? (
+                    <PortableText value={homePage.heroHeadline} components={heroHeadlineComponents} />
+                  ) : (
+                    <>
+                      Un service personnalisé en présentiel pour t'aider à progresser{' '}
+                      <span className="hero-headline-pull">
+                        <em>de façon claire et durable</em>
+                      </span>
+                      .
+                    </>
+                  )}
                 </h1>
                 <p className="hero-lead">
-                  Un accompagnement sur mesure, conçu pour toi qui crois avoir tout essayé, mais qui n'arrives toujours pas à
-                  atteindre tes objectifs et à les maintenir.
+                  {homePage?.heroSubheadline ??
+                    "Un accompagnement sur mesure, conçu pour toi qui crois avoir tout essayé, mais qui n'arrives toujours pas à atteindre tes objectifs et à les maintenir."}
                 </p>
                 <div className="hero-actions">
                   <a
                     className="btn btn-primary"
-                    href="https://cal.com/elianelarre/appel-decouverte"
-                    data-cal-link="elianelarre/appel-decouverte"
-                    data-cal-namespace="appel-decouverte"
+                    href={calBookingUrl}
+                    data-cal-link={calNamespace}
+                    data-cal-namespace={calNamespaceSlug}
                     data-cal-config='{"layout":"month_view"}'
                     >Appel découverte</a>
                   <a className="btn btn-ghost hero-secondary-cta" href="#offres"
@@ -139,19 +118,14 @@ export default function Home() {
               <div className="hero-visual">
                 <p className="sr-only">Portrait d’Éliane.</p>
                 <div className="hero-photo">
-                  <picture>
-                    <source media="(max-width: 767px)" srcSet="/images/hero-mobile.jpg" />
-                    <source media="(max-width: 1279px)" srcSet="/images/hero-tablet.jpg" />
-                    <source type="image/webp" media="(min-width: 1280px)" srcSet="/images/eliane-hero.webp" />
-                    <img
-                      className="hero-img"
-                      src="/images/eliane-hero.jpg"
-                      alt=""
-                      width="2400"
-                      height="3000"
-                      fetchPriority="high"
-                    />
-                  </picture>
+                  <img
+                    className="hero-img"
+                    src={heroImageSrc}
+                    alt={homePage?.heroImage?.alt ?? ''}
+                    width="2400"
+                    height="3000"
+                    fetchPriority="high"
+                  />
                 </div>
                 <div className="hero-accent-bar" aria-hidden="true" />
               </div>
@@ -220,10 +194,19 @@ export default function Home() {
               <div className="section-inner intro-stack">
                 <div className="intro-top reveal" data-reveal>
                   <span className="eyebrow eyebrow--with-anchor">Introduction</span>
-                  <h2>Accompagnement personnalisé <br /><em>en présentiel à Montréal</em></h2>
+                  <h2>
+                    {Array.isArray(homePage?.introHeadline) && homePage.introHeadline.length > 0 ? (
+                      <PortableText value={homePage.introHeadline} components={introHeadlineComponents} />
+                    ) : (
+                      <>
+                        Accompagnement personnalisé <br />
+                        <em>en présentiel à Montréal</em>
+                      </>
+                    )}
+                  </h2>
                   <p className="lead intro-subhead">
-                    J'offre un accompagnement personnalisé avec séances en présentiel pour t'aider à progresser de façon
-                    structurée, sécuritaire et adaptée à tes objectifs.
+                    {homePage?.introDescription ??
+                      "J'offre un accompagnement personnalisé avec séances en présentiel pour t'aider à progresser de façon structurée, sécuritaire et adaptée à tes objectifs."}
                   </p>
                 </div>
                 <div className="intro-bottom">
@@ -233,8 +216,11 @@ export default function Home() {
                         <div className="intro-photo-frame">
                           <img
                             className="intro-photo-img"
-                            src="/images/eliane-intro-training.png"
-                            alt="Éliane, entraîneure personnelle à Montréal, s'entraînant avec un haltère en salle."
+                            src={introImageSrc}
+                            alt={
+                              homePage?.introImage?.alt ??
+                              "Éliane, entraîneure personnelle à Montréal, s'entraînant avec un haltère en salle."
+                            }
                             width="682"
                             height="1024"
                             loading="lazy"
@@ -297,9 +283,9 @@ export default function Home() {
                 <div className="cta-inline-actions reveal" data-reveal>
                   <a
                     className="btn cta-inline-btn"
-                    href="https://cal.com/elianelarre/appel-decouverte"
-                    data-cal-link="elianelarre/appel-decouverte"
-                    data-cal-namespace="appel-decouverte"
+                    href={calBookingUrl}
+                    data-cal-link={calNamespace}
+                    data-cal-namespace={calNamespaceSlug}
                     data-cal-config='{"layout":"month_view"}'
                     >OUI, JE VEUX EN SAVOIR PLUS&nbsp;!</a
                   >
@@ -408,9 +394,9 @@ export default function Home() {
                       </ul>
                       <a
                         className="fit-bridge-yes-badge"
-                        href="https://cal.com/elianelarre/appel-decouverte"
-                        data-cal-link="elianelarre/appel-decouverte"
-                        data-cal-namespace="appel-decouverte"
+                        href={calBookingUrl}
+                        data-cal-link={calNamespace}
+                        data-cal-namespace={calNamespaceSlug}
                         data-cal-config='{"layout":"month_view"}'
                       >
                         <span className="fit-bridge-yes-badge__text"
@@ -486,20 +472,25 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="mission-block reveal" data-reveal>
-                  <h2 className="mission-heading">Mon approche</h2>
+                  <h2 className="mission-heading">
+                    {Array.isArray(homePage?.approachHeadline) && homePage.approachHeadline.length > 0 ? (
+                      <PortableText value={homePage.approachHeadline} components={introHeadlineComponents} />
+                    ) : (
+                      <>Mon approche</>
+                    )}
+                  </h2>
                   <div className="mission-body">
                     <div className="mission-copy">
                       <p className="mission-manifesto">
                         Ma mission est de t'aider à instaurer des habitudes de vie durables.
                       </p>
                       <p className="mission-text">
-                        Les changements durables demandent du temps et de la constance. Mon rôle est de t'accompagner de façon
-                        soutenue pour t'aider à obtenir des résultats concrets et à développer les apprentissages nécessaires
-                        pour reprendre le contrôle et maintenir tes résultats à long terme.
+                        {homePage?.approachDescription ??
+                          "Les changements durables demandent du temps et de la constance. Mon rôle est de t'accompagner de façon soutenue pour t'aider à obtenir des résultats concrets et à développer les apprentissages nécessaires pour reprendre le contrôle et maintenir tes résultats à long terme."}
                       </p>
                       <a
                         className="arrow-text-link mission-instagram-link"
-                        href="https://www.instagram.com/eliane.au.naturel"
+                        href={instagramUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Découvre mon quotidien sur Instagram (nouvel onglet)"
@@ -510,8 +501,11 @@ export default function Home() {
                       <div className="mission-photo-frame">
                         <img
                           className="mission-photo-img"
-                          src="/images/eliane-mission-sled-push.png"
-                          alt="Éliane, entraîneure personnelle à Montréal, en poussée de traîneau dans un gym sombre à l'éclairage contrasté."
+                          src={approachImageSrc}
+                          alt={
+                            homePage?.approachImage?.alt ??
+                            "Éliane, entraîneure personnelle à Montréal, en poussée de traîneau dans un gym sombre à l'éclairage contrasté."
+                          }
                           width="1024"
                           height="819"
                           loading="lazy"
@@ -625,8 +619,8 @@ export default function Home() {
                     <div className="poids-libres-media-frame">
                       <img
                         className="poids-libres-media-img"
-                        src="/images/eliane-poids-libres.png"
-                        alt="Éliane utilisant des poids libres"
+                        src={freeWeightsImageSrc}
+                        alt={homePage?.freeWeightsImage?.alt ?? "Éliane utilisant des poids libres"}
                         width="690"
                         height="1536"
                         loading="lazy"
@@ -637,31 +631,37 @@ export default function Home() {
                   <div className="poids-libres-content">
                     <div className="reveal" data-reveal>
                       <span className="eyebrow">Les avantages des poids libres et accessoires</span>
-                      <h2>Pourquoi j'utilise les <em>poids libres et accessoires</em></h2>
+                      <h2>
+                        {Array.isArray(homePage?.freeWeightsHeadline) && homePage.freeWeightsHeadline.length > 0 ? (
+                          <PortableText value={homePage.freeWeightsHeadline} components={introHeadlineComponents} />
+                        ) : (
+                          <>Pourquoi j'utilise les <em>poids libres et accessoires</em></>
+                        )}
+                      </h2>
                     </div>
                     <ul className="imagine-list poids-libres-list">
-                      <li className="reveal" data-reveal>
-                        <strong>accessibles</strong> dans tous les gyms comme à la maison
-                      </li>
-                      <li className="reveal" data-reveal>
-                        <strong>travaillent</strong> l'équilibre et la stabilité
-                      </li>
-                      <li className="reveal" data-reveal>
-                        <strong>améliorent</strong> la coordination
-                      </li>
-                      <li className="reveal" data-reveal>
-                        <strong>développent</strong> une force plus fonctionnelle au quotidien
-                      </li>
-                      <li className="reveal" data-reveal>
-                        <strong>offrent</strong> beaucoup de variété dans la progression
-                      </li>
+                      {Array.isArray(homePage?.freeWeightsBullets) && homePage.freeWeightsBullets.length > 0 ? (
+                        homePage.freeWeightsBullets.map((bullet: any, i: number) => (
+                          <li key={i} className="reveal" data-reveal>
+                            <PortableText value={[bullet]} components={freeWeightsBulletComponents} />
+                          </li>
+                        ))
+                      ) : (
+                        <>
+                          <li className="reveal" data-reveal><strong>accessibles</strong> dans tous les gyms comme à la maison</li>
+                          <li className="reveal" data-reveal><strong>travaillent</strong> l'équilibre et la stabilité</li>
+                          <li className="reveal" data-reveal><strong>améliorent</strong> la coordination</li>
+                          <li className="reveal" data-reveal><strong>développent</strong> une force plus fonctionnelle au quotidien</li>
+                          <li className="reveal" data-reveal><strong>offrent</strong> beaucoup de variété dans la progression</li>
+                        </>
+                      )}
                     </ul>
                     <div className="poids-libres-cta-wrap reveal" data-reveal>
                       <a
                         className="btn btn-primary"
-                        href="https://cal.com/elianelarre/appel-decouverte"
-                        data-cal-link="elianelarre/appel-decouverte"
-                        data-cal-namespace="appel-decouverte"
+                        href={calBookingUrl}
+                        data-cal-link={calNamespace}
+                        data-cal-namespace={calNamespaceSlug}
                         data-cal-config='{"layout":"month_view"}'
                         >TROUVE LA BONNE APPROCHE</a
                       >
@@ -680,25 +680,39 @@ export default function Home() {
                 </header>
                 <div className="offres-grid">
                   <article className="offres-card offres-card--tremplin reveal" data-reveal>
-                    <span className="offres-badge offres-badge--muted" aria-hidden="true">1 mois</span>
+                    <span className="offres-badge offres-badge--muted" aria-hidden="true">
+                      {homepageOffers?.tremplinDurationBadge ?? '1 mois'}
+                    </span>
                     <div className="offres-card__body">
-                      <h3 className="offres-card__title">Le Tremplin</h3>
-                      <p className="offres-card__duration">1 mois</p>
-                      <p className="offres-card__pitch">Pour démarrer avec un plan clair et un encadrement de proximité.</p>
+                      <h3 className="offres-card__title">{homepageOffers?.tremplinTitle ?? 'Le Tremplin'}</h3>
+                      <p className="offres-card__duration">{homepageOffers?.tremplinDuration ?? '1 mois'}</p>
+                      <p className="offres-card__pitch">
+                        {homepageOffers?.tremplinPitch ?? 'Pour démarrer avec un plan clair et un encadrement de proximité.'}
+                      </p>
                       <ul className="offres-feature-list">
-                        <li>1 rencontre en présentiel de 2 heures</li>
-                        <li>Programme d'entraînement personnalisé</li>
-                        <li>Accès à l'application de suivi</li>
-                        <li>Messagerie directe 7/7 pendant 4 semaines</li>
-                        <li>Appel bilan de 45 minutes</li>
+                        {Array.isArray(homepageOffers?.tremplinFeatures) && homepageOffers.tremplinFeatures.length > 0 ? (
+                          homepageOffers.tremplinFeatures.map((feature: string, i: number) => (
+                            <li key={i}>{feature}</li>
+                          ))
+                        ) : (
+                          <>
+                            <li>1 rencontre en présentiel de 2 heures</li>
+                            <li>Programme d'entraînement personnalisé</li>
+                            <li>Accès à l'application de suivi</li>
+                            <li>Messagerie directe 7/7 pendant 4 semaines</li>
+                            <li>Appel bilan de 45 minutes</li>
+                          </>
+                        )}
                       </ul>
                       <div className="offres-ideal">
                         <p className="offres-ideal__label">IDÉALE SI TU…</p>
-                        <p className="offres-ideal__text">t'entraînes déjà mais manques de structure.</p>
+                        <p className="offres-ideal__text">
+                          {homepageOffers?.tremplinIdealFor ?? "t'entraînes déjà mais manques de structure."}
+                        </p>
                       </div>
                     </div>
                     <div className="offres-card__cta">
-                      <a className="btn btn-primary btn--offres-cta" href="/offres/le-tremplin">En savoir plus<span aria-hidden="true"> →</span></a>
+                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.tremplinLinkUrl ?? '/offres/le-tremplin'}>En savoir plus<span aria-hidden="true"> →</span></a>
                     </div>
                   </article>
                   <article
@@ -706,26 +720,42 @@ export default function Home() {
                     data-reveal
                     aria-label="Offre signature — offre recommandée"
                   >
-                    <span className="offres-badge offres-badge--popular">Populaire</span>
+                    {homepageOffers?.signatureShowPopularBadge ? (
+                      <span className="offres-badge offres-badge--popular">Populaire</span>
+                    ) : (
+                      <span className="offres-badge offres-badge--muted">{homepageOffers?.signatureDurationBadge ?? '3 mois'}</span>
+                    )}
                     <div className="offres-card__body">
-                      <h3 className="offres-card__title">Offre signature</h3>
-                      <p className="offres-card__duration">3 mois</p>
-                      <p className="offres-card__pitch">Pour un accompagnement complet, structuré et personnalisé.</p>
+                      <h3 className="offres-card__title">{homepageOffers?.signatureTitle ?? 'Offre signature'}</h3>
+                      <p className="offres-card__duration">{homepageOffers?.signatureDuration ?? '3 mois'}</p>
+                      <p className="offres-card__pitch">
+                        {homepageOffers?.signaturePitch ?? 'Pour un accompagnement complet, structuré et personnalisé.'}
+                      </p>
                       <ul className="offres-feature-list">
-                        <li>12 séances en présentiel (1 par semaine)</li>
-                        <li>Programme d'entraînement personnalisé</li>
-                        <li>Accès à l'application de suivi</li>
-                        <li>Messagerie directe 7/7 pendant 12 semaines</li>
-                        <li>1 semaine de journal alimentaire</li>
-                        <li>Bilan écrit final avec recommandations</li>
+                        {Array.isArray(homepageOffers?.signatureFeatures) && homepageOffers.signatureFeatures.length > 0 ? (
+                          homepageOffers.signatureFeatures.map((feature: string, i: number) => (
+                            <li key={i}>{feature}</li>
+                          ))
+                        ) : (
+                          <>
+                            <li>12 séances en présentiel (1 par semaine)</li>
+                            <li>Programme d'entraînement personnalisé</li>
+                            <li>Accès à l'application de suivi</li>
+                            <li>Messagerie directe 7/7 pendant 12 semaines</li>
+                            <li>1 semaine de journal alimentaire</li>
+                            <li>Bilan écrit final avec recommandations</li>
+                          </>
+                        )}
                       </ul>
                       <div className="offres-ideal">
                         <p className="offres-ideal__label">IDÉALE SI TU…</p>
-                        <p className="offres-ideal__text">veux une transformation complète avec encadrement hebdomadaire.</p>
+                        <p className="offres-ideal__text">
+                          {homepageOffers?.signatureIdealFor ?? 'veux une transformation complète avec encadrement hebdomadaire.'}
+                        </p>
                       </div>
                     </div>
                     <div className="offres-card__cta">
-                      <a className="btn btn-primary btn--offres-cta" href="/offres/offre-signature"
+                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.signatureLinkUrl ?? '/offres/offre-signature'}
                         >En savoir plus<span aria-hidden="true"> →</span></a
                       >
                     </div>
@@ -736,9 +766,9 @@ export default function Home() {
                   <p className="offres-helper__sub">Parlons-en lors d'un appel découverte.</p>
                   <a
                     className="btn btn-primary"
-                    href="https://cal.com/elianelarre/appel-decouverte"
-                    data-cal-link="elianelarre/appel-decouverte"
-                    data-cal-namespace="appel-decouverte"
+                    href={calBookingUrl}
+                    data-cal-link={calNamespace}
+                    data-cal-namespace={calNamespaceSlug}
                     data-cal-config='{"layout":"month_view"}'
                     >Réserver un appel</a
                   >
@@ -757,202 +787,37 @@ export default function Home() {
                 <div className="faq-layout">
                   <div className="faq-main">
                     <div className="faq-list" data-faq>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-1" id="faq-1">
-                          <span className="faq-trigger-label">À qui s'adresse ce programme&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-1" role="region" aria-labelledby="faq-1" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Ce service s'adresse aux personnes qui ont déjà essayé de s'entraîner sans obtenir de résultats
-                              durables. Aux personnes qui veulent commencer à s'entraîner de façon sécuritaire. Peu importe ton
-                              niveau de départ, je pars de là où tu en es.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-2" id="faq-2">
-                          <span className="faq-trigger-label">Où ont lieu les séances&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-2" role="region" aria-labelledby="faq-2" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Les séances ont lieu au Biner Training, situé au 220 boulevard Crémazie Ouest, à Montréal.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-3" id="faq-3">
-                          <span className="faq-trigger-label">Quel équipement est utilisé&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-3" role="region" aria-labelledby="faq-3" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              J'ai plus de dix ans d'expérience avec les poids libres : haltères, ballons, bandes élastiques. Ton
-                              programme est conçu selon l'équipement disponible et adapté à tes besoins spécifiques.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-4" id="faq-4">
-                          <span className="faq-trigger-label">Est,ce que le programme inclut un volet nutrition&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-4" role="region" aria-labelledby="faq-4" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Oui. J'offre une analyse de ton alimentation ainsi que des conseils concrets et réalistes, selon
-                              l'offre choisie. Les recommandations nutritionnelles sont de nature générale et ne constituent pas un
-                              plan alimentaire personnalisé prescrit par un professionnel de la santé.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-5" id="faq-5">
-                          <span className="faq-trigger-label">Comment obtenir les détails sur l'investissement&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-5" role="region" aria-labelledby="faq-5" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Comme chaque situation est différente, je préfère en discuter directement avec toi pour m'assurer que
-                              l'accompagnement correspond bien à tes besoins avant de parler des modalités. Réserve un appel
-                              découverte, on prend le temps d'en parler ensemble.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-6" id="faq-6">
-                          <span className="faq-trigger-label">Que se passe,t,il après les 12 semaines&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-6" role="region" aria-labelledby="faq-6" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              La dernière séance est consacrée à faire le bilan et à planifier la suite selon tes objectifs. Des
-                              formules de suivi mensuel sont disponibles pour les clientes qui souhaitent continuer leur
-                              progression.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-7" id="faq-7">
-                          <span className="faq-trigger-label"
-                            >Quelle offre devrais,je choisir, Le Tremplin ou l'Offre signature&nbsp;?</span
-                          >
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-7" role="region" aria-labelledby="faq-7" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Le Tremplin est idéale si tu t'entraînes déjà, que tu es autonome et constante, et que tu cherches à
-                              briser un plateau. L'Offre signature est conçue pour celles qui veulent une transformation plus
-                              complète, un encadrement hebdomadaire en présentiel, et installer des habitudes solides sur le long
-                              terme. Si tu hésites, réserve un appel découverte : on regarde ensemble ce qui te convient le mieux.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-8" id="faq-8">
-                          <span className="faq-trigger-label">Combien de temps durent les séances&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-8" role="region" aria-labelledby="faq-8" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              La rencontre initiale du Tremplin dure 2 heures. Dans l'Offre signature, les séances hebdomadaires en
-                              présentiel durent environ 60 minutes.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-9" id="faq-9">
-                          <span className="faq-trigger-label">Comment se déroule la première rencontre&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-9" role="region" aria-labelledby="faq-9" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              La première rencontre se fait en présentiel au Biner Training. On prend le temps de faire des tests
-                              physiques, des mesures de départ et une prise de la composition corporelle. On revoit ensemble ton
-                              programme d'entraînement et on fait les premiers ajustements selon ton profil.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-10" id="faq-10">
-                          <span className="faq-trigger-label"
-                            >Est,ce que je peux m'entraîner si j'ai une blessure ou une condition médicale&nbsp;?</span
-                          >
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-10" role="region" aria-labelledby="faq-10" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Chaque situation est unique. Lors de l'appel découverte, on prend le temps d'en discuter pour voir
-                              comment adapter l'accompagnement à ta réalité. Dans certains cas, un avis médical peut être recommandé
-                              avant de commencer.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-11" id="faq-11">
-                          <span className="faq-trigger-label">Est,ce que les séances sont privées ou en groupe&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-11" role="region" aria-labelledby="faq-11" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Les séances sont entièrement privées. Tu travailles uniquement avec moi, dans un espace dédié au Biner
-                              Training.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-12" id="faq-12">
-                          <span className="faq-trigger-label">Puis,je poursuivre l'accompagnement après l'offre initiale&nbsp;?</span>
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-12" role="region" aria-labelledby="faq-12" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Oui. Des formules de suivi mensuel sont disponibles pour les clientes qui souhaitent continuer leur
-                              progression après la fin de leur accompagnement initial.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="faq-item">
-                        <button type="button" className="faq-trigger" aria-expanded="false" aria-controls="faq-panel-13" id="faq-13">
-                          <span className="faq-trigger-label"
-                            >Est,ce que tu accompagnes des femmes enceintes ou en post,partum&nbsp;?</span
-                          >
-                          <span className="faq-icon" aria-hidden="true">+</span>
-                        </button>
-                        <div className="faq-panel" id="faq-panel-13" role="region" aria-labelledby="faq-13" hidden>
-                          <div className="faq-panel-inner">
-                            <p>
-                              Oui, avec certaines précautions. Je recommande d'obtenir un avis médical préalable avant de débuter ou
-                              de reprendre l'entraînement. On en discute lors de l'appel découverte pour adapter l'accompagnement à
-                              ta situation.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                      {faqs && faqs.length > 0 ? (
+                        faqs.map((faq: any) => {
+                          const panelId = `faq-panel-${faq._id}`
+                          const triggerId = `faq-trigger-${faq._id}`
+                          return (
+                            <div className="faq-item" key={faq._id}>
+                              <button
+                                type="button"
+                                className="faq-trigger"
+                                aria-expanded="false"
+                                aria-controls={panelId}
+                                id={triggerId}
+                              >
+                                <span className="faq-trigger-label">{faq.question}</span>
+                                <span className="faq-icon" aria-hidden="true">+</span>
+                              </button>
+                              <div
+                                className="faq-panel"
+                                id={panelId}
+                                role="region"
+                                aria-labelledby={triggerId}
+                                hidden
+                              >
+                                <div className="faq-panel-inner">
+                                  <p>{faq.answer}</p>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })
+                      ) : null}
                     </div>
                   </div>
                   <aside className="faq-contact reveal" data-reveal aria-label="Contacter Éliane Larre">
@@ -965,14 +830,14 @@ export default function Home() {
                         Pour toute question sur l'accompagnement, les offres ou la logistique, n'hésite pas. Je réponds
                         personnellement.
                       </p>
-                      <a className="faq-contact-email" href="mailto:info@elianelarre.com">info@elianelarre.com</a>
+                      <a className="faq-contact-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
                       <div className="faq-contact-sep" role="presentation" />
                       <p className="faq-contact-or">ou</p>
                       <a
                         className="faq-contact-cal"
-                        href="https://cal.com/elianelarre/appel-decouverte"
-                        data-cal-link="elianelarre/appel-decouverte"
-                        data-cal-namespace="appel-decouverte"
+                        href={calBookingUrl}
+                        data-cal-link={calNamespace}
+                        data-cal-namespace={calNamespaceSlug}
                         data-cal-config='{"layout":"month_view"}'
                         >Ou réserve directement un appel découverte<span className="faq-contact-cal-arrow" aria-hidden="true"> →</span></a
                       >
@@ -980,10 +845,25 @@ export default function Home() {
                   </aside>
                 </div>
               </div>
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
-              />
+              {faqs && faqs.length > 0 && (
+                <script
+                  type="application/ld+json"
+                  dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                      '@context': 'https://schema.org',
+                      '@type': 'FAQPage',
+                      mainEntity: faqs.map((faq: any) => ({
+                        '@type': 'Question',
+                        name: faq.question,
+                        acceptedAnswer: {
+                          '@type': 'Answer',
+                          text: faq.answer,
+                        },
+                      })),
+                    }),
+                  }}
+                />
+              )}
             </section>
       
             <section className="close">
@@ -999,9 +879,9 @@ export default function Home() {
                 <div className="close-actions reveal" data-reveal>
                   <a
                     className="btn btn-primary"
-                    href="https://cal.com/elianelarre/appel-decouverte"
-                    data-cal-link="elianelarre/appel-decouverte"
-                    data-cal-namespace="appel-decouverte"
+                    href={calBookingUrl}
+                    data-cal-link={calNamespace}
+                    data-cal-namespace={calNamespaceSlug}
                     data-cal-config='{"layout":"month_view"}'
                     >Appel découverte</a
                   >

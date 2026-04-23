@@ -6,6 +6,8 @@ import CookieConsent from "./components/CookieConsent";
 import IntroPhotoDock from "./components/IntroPhotoDock";
 import SiteChrome from "./components/SiteChrome";
 import SiteFooter from "./components/SiteFooter";
+import { client } from "@/sanity/client";
+import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Éliane — Entraîneure personnelle privée · Montréal",
@@ -13,11 +15,23 @@ export const metadata: Metadata = {
     "Éliane — Entraîneure personnelle privée à Montréal. Accompagnement sur mesure, technique et nutrition alignées. Réserve ton appel découverte.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await client.fetch(SITE_SETTINGS_QUERY);
+  const calBookingUrl =
+    siteSettings?.calBookingUrl ?? "https://cal.com/elianelarre/appel-decouverte";
+  const calNamespace =
+    siteSettings?.calNamespace ?? "elianelarre/appel-decouverte";
+  const calNamespaceSlug =
+    calNamespace.split("/").pop() || "appel-decouverte";
+  const contactEmail = siteSettings?.contactEmail ?? "info@elianelarre.com";
+  const instagramUrl =
+    siteSettings?.instagramUrl ??
+    "https://www.instagram.com/eliane.au.naturel";
+
   return (
     <html lang="fr">
       <head>
@@ -36,11 +50,21 @@ export default function RootLayout({
           Passer au contenu
         </a>
 
-        <SiteChrome />
+        <SiteChrome
+          calBookingUrl={calBookingUrl}
+          calLinkNamespace={calNamespace}
+          calNamespaceSlug={calNamespaceSlug}
+        />
 
         {children}
 
-        <SiteFooter />
+        <SiteFooter
+          calBookingUrl={calBookingUrl}
+          calLinkNamespace={calNamespace}
+          calNamespaceSlug={calNamespaceSlug}
+          contactEmail={contactEmail}
+          instagramUrl={instagramUrl}
+        />
 
         <ClientScripts />
         <CalEmbed />

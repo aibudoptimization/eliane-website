@@ -2,7 +2,27 @@
 
 import { usePathname } from "next/navigation";
 
-export default function SiteFooter() {
+const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
+const DEFAULT_CAL_LINK_NAMESPACE = "elianelarre/appel-decouverte";
+const DEFAULT_CAL_NAMESPACE_SLUG = "appel-decouverte";
+const DEFAULT_CONTACT_EMAIL = "info@elianelarre.com";
+const DEFAULT_INSTAGRAM = "https://www.instagram.com/eliane.au.naturel";
+
+export type SiteFooterProps = {
+  calBookingUrl?: string;
+  calLinkNamespace?: string;
+  calNamespaceSlug?: string;
+  contactEmail?: string;
+  instagramUrl?: string;
+};
+
+export default function SiteFooter({
+  calBookingUrl = DEFAULT_CAL_BOOKING,
+  calLinkNamespace = DEFAULT_CAL_LINK_NAMESPACE,
+  calNamespaceSlug = DEFAULT_CAL_NAMESPACE_SLUG,
+  contactEmail = DEFAULT_CONTACT_EMAIL,
+  instagramUrl = DEFAULT_INSTAGRAM,
+}: SiteFooterProps) {
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
 
@@ -41,9 +61,9 @@ export default function SiteFooter() {
             </li>
             <li>
               <a
-                href="https://cal.com/elianelarre/appel-decouverte"
-                data-cal-link="elianelarre/appel-decouverte"
-                data-cal-namespace="appel-decouverte"
+                href={calBookingUrl}
+                data-cal-link={calLinkNamespace}
+                data-cal-namespace={calNamespaceSlug}
                 data-cal-config='{"layout":"month_view"}'
               >
                 Appel découverte
@@ -57,10 +77,10 @@ export default function SiteFooter() {
             Contact
           </h3>
           <address className="footer-contact-list">
-            <a href="mailto:info@elianelarre.com">info@elianelarre.com</a>
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
             <a
               className="footer-ig-link"
-              href="https://www.instagram.com/eliane.au.naturel"
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram @elianelarre (nouvel onglet)"

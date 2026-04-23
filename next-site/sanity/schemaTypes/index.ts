@@ -1,6 +1,6 @@
 import siteSettings from './siteSettings'
 import homePage from './homePage'
-import offer from './offer'
+import homepageOffers from './homepageOffers'
 import faq from './faq'
 
-export const schemaTypes = [siteSettings, homePage, offer, faq]
+export const schemaTypes = [siteSettings, homePage, homepageOffers, faq]
