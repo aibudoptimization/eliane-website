@@ -1,6 +1,6 @@
 import { PortableText, type PortableTextComponents } from '@portabletext/react'
-import { client } from '@/sanity/client'
 import { urlFor } from '@/sanity/imageUrl'
+import { sanityFetch } from '@/sanity/live'
 import {
   HOMEPAGE_QUERY,
   HOMEPAGE_OFFERS_QUERY,
@@ -43,11 +43,16 @@ const freeWeightsBulletComponents: PortableTextComponents = {
 }
 
 export default async function Home() {
-  const [homePage, homepageOffers, faqs, siteSettings] = await Promise.all([
-    client.fetch(HOMEPAGE_QUERY),
-    client.fetch(HOMEPAGE_OFFERS_QUERY),
-    client.fetch(FAQS_QUERY),
-    client.fetch(SITE_SETTINGS_QUERY),
+  const [
+    { data: homePage },
+    { data: homepageOffers },
+    { data: faqs },
+    { data: siteSettings },
+  ] = await Promise.all([
+    sanityFetch({ query: HOMEPAGE_QUERY }),
+    sanityFetch({ query: HOMEPAGE_OFFERS_QUERY }),
+    sanityFetch({ query: FAQS_QUERY }),
+    sanityFetch({ query: SITE_SETTINGS_QUERY }),
   ])
 
   const calBookingUrl =
@@ -712,7 +717,7 @@ export default async function Home() {
                       </div>
                     </div>
                     <div className="offres-card__cta">
-                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.tremplinLinkUrl ?? '/offres/le-tremplin'}>En savoir plus<span aria-hidden="true"> →</span></a>
+                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.tremplinLink?.slug ? `/offres/${homepageOffers.tremplinLink.slug}` : '/offres/le-tremplin'}>En savoir plus<span aria-hidden="true"> →</span></a>
                     </div>
                   </article>
                   <article
@@ -755,7 +760,7 @@ export default async function Home() {
                       </div>
                     </div>
                     <div className="offres-card__cta">
-                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.signatureLinkUrl ?? '/offres/offre-signature'}
+                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.signatureLink?.slug ? `/offres/${homepageOffers.signatureLink.slug}` : '/offres/offre-signature'}
                         >En savoir plus<span aria-hidden="true"> →</span></a
                       >
                     </div>

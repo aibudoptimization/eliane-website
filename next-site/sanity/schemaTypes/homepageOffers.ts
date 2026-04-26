@@ -53,12 +53,13 @@ export default defineType({
       group: 'tremplin',
     }),
     defineField({
-      name: 'tremplinLinkUrl',
-      title: 'Lien "En savoir plus"',
-      description: 'Relative: /offres/le-tremplin',
-      type: 'string',
+      name: 'tremplinLink',
+      title: "Page détaillée de l'offre",
+      description:
+        "Sélectionne la page d'offre Le Tremplin. Le lien 'En savoir plus' pointera automatiquement vers cette page.",
+      type: 'reference',
+      to: [{type: 'offerPage'}],
       group: 'tremplin',
-      initialValue: '/offres/le-tremplin',
     }),
 
     // === OFFRE SIGNATURE ===
@@ -113,12 +114,13 @@ export default defineType({
       group: 'signature',
     }),
     defineField({
-      name: 'signatureLinkUrl',
-      title: 'Lien "En savoir plus"',
-      description: 'Relative: /offres/offre-signature',
-      type: 'string',
+      name: 'signatureLink',
+      title: "Page détaillée de l'offre",
+      description:
+        "Sélectionne la page d'offre Offre signature. Le lien 'En savoir plus' pointera automatiquement vers cette page.",
+      type: 'reference',
+      to: [{type: 'offerPage'}],
       group: 'signature',
-      initialValue: '/offres/offre-signature',
     }),
   ],
   preview: {

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 import CalEmbed from "./components/CalEmbed";
 import ClientScripts from "./components/ClientScripts";
 import CookieConsent from "./components/CookieConsent";
 import IntroPhotoDock from "./components/IntroPhotoDock";
 import SiteChrome from "./components/SiteChrome";
 import SiteFooter from "./components/SiteFooter";
-import { client } from "@/sanity/client";
+import { sanityFetch, SanityLive } from "@/sanity/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
@@ -20,7 +22,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteSettings = await client.fetch(SITE_SETTINGS_QUERY);
+  const isDraftMode = (await draftMode()).isEnabled;
+  const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
   const calBookingUrl =
     siteSettings?.calBookingUrl ?? "https://cal.com/elianelarre/appel-decouverte";
   const calNamespace =
@@ -70,6 +73,8 @@ export default async function RootLayout({
         <CalEmbed />
         <CookieConsent />
         <IntroPhotoDock />
+        <SanityLive />
+        {isDraftMode && <VisualEditing />}
       </body>
     </html>
   );

@@ -20,7 +20,9 @@ export const HOMEPAGE_OFFERS_QUERY = `*[_type == "homepageOffers"][0]{
   tremplinPitch,
   tremplinFeatures,
   tremplinIdealFor,
-  tremplinLinkUrl,
+  "tremplinLink": tremplinLink->{
+    "slug": slug.current
+  },
   signatureDurationBadge,
   signatureShowPopularBadge,
   signatureTitle,
@@ -28,7 +30,37 @@ export const HOMEPAGE_OFFERS_QUERY = `*[_type == "homepageOffers"][0]{
   signaturePitch,
   signatureFeatures,
   signatureIdealFor,
-  signatureLinkUrl
+  "signatureLink": signatureLink->{
+    "slug": slug.current
+  }
+}`
+
+export const OFFER_PAGE_BY_SLUG_QUERY = `*[_type == "offerPage" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  heroEyebrow,
+  heroSubtitle[]{..., children[]{...}},
+  heroPitch,
+  idealListHeading,
+  idealListItems,
+  includesHeading,
+  processCards[]{
+    kicker,
+    title,
+    items
+  },
+  forYouHeading,
+  forYouItems,
+  comparisonDuration,
+  comparisonBullets,
+  "otherOffer": otherOffer->{
+    _id,
+    title,
+    "slug": slug.current,
+    comparisonDuration,
+    comparisonBullets
+  }
 }`
 
 export const FAQS_QUERY = `*[_type == "faq"] | order(order asc){

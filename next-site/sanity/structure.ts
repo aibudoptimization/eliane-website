@@ -17,4 +17,11 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('faq').title('Questions fréquentes'),
             ]),
         ),
+      S.listItem()
+        .title('Sous-pages')
+        .child(
+          S.list()
+            .title('Sous-pages')
+            .items([S.documentTypeListItem('offerPage').title('Offres')]),
+        ),
     ])
