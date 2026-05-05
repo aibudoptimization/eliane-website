@@ -308,10 +308,10 @@ Update the homepage GROQ query so it pulls every new field added in Step 5. The 
 
 ## Step 9 — Commit and push
 
-- [ ] Stage all changes: `git add -A`
-- [ ] Commit: `git commit -m "chore(next-site): cleanup offers, restructure homePage schema, add collaborator"`
-- [ ] Push: `git push -u origin chore/01-cleanup-and-schema`
-- [ ] Open PR against `nextjs-migration` (do not merge yet — Plan 02 builds on this)
+- [x] Stage all changes: `git add -A`
+- [x] Commit: `git commit -m "chore(next-site): cleanup offers, restructure homePage schema, add collaborator"`
+- [x] Push: `git push -u origin chore/01-cleanup-and-schema`
+- [x] Open PR against `nextjs-migration` (do not merge yet — Plan 02 builds on this) — [PR #51](https://github.com/aibudoptimization/eliane-website/pull/51) *(pushed `nextjs-migration` to `origin` as PR base)*
 
 ---
 
