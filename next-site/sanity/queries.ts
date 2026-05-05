@@ -92,6 +92,7 @@ export const FAQS_QUERY = `*[_type == "faq"] | order(order asc){
 
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
   contactEmail,
+  bookingUrl,
   calBookingUrl,
   calNamespace,
   instagramUrl

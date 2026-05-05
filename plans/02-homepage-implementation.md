@@ -37,16 +37,18 @@
 
 ## Step 0 — Setup
 
-- [ ] `git checkout chore/01-cleanup-and-schema` (or whichever branch Plan 01 is on)
-- [ ] `git checkout -b feat/02-homepage-impl`
-- [ ] Confirm `npm --prefix next-site run dev` starts cleanly
-- [ ] In `next-site/sanity/schemaTypes/siteSettings.ts`, locate the booking URL field. If none exists, add `bookingUrl` (url, required, default the existing cal.com URL Éliane uses). All CTAs in this plan reference it.
+- [x] `git checkout chore/01-cleanup-and-schema` (or whichever branch Plan 01 is on) *(Plan 01 already merged; started from updated `nextjs-migration`.)*
+- [x] `git checkout -b feat/02-homepage-impl`
+- [x] Confirm `npm --prefix next-site run dev` starts cleanly *(existing dev server on `localhost:3000` healthy: `/` + `/studio` return 200).*
+- [x] In `next-site/sanity/schemaTypes/siteSettings.ts`, locate the booking URL field. If none exists, add `bookingUrl` (url, required, default the existing cal.com URL Éliane uses). All CTAs in this plan reference it.
 
 ---
 
 ## Step 1 — Seed Sanity content
 
 Before touching `app/page.tsx`, populate the `Page d'accueil` document and the FAQ entries in Studio (manually via UI or programmatically if Cursor wants to write a one-off script — manual is fine).
+
+> **Execution note (recommended):** Since `faq.answer` moved from plain text to portable text in Plan 01, existing legacy FAQ values can show the "Invalid property value" warning until reset. To avoid repetitive manual resets, prefer a **one-time migration/seed script in this Step 1** that upserts the 8 FAQ entries from Éliane's email directly in the new portable-text shape (including `link` annotations), then archive/delete legacy FAQs not in the email list.
 
 **Open `/studio` and edit `Page d'accueil`:**
 
@@ -209,9 +211,9 @@ Create one collaborator entry:
 - All other fields blank for now.
 
 **Verification for Step 1:**
-- [ ] `Page d'accueil` document saves without validation errors
-- [ ] All 8 FAQ entries saved, links visible (clickable indicator in the editor toolbar)
-- [ ] One collaborator created, marked featured
+- [x] `Page d'accueil` document saves without validation errors *(seed script now uploads/links hero, sled, meet-trainer, offering x3, and for-you images)*
+- [x] All 8 FAQ entries saved, links visible (clickable indicator in the editor toolbar) *(seed script upserted portable-text answers + links)*
+- [x] One collaborator created, marked featured *(Esthétique Flora, featured=true, order=1)*
 
 ---
 
@@ -219,11 +221,11 @@ Create one collaborator entry:
 
 In `next-site/app/page.tsx`:
 
-- [ ] Update the GROQ fetch (or imported query from `sanity/queries.ts`) to use the new query from Plan 01 Step 8.
-- [ ] Fetch collaborators in parallel (separate query).
-- [ ] Type the response with the updated TypeScript interfaces.
-- [ ] **Delete the current `<section ... id="poids-libres">` block entirely** along with any imports / helpers that were only used by it.
-- [ ] Reorganize the `<main>` body into the new section order below. For each block, the marker indicates whether you preserve the existing JSX or build fresh:
+- [x] Update the GROQ fetch (or imported query from `sanity/queries.ts`) to use the new query from Plan 01 Step 8.
+- [x] Fetch collaborators in parallel (separate query).
+- [x] Type the response with the updated TypeScript interfaces.
+- [x] **Delete the current `<section ... id="poids-libres">` block entirely** along with any imports / helpers that were only used by it.
+- [x] Reorganize the `<main>` body into the new section order below. For each block, the marker indicates whether you preserve the existing JSX or build fresh:
   - **[preserve]** = the section already exists in some form on the current page; keep its markup/CSS, only change what's noted in subsequent steps
   - **[new]** = no existing equivalent; create a fresh stub (heading + empty `<div>`) and let subsequent steps fill it in
 
@@ -243,30 +245,30 @@ In `next-site/app/page.tsx`:
   13. `<section id="faq">` (FAQ) — **[preserve]** the existing FAQ component, point it at the updated documents, and add the link mark renderer in Step 14
   14. `<section id="collaborateurs">` (Collaborators) — **[new]**
 
-- [ ] Sections being **deleted entirely**: `#introduction` (replaced by `#accompagnement`), `#poids-libres` (removed), `#offres` (already removed in Plan 01), the existing `.close` block at the bottom (replaced by the new Purple CTA + FAQ + Collaborators).
-- [ ] Remove all imports related to deleted offer components and the deleted free-weights helpers.
+- [x] Sections being **deleted entirely**: `#introduction` (replaced by `#accompagnement`), `#poids-libres` (removed), `#offres` (already removed in Plan 01), the existing `.close` block at the bottom (replaced by the new Purple CTA + FAQ + Collaborators).
+- [x] Remove all imports related to deleted offer components and the deleted free-weights helpers.
 
 **Verification:**
 - [ ] `npm --prefix next-site run dev`, visit `/`, see every block from the "Section order" list rendered in order (use DevTools to confirm IDs match exactly: `accueil`, `approche`, `rencontre`, `accompagnement`, `presentiel`, `temoignages`, `pour-toi`, `apres-appel`, `faq`, `collaborateurs`)
-- [ ] Both marquees render right after the hero (Marquee 1 then Marquee 2)
-- [ ] No `#poids-libres` element on the page
-- [ ] No console errors, no TypeScript errors
-- [ ] `npm --prefix next-site run build` passes
+- [x] Both marquees render right after the hero (Marquee 1 then Marquee 2)
+- [x] No `#poids-libres` element on the page
+- [x] No console errors, no TypeScript errors
+- [x] `npm --prefix next-site run build` passes
 
 ---
 
 ## Step 3 — Hero section
 
-- [ ] Layout: photo on left, text on right. Use the existing hero CSS structure where possible (don't restyle, just rearrange). On mobile, stack with photo above text.
-- [ ] Render `heroKicker` as a small uppercase line above the headline. **No bullet (`•`) at the start** — the dot in the middle of the kicker text stays. (Confirm with `grep` that you haven't accidentally added a leading `•`.)
-- [ ] Render `heroHeadline` as `<h1>` using `<PortableText>`.
-- [ ] Render `heroSubheadline` as `<p>`.
-- [ ] CTA button: text from `heroCtaLabel`, link to `siteSettings.bookingUrl`. Below the button, render `heroCtaSubtext` as a smaller secondary line.
-- [ ] Hero image with `next/image`, alt from `heroImage.alt`. Sized appropriately (avoid Layout Shift — set width/height).
+- [x] Layout: photo on left, text on right. Use the existing hero CSS structure where possible (don't restyle, just rearrange). On mobile, stack with photo above text.
+- [x] Render `heroKicker` as a small uppercase line above the headline. **No bullet (`•`) at the start** — the dot in the middle of the kicker text stays. (Confirm with `grep` that you haven't accidentally added a leading `•`.)
+- [x] Render `heroHeadline` as `<h1>` using `<PortableText>`.
+- [x] Render `heroSubheadline` as `<p>`.
+- [x] CTA button: text from `heroCtaLabel`, link to `siteSettings.bookingUrl`. Below the button, render `heroCtaSubtext` as a smaller secondary line.
+- [x] Hero image with `next/image`, alt from `heroImage.alt`. Sized appropriately (avoid Layout Shift — set width/height).
 
 **Verification:**
 - [ ] Hero displays correctly on desktop and mobile viewports (use DevTools responsive mode)
-- [ ] Clicking the hero CTA opens the booking URL (in a new tab if that's the existing pattern)
+- [x] Clicking the hero CTA opens the booking URL (in a new tab if that's the existing pattern) *(Cal embed 404 issue fixed; user confirmed working)*
 - [ ] Lighthouse: no LCP regressions on hero (eyeball is fine — no formal audit needed)
 
 ---
@@ -277,116 +279,116 @@ Both marquees already exist in the current `app/page.tsx` (around lines 139–19
 
 ### Marquee 1 (`.marquee`, scrolling)
 
-- [ ] Locate the existing `<div className="marquee" role="presentation">` block (about line 139 of the pre-edit `page.tsx`).
-- [ ] Replace the hardcoded `<span>` items inside `.marquee-inner` with a render loop over `data.marqueeOneItems`. The marquee needs the items duplicated (current markup repeats the list 4 times across 2 `.marquee-inner` divs to make the seamless loop) — preserve that doubling pattern, just generate it from the array. Render `<span className="marquee-sep">·</span>` between items.
-- [ ] Default fallback if Sanity returns empty: render the original 4 hardcoded items so the page never breaks.
+- [x] Locate the existing `<div className="marquee" role="presentation">` block (about line 139 of the pre-edit `page.tsx`).
+- [x] Replace the hardcoded `<span>` items inside `.marquee-inner` with a render loop over `data.marqueeOneItems`. The marquee needs the items duplicated (current markup repeats the list 4 times across 2 `.marquee-inner` divs to make the seamless loop) — preserve that doubling pattern, just generate it from the array. Render `<span className="marquee-sep">·</span>` between items.
+- [x] Default fallback if Sanity returns empty: render the original 4 hardcoded items so the page never breaks.
 
 ### Marquee 2 (`.stats` block — static desktop, scrolling mobile)
 
-- [ ] Locate the existing `<section className="stats" ...>` block (about line 161 of pre-edit `page.tsx`).
-- [ ] **Update the `aria-label`** to: `aria-label="Approche durable, accompagnement personnalisé, progression mesurable"` (replacing "sur mesure" with "personnalisé").
-- [ ] In the desktop grid (`.stats-desktop`), render 3 `<div className="stat">` cells, one per item in `data.marqueeTwoItems`. Each cell contains `<p className="stat-phrase">{item}</p>`.
-- [ ] In the mobile marquee (`.stats-marquee-wrap` → `.stats-marquee-track` → `.stats-marquee-inner`), render the items in the same duplicated pattern as Marquee 1 (the existing markup repeats them 6 times across 2 `.stats-marquee-inner` divs — preserve that pattern, generate from the array).
-- [ ] Validation safety: if `data.marqueeTwoItems.length !== 3`, log a console warning in dev and fall back to the default 3 items (`Approche durable`, `Accompagnement personnalisé`, `Progression mesurable`). The desktop grid CSS expects exactly 3.
+- [x] Locate the existing `<section className="stats" ...>` block (about line 161 of pre-edit `page.tsx`).
+- [x] **Update the `aria-label`** to: `aria-label="Approche durable, accompagnement personnalisé, progression mesurable"` (replacing "sur mesure" with "personnalisé").
+- [x] In the desktop grid (`.stats-desktop`), render 3 `<div className="stat">` cells, one per item in `data.marqueeTwoItems`. Each cell contains `<p className="stat-phrase">{item}</p>`.
+- [x] In the mobile marquee (`.stats-marquee-wrap` → `.stats-marquee-track` → `.stats-marquee-inner`), render the items in the same duplicated pattern as Marquee 1 (the existing markup repeats them 6 times across 2 `.stats-marquee-inner` divs — preserve that pattern, generate from the array).
+- [x] Validation safety: if `data.marqueeTwoItems.length !== 3`, log a console warning in dev and fall back to the default 3 items (`Approche durable`, `Accompagnement personnalisé`, `Progression mesurable`). The desktop grid CSS expects exactly 3.
 
 **Verification:**
-- [ ] Marquee 1 renders right below the hero, scrolling continuously, with the 4 items
-- [ ] Marquee 2 on desktop (≥768px) shows 3 static columns: "Approche durable" / "Accompagnement personnalisé" / "Progression mesurable"
-- [ ] Marquee 2 on mobile (<768px) shows the 3 items scrolling continuously in reverse
-- [ ] DevTools: `aria-label` on the stats section reads "Approche durable, accompagnement personnalisé, progression mesurable"
-- [ ] No "sur mesure" text appears anywhere in the rendered DOM of these two marquees (`document.body.innerText.includes('sur mesure')` returns false within those sections)
-- [ ] Editing `marqueeTwoItems` in Studio and reloading updates both desktop grid and mobile marquee
+- [x] Marquee 1 renders right below the hero, scrolling continuously, with the 4 items
+- [x] Marquee 2 on desktop (≥768px) shows 3 static columns: "Approche durable" / "Accompagnement personnalisé" / "Progression mesurable"
+- [x] Marquee 2 on mobile (<768px) shows the 3 items scrolling continuously in reverse
+- [x] DevTools: `aria-label` on the stats section reads "Approche durable, accompagnement personnalisé, progression mesurable"
+- [x] No "sur mesure" text appears anywhere in the rendered DOM of these two marquees (`document.body.innerText.includes('sur mesure')` returns false within those sections)
+- [x] Editing `marqueeTwoItems` in Studio and reloading updates both desktop grid and mobile marquee
 
 ---
 
 ## Step 5 — Sled comparison section
 
-- [ ] `<h2>` from `sledHeadline` (rendered via PortableText so italic/strong is preserved).
-- [ ] Subheadline `<p>` from `sledSubheadline`.
-- [ ] Sled image displayed prominently (Éliane wants the photo with the sled — placement is your call: above the comparison columns is fine, or to one side at desktop).
-- [ ] Two-column layout for desktop (≥768px), stacked on mobile:
+- [x] `<h2>` from `sledHeadline` (rendered via PortableText so italic/strong is preserved).
+- [x] Subheadline `<p>` from `sledSubheadline`.
+- [x] Sled image displayed prominently (Éliane wants the photo with the sled — placement is your call: above the comparison columns is fine, or to one side at desktop).
+- [x] Two-column layout for desktop (≥768px), stacked on mobile:
   - Left column: `sledFromTitle` heading, then `sledFromItems` rendered as a `<ul>` of PortableText items. Use a slightly muted color or smaller dot style.
   - Right column: `sledToTitle` heading, then `sledToItems` rendered the same way, with a plum accent color or a small arrow icon at the top of the column for visual contrast.
-- [ ] Between the two columns at desktop, an arrow icon (any simple SVG arrow, or use `lucide` if already installed). Hidden on mobile.
-- [ ] CTA button at the bottom: `sledCtaLabel`, links to `siteSettings.bookingUrl`.
-- [ ] Bold spans inside list items render as `<strong>` (default browser bold is fine for now — Plan 03 may slightly enlarge them but it's optional).
+- [x] Between the two columns at desktop, an arrow icon (any simple SVG arrow, or use `lucide` if already installed). Hidden on mobile.
+- [x] CTA button at the bottom: `sledCtaLabel`, links to `siteSettings.bookingUrl`.
+- [x] Bold spans inside list items render as `<strong>` (default browser bold is fine for now — Plan 03 may slightly enlarge them but it's optional).
 
 **Verification:**
-- [ ] Two columns visible at ≥768px, single column at <768px
-- [ ] All 5 + 5 bullets render with correct emphasis
-- [ ] CTA opens booking URL
+- [x] Two columns visible at ≥768px, single column at <768px
+- [x] All 5 + 5 bullets render with correct emphasis
+- [x] CTA opens booking URL
 
 ---
 
 ## Step 6 — Meet trainer section
 
-- [ ] Layout: image on one side, text on the other (mirror of hero, or designer's choice — stick with what's already in the codebase if there's an existing portrait section).
-- [ ] `meetTrainerKicker` as a small uppercase line above the body.
-- [ ] `<h2>` is implicit in the kicker styling; if there's no `<h2>`, add a hidden one for accessibility (`<h2 className="sr-only">Rencontre ton entraîneure</h2>`).
-- [ ] `meetTrainerBody` rendered with `<PortableText>`. Apply this rule in your portable-text components:
+- [x] Layout: image on one side, text on the other (mirror of hero, or designer's choice — stick with what's already in the codebase if there's an existing portrait section).
+- [x] `meetTrainerKicker` as a small uppercase line above the body.
+- [x] `<h2>` is implicit in the kicker styling; if there's no `<h2>`, add a hidden one for accessibility (`<h2 className="sr-only">Rencontre ton entraîneure</h2>`).
+- [x] `meetTrainerBody` rendered with `<PortableText>`. Apply this rule in your portable-text components:
   - Default `<strong>` renders inline at slightly larger size and plum accent color (e.g. `font-weight: 700; font-size: 1.08em; color: var(--plum)` — pull the plum color from the existing site palette).
   - All other styling default.
-- [ ] CTA: `meetTrainerCtaLabel` linking to `meetTrainerCtaUrl`. Open in new tab.
+- [x] CTA: `meetTrainerCtaLabel` linking to `meetTrainerCtaUrl`. Open in new tab.
 
 **Verification:**
-- [ ] Bolded phrases visibly stand out (slightly larger, plum color)
-- [ ] Long text reads cleanly — no width overflow on mobile
-- [ ] Instagram CTA opens in new tab
+- [x] Bolded phrases visibly stand out (slightly larger, plum color)
+- [x] Long text reads cleanly — no width overflow on mobile
+- [x] Instagram CTA opens in new tab
 
 ---
 
 ## Step 7 — Pull quote (transition)
 
-- [ ] Wrapped in `{data.pullQuoteEnabled && (...)}`.
-- [ ] Centered, no background, generous vertical padding, italic, max-width 60ch.
-- [ ] Render with `<blockquote>` for semantics, `<p>` inside for the text.
+- [x] Wrapped in `{data.pullQuoteEnabled && (...)}`.
+- [x] Centered, no background, generous vertical padding, italic, max-width 60ch.
+- [x] Render with `<blockquote>` for semantics, `<p>` inside for the text.
 
 **Verification:**
-- [ ] Quote displays between meet-trainer and offering sections
-- [ ] Toggling `pullQuoteEnabled` to false in Studio (and reloading) hides the section
+- [x] Quote displays between meet-trainer and offering sections
+- [x] Toggling `pullQuoteEnabled` to false in Studio (and reloading) hides the section
 
 ---
 
 ## Step 8 — Offering section ("Mon accompagnement personnalisé")
 
-- [ ] `<h2>` from `offeringHeadline`.
-- [ ] Render `offeringImages` as 3 images side by side at desktop, stacked at mobile, with `alt` text. Reasonable max-width per image (e.g. 240px) — they're phone screenshots, so portrait aspect ratio.
-- [ ] Render `offeringFeatures` as 4 items in a grid (2x2 at desktop, 1 column on mobile). Each item: bold `title`, then `description` paragraph below.
-- [ ] CTA: `offeringCtaLabel` → booking URL.
+- [x] `<h2>` from `offeringHeadline`.
+- [x] Render `offeringImages` as 3 images side by side at desktop, stacked at mobile, with `alt` text. Reasonable max-width per image (e.g. 240px) — they're phone screenshots, so portrait aspect ratio.
+- [x] Render `offeringFeatures` as 4 items in a grid (2x2 at desktop, 1 column on mobile). Each item: bold `title`, then `description` paragraph below.
+- [x] CTA: `offeringCtaLabel` → booking URL.
 
 **Verification:**
-- [ ] 3 screenshots render side by side at desktop
-- [ ] 4 features render in a grid
-- [ ] CTA works
+- [x] 3 screenshots render side by side at desktop
+- [x] 4 features render in a grid
+- [x] CTA works
 
 ---
 
 ## Step 9 — In-person section ("Pourquoi le présentiel")
 
-- [ ] **Do not change the existing structure or content.** Éliane said "même format que présentement".
-- [ ] At the end of the section, append the new punch line from `inPersonPunchLine`. Render in `<p>` with `white-space: pre-line` so the embedded `\n` becomes a real line break, OR split on `\n` and render two `<p>`s. Bolded styling (matches her email — both lines are bold). Centered, slightly larger text.
-- [ ] **Confirm the `#poids-libres` section is gone** (deleted in Step 2). The only remaining "présentiel" content on the page is `#presentiel`. There should be no second sibling section about poids libres or free weights.
+- [x] **Do not change the existing structure or content.** Éliane said "même format que présentement".
+- [x] At the end of the section, append the new punch line from `inPersonPunchLine`. Render in `<p>` with `white-space: pre-line` so the embedded `\n` becomes a real line break, OR split on `\n` and render two `<p>`s. Bolded styling (matches her email — both lines are bold). Centered, slightly larger text.
+- [x] **Confirm the `#poids-libres` section is gone** (deleted in Step 2). The only remaining "présentiel" content on the page is `#presentiel`. There should be no second sibling section about poids libres or free weights.
 
 **Verification:**
-- [ ] Existing `#presentiel` section content is unchanged
-- [ ] New punch line appears at the end with line break preserved
-- [ ] `grep -n 'poids-libres\|freeWeights\|Poids libres' next-site/app/page.tsx` returns no matches
+- [x] Existing `#presentiel` section content is unchanged
+- [x] New punch line appears at the end with line break preserved
+- [x] `grep -n 'poids-libres\|freeWeights\|Poids libres' next-site/app/page.tsx` returns no matches
 
 ---
 
 ## Step 10 — Reviews section ("Leur expérience")
 
-- [ ] `<h2>` from `reviewsHeadline`.
-- [ ] Render `reviewsList` as 3 cards. At desktop, 3 columns. At mobile, single column stacked or horizontally scrollable — single column is simpler, do that.
-- [ ] Each card displays:
+- [x] `<h2>` from `reviewsHeadline`.
+- [x] Render `reviewsList` as 3 cards. At desktop, 3 columns. At mobile, single column stacked or horizontally scrollable — single column is simpler, do that.
+- [x] Each card displays:
   - Person name (bold)
   - Star rating (render `rating` as that many filled stars, `5 - rating` empty stars — use any star icon, lucide's `Star` is fine)
   - Excerpt as a paragraph
-- [ ] No "verified" or "Google" branding — these are static cards.
+- [x] No "verified" or "Google" branding — these are static cards.
 
 **Verification:**
-- [ ] 3 cards visible at desktop, stacked on mobile
-- [ ] All 3 names + 5-star ratings + excerpts visible
+- [x] 3 cards visible at desktop, stacked on mobile
+- [x] All 3 names + 5-star ratings + excerpts visible
 
 ---
 
@@ -394,91 +396,91 @@ Both marquees already exist in the current `app/page.tsx` (around lines 139–19
 
 The current homepage already has an equivalent section at `id="ce-quil-faut-savoir"` (a yes-list / no-list pattern). **Reuse its existing markup and CSS** — rename the section ID to `pour-toi`, swap the heading text and bullets to come from Sanity, and update the kicker/intro language to match the email. Don't rebuild from scratch.
 
-- [ ] Locate the existing `<section ... id="ce-quil-faut-savoir">` block in `app/page.tsx`.
-- [ ] Change the section's `id` to `pour-toi`.
-- [ ] `<h2>` from `forYouHeadline`.
-- [ ] Photo (`forYouImage`) on one side, two columns of bullets on the other (or three columns total: image + yes-list + no-list — keep whatever 2-column / 3-column layout the existing section uses).
-- [ ] Yes column: `forYouYesTitle` heading + `forYouYesItems` as `<ul>`. Replace any hardcoded bullets with the Sanity array.
-- [ ] No column: `forYouNoTitle` heading + `forYouNoItems` as `<ul>`. Replace any hardcoded bullets with the Sanity array. Slightly muted or with a visual indicator (e.g., a different bullet color — match the existing styling).
-- [ ] Below both columns: `forYouFooter` paragraph.
-- [ ] CTA: `forYouCtaLabel` → booking URL.
+- [x] Locate the existing `<section ... id="ce-quil-faut-savoir">` block in `app/page.tsx`.
+- [x] Change the section's `id` to `pour-toi`.
+- [x] `<h2>` from `forYouHeadline`.
+- [x] Photo (`forYouImage`) on one side, two columns of bullets on the other (or three columns total: image + yes-list + no-list — keep whatever 2-column / 3-column layout the existing section uses).
+- [x] Yes column: `forYouYesTitle` heading + `forYouYesItems` as `<ul>`. Replace any hardcoded bullets with the Sanity array.
+- [x] No column: `forYouNoTitle` heading + `forYouNoItems` as `<ul>`. Replace any hardcoded bullets with the Sanity array. Slightly muted or with a visual indicator (e.g., a different bullet color — match the existing styling).
+- [x] Below both columns: `forYouFooter` paragraph.
+- [x] CTA: `forYouCtaLabel` → booking URL.
 
 **Verification:**
-- [ ] The renamed section has `id="pour-toi"`, no element on the page has `id="ce-quil-faut-savoir"`
-- [ ] Both lists render with correct titles and items pulled from Sanity
-- [ ] Footer paragraph visible
-- [ ] CTA works
+- [x] The renamed section has `id="pour-toi"`, no element on the page has `id="ce-quil-faut-savoir"`
+- [x] Both lists render with correct titles and items pulled from Sanity
+- [x] Footer paragraph visible
+- [x] CTA works
 
 ---
 
 ## Step 12 — After call section ("Comment ça se passe après l'appel?")
 
-- [ ] `<h2>` from `afterCallHeadline`.
-- [ ] `afterCallIntro` as `<p>`.
-- [ ] `afterCallItems` as `<ul>`.
-- [ ] `afterCallFooter` as `<p>`.
-- [ ] CTA: `afterCallCtaLabel` → booking URL.
+- [x] `<h2>` from `afterCallHeadline`.
+- [x] `afterCallIntro` as `<p>`.
+- [x] `afterCallItems` as `<ul>`.
+- [x] `afterCallFooter` as `<p>`.
+- [x] CTA: `afterCallCtaLabel` → booking URL.
 
 **Verification:**
-- [ ] All elements render in order
-- [ ] CTA works
+- [x] All elements render in order
+- [x] CTA works
 
 ---
 
 ## Step 13 — Purple CTA band
 
-- [ ] Full-width plum / purple band, white text, centered content.
-- [ ] `<h2>` from `purpleCtaHeadline` (e.g. "Es-tu prête à investir en toi ?").
-- [ ] Button styled as primary CTA: text from `purpleCtaButtonLabel`, link to `siteSettings.bookingUrl`. Use a contrasting button color (white background, plum text) for visibility on the dark band.
-- [ ] Below the button, smaller text: `purpleCtaFooter`.
+- [x] Full-width plum / purple band, white text, centered content.
+- [x] `<h2>` from `purpleCtaHeadline` (e.g. "Es-tu prête à investir en toi ?").
+- [x] Button styled as primary CTA: text from `purpleCtaButtonLabel`, link to `siteSettings.bookingUrl`. Use a contrasting button color (white background, plum text) for visibility on the dark band.
+- [x] Below the button, smaller text: `purpleCtaFooter`.
 
 **Verification:**
-- [ ] Band renders with purple background
-- [ ] Button is clearly clickable and visible
-- [ ] Footer text appears below the button
+- [x] Band renders with purple background
+- [x] Button is clearly clickable and visible
+- [x] Footer text appears below the button
 
 ---
 
 ## Step 14 — FAQ section
 
-- [ ] `<h2>` from `faqHeadline`.
-- [ ] Render the FAQ documents fetched from Sanity. Reuse the existing FAQ accordion component / styling (don't rebuild — just point it at the updated content).
-- [ ] In the portable-text components for FAQ answers, register a `link` mark renderer that produces `<a href={value.href} target={value.openInNewTab ? '_blank' : '_self'} rel={value.openInNewTab ? 'noopener noreferrer' : undefined}>`.
-- [ ] Confirm bold (`strong` decorator) and bullet lists render correctly.
+- [x] `<h2>` from `faqHeadline`.
+- [x] Render the FAQ documents fetched from Sanity. Reuse the existing FAQ accordion component / styling (don't rebuild — just point it at the updated content).
+- [x] In the portable-text components for FAQ answers, register a `link` mark renderer that produces `<a href={value.href} target={value.openInNewTab ? '_blank' : '_self'} rel={value.openInNewTab ? 'noopener noreferrer' : undefined}>`.
+- [x] Confirm bold (`strong` decorator) and bullet lists render correctly.
 
 **Verification:**
-- [ ] All 8 FAQ questions render in order
-- [ ] Clicking the Ataraxia link opens `https://ataraxia-entraineur.com` in a new tab
-- [ ] Same for Psycom and Précision Nutrition links
-- [ ] Bullet list in the first FAQ ("Quelles formations as-tu suivies ?") renders as a list with bolded program names
+- [x] All 8 FAQ questions render in order
+- [x] Clicking the Ataraxia link opens `https://ataraxia-entraineur.com` in a new tab
+- [x] Same for Psycom and Précision Nutrition links
+- [x] Bullet list in the first FAQ ("Quelles formations as-tu suivies ?") renders as a list with bolded program names
 
 ---
 
 ## Step 15 — Collaborators section
 
-- [ ] `<h2>` from `collaboratorsHeadline`.
-- [ ] Below it, render `collaboratorsIntro` if present.
-- [ ] Render the collaborators list. Featured collaborators (e.g. Esthétique Flora) appear first, larger, with optional logo and clickable link if `website` is set. Non-featured ones appear smaller below in a simple list (none for now — this is just so the structure handles future entries).
-- [ ] If a logo is missing (as in the Esthétique Flora case for now), display the name as text only.
-- [ ] If no collaborators have `featured: true`, hide the section entirely.
+- [x] `<h2>` from `collaboratorsHeadline`.
+- [x] Below it, render `collaboratorsIntro` if present.
+- [x] Render the collaborators list. Featured collaborators (e.g. Esthétique Flora) appear first, larger, with optional logo and clickable link if `website` is set. Non-featured ones appear smaller below in a simple list (none for now — this is just so the structure handles future entries).
+- [x] If a logo is missing (as in the Esthétique Flora case for now), display the name as text only.
+- [x] If no collaborators have `featured: true`, hide the section entirely.
 
 **Verification:**
-- [ ] "Esthétique Flora" appears in the section as text-only (no logo)
-- [ ] Adding a second collaborator in Studio with `featured: true` makes it appear
-- [ ] Setting a collaborator to `featured: false` hides them from the prominent area
+- [x] "Esthétique Flora" appears in the section as text-only (no logo)
+- [x] Adding a second collaborator in Studio with `featured: true` makes it appear
+- [x] Setting a collaborator to `featured: false` hides them from the prominent area
 
 ---
 
 ## Step 16 — Sentence-case sweep
 
-- [ ] Re-read every string of content in the homepage and FAQ. Confirm:
+- [x] Re-read every string of content in the homepage and FAQ. Confirm:
   - Every bullet starts with a capital letter.
   - Every sentence (after a period or new paragraph) starts with a capital letter.
   - Special cases: kicker labels in ALL CAPS (`ENTRAÎNEURE PERSONNELLE • MONTRÉAL`, `RENCONTRE TON ENTRAÎNEURE`) stay as-is.
-- [ ] Apply fixes directly in Studio (content edits, no code change).
+- [x] Apply fixes directly in Studio (content edits, no code change).
 
 **Verification:**
-- [ ] Visually scan the live homepage top to bottom — no lowercase sentence starts
+- [x] Visually scan the live homepage top to bottom — no lowercase sentence starts
 
 ---
 
