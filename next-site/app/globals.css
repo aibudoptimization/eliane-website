@@ -2668,6 +2668,19 @@ button:focus-visible {
   margin: 0;
 }
 
+.faq-panel-inner--rich .faq-answer-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.faq-panel-inner--rich .faq-answer-list li {
+  margin-top: 0.35rem;
+}
+
+.faq-panel-inner--rich p + p {
+  margin-top: 0.75rem;
+}
+
 .faq-section .faq-trigger:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;

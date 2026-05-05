@@ -13,15 +13,9 @@ export const structure: StructureResolver = (S) =>
             .title("Page d'accueil")
             .items([
               S.documentTypeListItem('homePage').title('Sections'),
-              S.documentTypeListItem('homepageOffers').title('Offres du site'),
               S.documentTypeListItem('faq').title('Questions fréquentes'),
             ]),
         ),
-      S.listItem()
-        .title('Sous-pages')
-        .child(
-          S.list()
-            .title('Sous-pages')
-            .items([S.documentTypeListItem('offerPage').title('Offres')]),
-        ),
+      S.divider(),
+      S.documentTypeListItem('collaborator').title('Collaborateurs'),
     ])

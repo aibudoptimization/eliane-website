@@ -46,17 +46,6 @@ export default function SiteFooter({
               <a href="/#introduction">Introduction</a>
             </li>
             <li>
-              <a href="/#offres">Offres</a>
-              <ul className="footer-sublinks">
-                <li>
-                  <a href="/offres/le-tremplin">Le Tremplin</a>
-                </li>
-                <li>
-                  <a href="/offres/offre-signature">Offre signature</a>
-                </li>
-              </ul>
-            </li>
-            <li>
               <a href="/#faq">FAQ</a>
             </li>
             <li>
