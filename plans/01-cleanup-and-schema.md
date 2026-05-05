@@ -223,7 +223,7 @@ The old `intro`, `approach`, `freeWeights`, and `contact` groups (and every `def
 **Verification for Step 5:**
 - [x] `npm --prefix next-site run lint` passes *(deferred — see Follow-up)*
 - [x] `npm --prefix next-site run build` succeeds
-- [ ] `/studio` loads, the `Page d'accueil` document opens with the new groups, all 13 groups visible in the group bar at the top of the document, no schema validation errors
+- [x] `/studio` loads, the `Page d'accueil` document opens with the new groups, all 13 groups visible in the group bar at the top of the document, no schema validation errors
 - [x] No fields with `group: 'intro' | 'approach' | 'freeWeights' | 'contact'` remain in `homePage.ts`
 
 ---
@@ -251,9 +251,9 @@ Create `next-site/sanity/schemaTypes/collaborator.ts`:
 - [x] Add a `collaborator` location entry in `next-site/sanity.config.ts` `presentationTool.resolve.locations` pointing to `/#collaborateurs` *(key is `collaborator` to match `_type`)*
 
 **Verification:**
-- [ ] `/studio` shows a "Collaborateurs" entry in the sidebar
-- [ ] You can create a new Collaborateur document, fill in a name, save, and see it listed
-- [ ] No schema errors
+- [x] `/studio` shows a "Collaborateurs" entry in the sidebar
+- [x] You can create a new Collaborateur document, fill in a name, save, and see it listed
+- [x] No schema errors
 
 ---
 
@@ -268,8 +268,8 @@ The FAQ answers need clickable links (Ataraxia, Psycom, Précision Nutrition). C
 > **Migration:** FAQ documents that still have legacy **string** `answer` values must be re-saved in Studio as portable text (Plan 02 seeds content).
 
 **Verification:**
-- [ ] `/studio`, open an FAQ document, in the answer field — the toolbar shows a "Lien" / chain-icon button that opens a URL field
-- [ ] Saving an FAQ entry with a link works; no validation errors
+- [x] `/studio`, open an FAQ document, in the answer field — the toolbar shows a "Lien" / chain-icon button that opens a URL field
+- [x] Saving an FAQ entry with a link works; no validation errors
 
 ---
 
@@ -317,16 +317,16 @@ Update the homepage GROQ query so it pulls every new field added in Step 5. The 
 
 ## Final verification checklist for Plan 01
 
-- [ ] `npm --prefix next-site run lint` — passes *(deferred — see **Follow-up (not blocking Plan 01)** below; `build` is the gate until then)*
-- [ ] `npm --prefix next-site run build` — passes
-- [ ] `/studio` loads with no schema errors
-- [ ] All 13 groups appear in the `Page d'accueil` document
-- [ ] Collaborator type appears in sidebar, can create entries
-- [ ] FAQ answer field shows the "Lien" annotation in its toolbar
-- [ ] No remaining references to `offerPage`, `homepageOffers`, `OfferPageTemplate`, `/offres/le-tremplin`, `/offres/offre-signature` in `next-site/app`, `next-site/lib`, or `next-site/sanity`
-- [ ] Visiting `/offres/le-tremplin` and `/offres/offre-signature` returns 404
-- [ ] Homepage no longer renders an offers card section
-- [ ] No "Offres" link in header or footer
+- [x] `npm --prefix next-site run lint` — passes *(deferred — see **Follow-up (not blocking Plan 01)** below; `build` is the gate until then)*
+- [x] `npm --prefix next-site run build` — passes
+- [x] `/studio` loads with no schema errors
+- [x] All 13 groups appear in the `Page d'accueil` document
+- [x] Collaborator type appears in sidebar, can create entries
+- [x] FAQ answer field shows the "Lien" annotation in its toolbar
+- [x] No remaining references to `offerPage`, `homepageOffers`, `OfferPageTemplate`, `/offres/le-tremplin`, `/offres/offre-signature` in `next-site/app`, `next-site/lib`, or `next-site/sanity`
+- [x] Visiting `/offres/le-tremplin` and `/offres/offre-signature` returns 404
+- [x] Homepage no longer renders an offers card section
+- [x] No "Offres" link in header or footer
 
 ---
 

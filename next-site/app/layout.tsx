@@ -25,11 +25,17 @@ export default async function RootLayout({
   const isDraftMode = (await draftMode()).isEnabled;
   const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
   const calBookingUrl =
-    siteSettings?.calBookingUrl ?? "https://cal.com/elianelarre/appel-decouverte";
-  const calNamespace =
-    siteSettings?.calNamespace ?? "elianelarre/appel-decouverte";
-  const calNamespaceSlug =
-    calNamespace.split("/").pop() || "appel-decouverte";
+    siteSettings?.bookingUrl ??
+    siteSettings?.calBookingUrl ??
+    "https://cal.com/elianelarre/appel-decouverte";
+  const calLinkNamespace = (() => {
+    try {
+      const url = new URL(calBookingUrl);
+      return url.hostname === "cal.com" ? url.pathname.replace(/^\/+/, "") : "";
+    } catch {
+      return "";
+    }
+  })();
   const contactEmail = siteSettings?.contactEmail ?? "info@elianelarre.com";
   const instagramUrl =
     siteSettings?.instagramUrl ??
@@ -55,16 +61,14 @@ export default async function RootLayout({
 
         <SiteChrome
           calBookingUrl={calBookingUrl}
-          calLinkNamespace={calNamespace}
-          calNamespaceSlug={calNamespaceSlug}
+          calLinkNamespace={calLinkNamespace}
         />
 
         {children}
 
         <SiteFooter
           calBookingUrl={calBookingUrl}
-          calLinkNamespace={calNamespace}
-          calNamespaceSlug={calNamespaceSlug}
+          calLinkNamespace={calLinkNamespace}
           contactEmail={contactEmail}
           instagramUrl={instagramUrl}
         />

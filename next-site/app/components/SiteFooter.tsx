@@ -3,23 +3,19 @@
 import { usePathname } from "next/navigation";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
-const DEFAULT_CAL_LINK_NAMESPACE = "elianelarre/appel-decouverte";
-const DEFAULT_CAL_NAMESPACE_SLUG = "appel-decouverte";
 const DEFAULT_CONTACT_EMAIL = "info@elianelarre.com";
 const DEFAULT_INSTAGRAM = "https://www.instagram.com/eliane.au.naturel";
 
 export type SiteFooterProps = {
   calBookingUrl?: string;
   calLinkNamespace?: string;
-  calNamespaceSlug?: string;
   contactEmail?: string;
   instagramUrl?: string;
 };
 
 export default function SiteFooter({
   calBookingUrl = DEFAULT_CAL_BOOKING,
-  calLinkNamespace = DEFAULT_CAL_LINK_NAMESPACE,
-  calNamespaceSlug = DEFAULT_CAL_NAMESPACE_SLUG,
+  calLinkNamespace,
   contactEmail = DEFAULT_CONTACT_EMAIL,
   instagramUrl = DEFAULT_INSTAGRAM,
 }: SiteFooterProps) {
@@ -51,9 +47,8 @@ export default function SiteFooter({
             <li>
               <a
                 href={calBookingUrl}
-                data-cal-link={calLinkNamespace}
-                data-cal-namespace={calNamespaceSlug}
-                data-cal-config='{"layout":"month_view"}'
+                data-cal-link={calLinkNamespace || undefined}
+                data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
               >
                 Appel découverte
               </a>

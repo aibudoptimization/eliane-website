@@ -3,19 +3,15 @@
 import { usePathname } from "next/navigation";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
-const DEFAULT_CAL_LINK_NAMESPACE = "elianelarre/appel-decouverte";
-const DEFAULT_CAL_NAMESPACE_SLUG = "appel-decouverte";
 
 export type SiteChromeProps = {
   calBookingUrl?: string;
   calLinkNamespace?: string;
-  calNamespaceSlug?: string;
 };
 
 export default function SiteChrome({
   calBookingUrl = DEFAULT_CAL_BOOKING,
-  calLinkNamespace = DEFAULT_CAL_LINK_NAMESPACE,
-  calNamespaceSlug = DEFAULT_CAL_NAMESPACE_SLUG,
+  calLinkNamespace,
 }: SiteChromeProps) {
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
@@ -39,9 +35,8 @@ export default function SiteChrome({
         <a
           className="nav-cta nav-cta--outline"
           href={calBookingUrl}
-          data-cal-link={calLinkNamespace}
-          data-cal-namespace={calNamespaceSlug}
-          data-cal-config='{"layout":"month_view"}'
+          data-cal-link={calLinkNamespace || undefined}
+          data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
         >
           Appel découverte
         </a>
@@ -73,9 +68,8 @@ export default function SiteChrome({
         <a
           className="btn btn-primary nav-mobile-cta"
           href={calBookingUrl}
-          data-cal-link={calLinkNamespace}
-          data-cal-namespace={calNamespaceSlug}
-          data-cal-config='{"layout":"month_view"}'
+          data-cal-link={calLinkNamespace || undefined}
+          data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
           data-nav-link
         >
           Appel découverte

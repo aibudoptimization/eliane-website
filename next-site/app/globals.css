@@ -576,12 +576,7 @@ button:focus-visible {
 }
 
 .hero-tag::before {
-  content: '';
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--plum);
+  display: none;
 }
 
 .hero h1 {
@@ -619,6 +614,14 @@ button:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   gap: 1.25rem 1.75rem;
+}
+
+.hero-cta-subtext {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 34rem;
 }
 
 .hero .btn-primary {
@@ -1524,11 +1527,11 @@ button:focus-visible {
 }
 
 /* —— Ce qu'il faut savoir (deux cartes) —— */
-#ce-quil-faut-savoir {
+#pour-toi {
   overflow: visible;
 }
 
-#ce-quil-faut-savoir .section-inner {
+#pour-toi .section-inner {
   overflow: visible;
 }
 
@@ -1540,7 +1543,7 @@ button:focus-visible {
 }
 
 @media (min-width: 768px) {
-  #ce-quil-faut-savoir .fit-bridge {
+  #pour-toi .fit-bridge {
     padding-bottom: clamp(2.25rem, 4vw, 3.75rem);
   }
 }
@@ -1659,7 +1662,7 @@ button:focus-visible {
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  #ce-quil-faut-savoir .fit-bridge-layout {
+  #pour-toi .fit-bridge-layout {
     gap: clamp(2.35rem, 5.5vw, 3.25rem);
   }
 }
@@ -1802,7 +1805,7 @@ button:focus-visible {
     gap: 2rem;
   }
 
-  #ce-quil-faut-savoir .fit-bridge-layout {
+  #pour-toi .fit-bridge-layout {
     gap: 2.5rem;
   }
 
@@ -1813,6 +1816,17 @@ button:focus-visible {
   .fit-bridge-card--yes {
     padding: 3rem 3rem 4.5rem 3rem;
   }
+}
+
+.fit-bridge-footer {
+  margin: 1.25rem 0 0;
+  text-align: center;
+  color: var(--mid);
+}
+
+.fit-bridge-cta-row {
+  margin: 0.9rem 0 0;
+  text-align: center;
 }
 
 .mission-block {
@@ -1955,6 +1969,315 @@ button:focus-visible {
 }
 
 /* —— Pourquoi le présentiel —— */
+#approche .sled-subheadline {
+  max-width: 52rem;
+  margin: 0.9rem 0 1.5rem;
+  color: var(--mid);
+}
+
+#approche .sled-media {
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+#approche .sled-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#approche .sled-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+#approche .sled-column ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.15rem;
+}
+
+#approche .sled-column li {
+  margin-bottom: 0.8rem;
+  color: var(--mid);
+}
+
+#approche .sled-column li strong {
+  color: var(--ink);
+}
+
+#approche .sled-column--to li strong {
+  color: var(--plum);
+}
+
+#approche .sled-columns-arrow {
+  font-size: 1.5rem;
+  color: var(--plum);
+  align-self: center;
+}
+
+#approche .sled-cta {
+  margin-top: 1rem;
+}
+
+@media (max-width: 767px) {
+  #approche .sled-columns {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  #approche .sled-columns-arrow {
+    display: none;
+  }
+}
+
+#rencontre .meet-trainer {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+}
+
+#rencontre .meet-trainer-media {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+#rencontre .meet-trainer-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#rencontre .meet-trainer-kicker {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+#rencontre .meet-trainer-copy p {
+  margin: 0 0 1rem;
+  color: var(--mid);
+}
+
+#rencontre .meet-trainer-copy .meet-trainer-strong {
+  color: var(--plum-hover);
+  font-size: 1.1em;
+  font-weight: 800;
+}
+
+@media (max-width: 767px) {
+  #rencontre .meet-trainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pull-quote-section {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.pull-quote-block {
+  margin: 0 auto;
+  max-width: 60ch;
+  text-align: center;
+}
+
+.pull-quote-block p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.35rem, 1.5vw + 1rem, 1.9rem);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+#accompagnement .offering-images {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#accompagnement .offering-image-card {
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #f5efe9;
+}
+
+#accompagnement .offering-image-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#accompagnement .offering-features {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+#accompagnement .offering-feature {
+  border: 1px solid rgba(26, 20, 16, 0.12);
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: #fffaf5;
+}
+
+#accompagnement .offering-feature h3 {
+  margin: 0 0 0.45rem;
+}
+
+#accompagnement .offering-feature p {
+  margin: 0;
+  color: var(--mid);
+}
+
+#accompagnement .offering-cta {
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 767px) {
+  #accompagnement .offering-images,
+  #accompagnement .offering-features {
+    grid-template-columns: 1fr;
+  }
+}
+
+#temoignages .reviews-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+#temoignages .review-card {
+  border: 1px solid rgba(26, 20, 16, 0.12);
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+#temoignages .review-card h3 {
+  margin: 0 0 0.4rem;
+}
+
+#temoignages .review-stars {
+  margin: 0 0 0.65rem;
+  color: var(--plum);
+  letter-spacing: 0.03em;
+}
+
+#temoignages .review-card p {
+  margin: 0;
+  color: var(--mid);
+}
+
+@media (max-width: 767px) {
+  #temoignages .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+#apres-appel .after-call-intro,
+#apres-appel .after-call-footer {
+  color: var(--mid);
+}
+
+#apres-appel .after-call-list {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.2rem;
+  color: var(--mid);
+}
+
+#apres-appel .after-call-list li {
+  margin-bottom: 0.5rem;
+}
+
+#apres-appel .after-call-cta-row {
+  margin: 1rem 0 0;
+}
+
+.purple-cta-band {
+  background: var(--plum);
+  color: var(--white);
+  text-align: center;
+  border-radius: 0.9rem;
+  padding: clamp(2rem, 4.5vw, 3rem);
+}
+
+.purple-cta-band h2 {
+  margin: 0;
+  color: var(--white);
+}
+
+.purple-cta-button-row {
+  margin: 1rem 0 0.7rem;
+}
+
+.btn-purple-cta {
+  background: var(--white);
+  color: var(--plum);
+  border-color: var(--white);
+}
+
+.btn-purple-cta:hover {
+  background: #f5f1f7;
+  color: var(--plum-hover);
+}
+
+.purple-cta-footer {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.collaborators-intro {
+  color: var(--mid);
+}
+
+.collaborators-featured {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.collaborator-card {
+  border: 1px solid rgba(26, 20, 16, 0.12);
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+}
+
+.collaborator-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.collaborator-name {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.collaborator-description {
+  margin: 0.6rem 0 0;
+  color: var(--mid);
+}
+
+.collaborators-other {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--mid);
+}
+
 #presentiel.section {
   padding-block: calc(var(--pad-y) - clamp(0.75rem, 1.5vw, 1rem));
 }
@@ -2132,6 +2455,7 @@ button:focus-visible {
   font-size: clamp(1.375rem, 2.2vw, 1.75rem);
   line-height: 1.45;
   color: var(--plum);
+  white-space: pre-line;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
