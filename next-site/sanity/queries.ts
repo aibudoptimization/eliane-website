@@ -1,66 +1,86 @@
+/** Inner projection for portable-text blocks (links). */
+const ptInner = String.raw`
+  ...,
+  markDefs[]{
+    ...,
+    _type == "link" => {
+      href,
+      openInNewTab
+    }
+  }
+`
+
+/** `field` must be an array of blocks or null — coalesce avoids GROQ errors on null. */
+function ptArray(field: string): string {
+  return `coalesce(${field}, [])[]{${ptInner}}`
+}
+
 export const HOMEPAGE_QUERY = `*[_type == "homePage"][0]{
-  heroHeadline[]{..., children[]{...}},
+  heroKicker,
+  "heroHeadline": ${ptArray('heroHeadline')},
   heroSubheadline,
   heroImage { ..., "asset": asset-> },
-  introHeadline[]{..., children[]{...}},
-  introDescription,
-  introImage { ..., "asset": asset-> },
-  approachHeadline[]{..., children[]{...}},
-  approachDescription,
-  approachImage { ..., "asset": asset-> },
-  freeWeightsHeadline[]{..., children[]{...}},
-  freeWeightsBullets[]{..., children[]{...}},
-  freeWeightsImage { ..., "asset": asset-> }
-}`
-
-export const HOMEPAGE_OFFERS_QUERY = `*[_type == "homepageOffers"][0]{
-  tremplinDurationBadge,
-  tremplinTitle,
-  tremplinDuration,
-  tremplinPitch,
-  tremplinFeatures,
-  tremplinIdealFor,
-  "tremplinLink": tremplinLink->{
-    "slug": slug.current
+  heroCtaLabel,
+  heroCtaSubtext,
+  marqueeOneItems,
+  marqueeTwoItems,
+  "sledHeadline": ${ptArray('sledHeadline')},
+  sledSubheadline,
+  sledImage { ..., "asset": asset-> },
+  sledFromTitle,
+  "sledFromItems": coalesce(sledFromItems, [])[]{
+    ...,
+    "text": ${ptArray('text')}
   },
-  signatureDurationBadge,
-  signatureShowPopularBadge,
-  signatureTitle,
-  signatureDuration,
-  signaturePitch,
-  signatureFeatures,
-  signatureIdealFor,
-  "signatureLink": signatureLink->{
-    "slug": slug.current
-  }
+  sledToTitle,
+  "sledToItems": coalesce(sledToItems, [])[]{
+    ...,
+    "text": ${ptArray('text')}
+  },
+  sledCtaLabel,
+  meetTrainerKicker,
+  meetTrainerImage { ..., "asset": asset-> },
+  "meetTrainerBody": ${ptArray('meetTrainerBody')},
+  meetTrainerCtaLabel,
+  meetTrainerCtaUrl,
+  pullQuoteText,
+  pullQuoteEnabled,
+  offeringHeadline,
+  offeringImages[] { ..., "asset": asset-> },
+  offeringFeatures[]{ title, description },
+  offeringCtaLabel,
+  inPersonPunchLine,
+  reviewsHeadline,
+  reviewsList[]{ name, rating, excerpt },
+  forYouHeadline,
+  forYouImage { ..., "asset": asset-> },
+  forYouYesTitle,
+  forYouYesItems,
+  forYouNoTitle,
+  forYouNoItems,
+  forYouFooter,
+  forYouCtaLabel,
+  afterCallHeadline,
+  afterCallIntro,
+  afterCallItems,
+  afterCallFooter,
+  afterCallCtaLabel,
+  purpleCtaHeadline,
+  purpleCtaButtonLabel,
+  purpleCtaFooter,
+  faqHeadline,
+  collaboratorsHeadline,
+  collaboratorsIntro
 }`
 
-export const OFFER_PAGE_BY_SLUG_QUERY = `*[_type == "offerPage" && slug.current == $slug][0]{
+export const COLLABORATORS_QUERY = `*[_type == "collaborator"]|order(featured desc, order asc, name asc){
   _id,
-  title,
-  "slug": slug.current,
-  heroEyebrow,
-  heroSubtitle[]{..., children[]{...}},
-  heroPitch,
-  idealListHeading,
-  idealListItems,
-  includesHeading,
-  processCards[]{
-    kicker,
-    title,
-    items
-  },
-  forYouHeading,
-  forYouItems,
-  comparisonDuration,
-  comparisonBullets,
-  "otherOffer": otherOffer->{
-    _id,
-    title,
-    "slug": slug.current,
-    comparisonDuration,
-    comparisonBullets
-  }
+  name,
+  description,
+  logo { ..., "asset": asset-> },
+  website,
+  featured,
+  order
 }`
 
 export const FAQS_QUERY = `*[_type == "faq"] | order(order asc){

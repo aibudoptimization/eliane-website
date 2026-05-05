@@ -1,10 +1,12 @@
+import type { ReactNode } from 'react'
 import { PortableText, type PortableTextComponents } from '@portabletext/react'
 import { urlFor } from '@/sanity/imageUrl'
+import { portableTextToPlainText } from '@/lib/portableTextPlainText'
 import { sanityFetch } from '@/sanity/live'
 import {
   HOMEPAGE_QUERY,
-  HOMEPAGE_OFFERS_QUERY,
   FAQS_QUERY,
+  COLLABORATORS_QUERY,
   SITE_SETTINGS_QUERY,
 } from '@/sanity/queries'
 
@@ -42,17 +44,57 @@ const freeWeightsBulletComponents: PortableTextComponents = {
   },
 }
 
+const faqAnswerComponents: PortableTextComponents = {
+  marks: {
+    strong: ({ children }) => <strong>{children}</strong>,
+    em: ({ children }) => <em>{children}</em>,
+    link: ({
+      children,
+      value,
+    }: {
+      children?: ReactNode
+      value?: { href?: string; openInNewTab?: boolean }
+    }) => {
+      const href = value?.href
+      if (!href) return <>{children}</>
+      const openInNewTab = value.openInNewTab !== false
+      return (
+        <a
+          href={href}
+          target={openInNewTab ? '_blank' : undefined}
+          rel={openInNewTab ? 'noopener noreferrer' : undefined}
+        >
+          {children}
+        </a>
+      )
+    },
+  },
+  block: {
+    normal: ({ children }) => <p>{children}</p>,
+  },
+  list: {
+    bullet: ({ children }) => <ul className="faq-answer-list">{children}</ul>,
+    number: ({ children }) => (
+      <ol className="faq-answer-list faq-answer-list--numbered">{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li>{children}</li>,
+    number: ({ children }) => <li>{children}</li>,
+  },
+}
+
 export default async function Home() {
   const [
     { data: homePage },
-    { data: homepageOffers },
     { data: faqs },
     { data: siteSettings },
+    { data: collaborators },
   ] = await Promise.all([
     sanityFetch({ query: HOMEPAGE_QUERY }),
-    sanityFetch({ query: HOMEPAGE_OFFERS_QUERY }),
     sanityFetch({ query: FAQS_QUERY }),
     sanityFetch({ query: SITE_SETTINGS_QUERY }),
+    sanityFetch({ query: COLLABORATORS_QUERY }),
   ])
 
   const calBookingUrl =
@@ -86,7 +128,10 @@ export default async function Home() {
       : '/images/eliane-poids-libres.png'
 
   return (
-    <main id="contenu-principal">
+    <main
+      id="contenu-principal"
+      data-collaborators-count={collaborators?.length ?? 0}
+    >
       
             <section className="hero" id="accueil">
               <div className="hero-copy">
@@ -116,8 +161,8 @@ export default async function Home() {
                     data-cal-namespace={calNamespaceSlug}
                     data-cal-config='{"layout":"month_view"}'
                     >Appel découverte</a>
-                  <a className="btn btn-ghost hero-secondary-cta" href="#offres"
-                    >Voir les offres<span className="hero-ghost-arrow" aria-hidden="true">→</span></a>
+                  <a className="btn btn-ghost hero-secondary-cta" href="#faq"
+                    >Voir la FAQ<span className="hero-ghost-arrow" aria-hidden="true">→</span></a>
                 </div>
               </div>
               <div className="hero-visual">
@@ -676,111 +721,6 @@ export default async function Home() {
               </div>
             </section>
       
-            <section className="section section-warm section-offres" id="offres">
-              <div className="section-inner section-inner--offres">
-                <header className="offres-head reveal" data-reveal>
-                  <span className="eyebrow">Les offres</span>
-                  <h2>Choisis l'offre <em>qui correspond à ton parcours</em></h2>
-                  <p className="offres-lead">Deux formules conçues selon ton niveau et tes objectifs.</p>
-                </header>
-                <div className="offres-grid">
-                  <article className="offres-card offres-card--tremplin reveal" data-reveal>
-                    <span className="offres-badge offres-badge--muted" aria-hidden="true">
-                      {homepageOffers?.tremplinDurationBadge ?? '1 mois'}
-                    </span>
-                    <div className="offres-card__body">
-                      <h3 className="offres-card__title">{homepageOffers?.tremplinTitle ?? 'Le Tremplin'}</h3>
-                      <p className="offres-card__duration">{homepageOffers?.tremplinDuration ?? '1 mois'}</p>
-                      <p className="offres-card__pitch">
-                        {homepageOffers?.tremplinPitch ?? 'Pour démarrer avec un plan clair et un encadrement de proximité.'}
-                      </p>
-                      <ul className="offres-feature-list">
-                        {Array.isArray(homepageOffers?.tremplinFeatures) && homepageOffers.tremplinFeatures.length > 0 ? (
-                          homepageOffers.tremplinFeatures.map((feature: string, i: number) => (
-                            <li key={i}>{feature}</li>
-                          ))
-                        ) : (
-                          <>
-                            <li>1 rencontre en présentiel de 2 heures</li>
-                            <li>Programme d'entraînement personnalisé</li>
-                            <li>Accès à l'application de suivi</li>
-                            <li>Messagerie directe 7/7 pendant 4 semaines</li>
-                            <li>Appel bilan de 45 minutes</li>
-                          </>
-                        )}
-                      </ul>
-                      <div className="offres-ideal">
-                        <p className="offres-ideal__label">IDÉALE SI TU…</p>
-                        <p className="offres-ideal__text">
-                          {homepageOffers?.tremplinIdealFor ?? "t'entraînes déjà mais manques de structure."}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="offres-card__cta">
-                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.tremplinLink?.slug ? `/offres/${homepageOffers.tremplinLink.slug}` : '/offres/le-tremplin'}>En savoir plus<span aria-hidden="true"> →</span></a>
-                    </div>
-                  </article>
-                  <article
-                    className="offres-card offres-card--signature reveal"
-                    data-reveal
-                    aria-label="Offre signature — offre recommandée"
-                  >
-                    {homepageOffers?.signatureShowPopularBadge ? (
-                      <span className="offres-badge offres-badge--popular">Populaire</span>
-                    ) : (
-                      <span className="offres-badge offres-badge--muted">{homepageOffers?.signatureDurationBadge ?? '3 mois'}</span>
-                    )}
-                    <div className="offres-card__body">
-                      <h3 className="offres-card__title">{homepageOffers?.signatureTitle ?? 'Offre signature'}</h3>
-                      <p className="offres-card__duration">{homepageOffers?.signatureDuration ?? '3 mois'}</p>
-                      <p className="offres-card__pitch">
-                        {homepageOffers?.signaturePitch ?? 'Pour un accompagnement complet, structuré et personnalisé.'}
-                      </p>
-                      <ul className="offres-feature-list">
-                        {Array.isArray(homepageOffers?.signatureFeatures) && homepageOffers.signatureFeatures.length > 0 ? (
-                          homepageOffers.signatureFeatures.map((feature: string, i: number) => (
-                            <li key={i}>{feature}</li>
-                          ))
-                        ) : (
-                          <>
-                            <li>12 séances en présentiel (1 par semaine)</li>
-                            <li>Programme d'entraînement personnalisé</li>
-                            <li>Accès à l'application de suivi</li>
-                            <li>Messagerie directe 7/7 pendant 12 semaines</li>
-                            <li>1 semaine de journal alimentaire</li>
-                            <li>Bilan écrit final avec recommandations</li>
-                          </>
-                        )}
-                      </ul>
-                      <div className="offres-ideal">
-                        <p className="offres-ideal__label">IDÉALE SI TU…</p>
-                        <p className="offres-ideal__text">
-                          {homepageOffers?.signatureIdealFor ?? 'veux une transformation complète avec encadrement hebdomadaire.'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="offres-card__cta">
-                      <a className="btn btn-primary btn--offres-cta" href={homepageOffers?.signatureLink?.slug ? `/offres/${homepageOffers.signatureLink.slug}` : '/offres/offre-signature'}
-                        >En savoir plus<span aria-hidden="true"> →</span></a
-                      >
-                    </div>
-                  </article>
-                </div>
-                <div className="offres-helper reveal" data-reveal>
-                  <p className="offres-helper__line">Tu hésites entre les deux ?</p>
-                  <p className="offres-helper__sub">Parlons-en lors d'un appel découverte.</p>
-                  <a
-                    className="btn btn-primary"
-                    href={calBookingUrl}
-                    data-cal-link={calNamespace}
-                    data-cal-namespace={calNamespaceSlug}
-                    data-cal-config='{"layout":"month_view"}'
-                    >Réserver un appel</a
-                  >
-                </div>
-              </div>
-            </section>
-      
             <section className="faq-section" id="faq" aria-labelledby="faq-heading">
               <div className="faq-section-inner">
                 <header className="faq-section-header reveal" data-reveal>
@@ -815,8 +755,15 @@ export default async function Home() {
                                 aria-labelledby={triggerId}
                                 hidden
                               >
-                                <div className="faq-panel-inner">
-                                  <p>{faq.answer}</p>
+                                <div className="faq-panel-inner faq-panel-inner--rich">
+                                  {Array.isArray(faq.answer) && faq.answer.length > 0 ? (
+                                    <PortableText
+                                      value={faq.answer}
+                                      components={faqAnswerComponents}
+                                    />
+                                  ) : typeof faq.answer === 'string' ? (
+                                    <p>{faq.answer}</p>
+                                  ) : null}
                                 </div>
                               </div>
                             </div>
@@ -857,12 +804,12 @@ export default async function Home() {
                     __html: JSON.stringify({
                       '@context': 'https://schema.org',
                       '@type': 'FAQPage',
-                      mainEntity: faqs.map((faq: any) => ({
+                      mainEntity: faqs.map((faq: { question?: string; answer?: unknown }) => ({
                         '@type': 'Question',
                         name: faq.question,
                         acceptedAnswer: {
                           '@type': 'Answer',
-                          text: faq.answer,
+                          text: portableTextToPlainText(faq.answer),
                         },
                       })),
                     }),
