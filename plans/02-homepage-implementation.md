@@ -486,25 +486,25 @@ The current homepage already has an equivalent section at `id="ce-quil-faut-savo
 
 ## Step 17 — Commit and push
 
-- [ ] `git add -A`
-- [ ] `git commit -m "feat(next-site): rebuild homepage from Éliane's email — sections 1-13 + FAQ"`
-- [ ] `git push -u origin feat/02-homepage-impl`
-- [ ] Open PR against `nextjs-migration`. Do not merge yet — Plan 03 finalizes nav and verification.
+- [x] `git add -A`
+- [x] `git commit -m "feat(next-site): rebuild homepage from Éliane's email — sections 1-13 + FAQ"`
+- [x] `git push -u origin feat/02-homepage-impl`
+- [x] Open PR against `nextjs-migration`. Do not merge yet — Plan 03 finalizes nav and verification.
 
 ---
 
 ## Final verification checklist for Plan 02
 
 - [ ] `npm --prefix next-site run lint` passes
-- [ ] `npm --prefix next-site run build` passes
-- [ ] All blocks listed under "Section order" (hero, two marquees, sled, meet trainer, pull quote, offering, in-person, reviews, for-you-or-not, after-call, purple CTA, FAQ, collaborators) render in correct order on `/`
-- [ ] No `#poids-libres` section on the page
-- [ ] All anchor IDs match the list at the top of this plan
-- [ ] All CTAs link to `siteSettings.bookingUrl`
-- [ ] Bold and italic from the email content are preserved as `<strong>` / `<em>`
-- [ ] Bolded phrases in the meet-trainer section are visibly larger and plum-colored
-- [ ] FAQ links are clickable and open in new tabs
-- [ ] Sentence case applied to all bullets and sentences
-- [ ] Mobile layout is functional (not pretty — design pass comes later)
-- [ ] No console errors
-- [ ] No 404s on remaining routes
+- [x] `npm --prefix next-site run build` passes
+- [x] All blocks listed under "Section order" (hero, two marquees, sled, meet trainer, pull quote, offering, in-person, reviews, for-you-or-not, after-call, purple CTA, FAQ, collaborators) render in correct order on `/`
+- [x] No `#poids-libres` section on the page
+- [x] All anchor IDs match the list at the top of this plan
+- [x] All CTAs link to `siteSettings.bookingUrl`
+- [x] Bold and italic from the email content are preserved as `<strong>` / `<em>`
+- [x] Bolded phrases in the meet-trainer section are visibly larger and plum-colored
+- [x] FAQ links are clickable and open in new tabs
+- [x] Sentence case applied to all bullets and sentences
+- [x] Mobile layout is functional (not pretty — design pass comes later)
+- [x] No console errors
+- [x] No 404s on remaining routes

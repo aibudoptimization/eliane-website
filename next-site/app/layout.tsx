@@ -14,7 +14,15 @@ import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 export const metadata: Metadata = {
   title: "Éliane — Entraîneure personnelle privée · Montréal",
   description:
-    "Éliane — Entraîneure personnelle privée à Montréal. Accompagnement sur mesure, technique et nutrition alignées. Réserve ton appel découverte.",
+    "Un accompagnement personnalisé en présentiel à Montréal pour t'aider à progresser avec confiance, constance et clarté.",
+  openGraph: {
+    type: "website",
+    locale: "fr_CA",
+    title: "Éliane — Entraîneure personnelle privée · Montréal",
+    description:
+      "Un accompagnement personnalisé en présentiel à Montréal pour t'aider à progresser avec confiance, constance et clarté.",
+    siteName: "Éliane Larre",
+  },
 };
 
 export default async function RootLayout({
@@ -46,6 +54,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap"
           rel="stylesheet"

@@ -36,6 +36,12 @@ type Collaborator = {
 type PortableTextValue = TypedObject[]
 type SledListItem = { _key?: string; text?: PortableTextValue }
 type ReviewItem = { _key?: string; name?: string; rating?: number; excerpt?: string }
+type InPersonBenefit = {
+  _key?: string
+  icon?: string
+  title?: string
+  text?: string
+}
 
 const faqAnswerComponents: PortableTextComponents = {
   marks: {
@@ -143,6 +149,32 @@ export default async function Home() {
   const offeringImages = Array.isArray(homePage?.offeringImages) ? homePage.offeringImages : []
   const offeringFeatures = Array.isArray(homePage?.offeringFeatures) ? homePage.offeringFeatures : []
   const reviewsList: ReviewItem[] = Array.isArray(homePage?.reviewsList) ? homePage.reviewsList : []
+  const defaultInPersonBenefits: InPersonBenefit[] = [
+    {
+      icon: 'eye',
+      title: 'Correction en temps réel',
+      text: "J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.",
+    },
+    {
+      icon: 'shield-check',
+      title: 'Progression sécuritaire',
+      text: "Je t'aide à progresser tout en respectant ton rythme.",
+    },
+    {
+      icon: 'calendar-check',
+      title: 'Imputabilité',
+      text: "Le présentiel ajoute une structure qui soutient l'engagement.",
+    },
+    {
+      icon: 'activity',
+      title: 'Adaptation à ton état',
+      text: 'Un entraînement sur mesure, pour toi, selon ton énergie, tes besoins et tes envies.',
+    },
+  ]
+  const inPersonBenefits: InPersonBenefit[] =
+    Array.isArray(homePage?.inPersonBenefits) && homePage.inPersonBenefits.length > 0
+      ? homePage.inPersonBenefits
+      : defaultInPersonBenefits
   const featuredCollaborators = Array.isArray(collaborators)
     ? collaborators.filter((collaborator: Collaborator) => collaborator?.featured)
     : []
@@ -237,7 +269,7 @@ export default async function Home() {
                     <PortableText value={homePage.heroHeadline} components={heroHeadlineComponents} />
                   ) : (
                     <>
-                      Un service personnalisé en présentiel pour t'aider à progresser{' '}
+                      Un service personnalisé en présentiel pour t&apos;aider à progresser{' '}
                       <span className="hero-headline-pull">
                         <em>de façon claire et durable</em>
                       </span>
@@ -471,41 +503,42 @@ export default async function Home() {
             <section className="section section-warm" id="presentiel">
               <div className="section-inner">
                 <div className="presentiel-block reveal" data-reveal>
-                  <h2>Pourquoi le <em>présentiel</em></h2>
+                  <h2>
+                    {homePage?.inPersonHeadline?.includes('présentiel') ? (
+                      <>
+                        {homePage.inPersonHeadline.replace(/présentiel/g, '').trim()}
+                        {' '}
+                        <em>présentiel</em>
+                      </>
+                    ) : (
+                      <>
+                        {homePage?.inPersonHeadline ?? 'Pourquoi le'}
+                        {' '}
+                        <em>présentiel</em>
+                      </>
+                    )}
+                  </h2>
                   <p className="presentiel-intro">
-                    Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne
-                    peut remplacer.
+                    {homePage?.inPersonIntro ??
+                      "Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer."}
                   </p>
                   <div className="presentiel-mid">
                     <div className="presentiel-benefits" role="list">
-                      <article className="presentiel-benefit-cell" role="listitem">
-                        <i className="presentiel-benefit__icon" data-lucide="eye" aria-hidden="true" />
-                        <h3 className="presentiel-benefit__title">Correction en temps réel</h3>
-                        <p className="presentiel-benefit__text">
-                          J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.
-                        </p>
-                      </article>
-                      <article className="presentiel-benefit-cell" role="listitem">
-                        <i className="presentiel-benefit__icon" data-lucide="shield-check" aria-hidden="true" />
-                        <h3 className="presentiel-benefit__title">Progression sécuritaire</h3>
-                        <p className="presentiel-benefit__text">
-                          Je t'aide à progresser tout en respectant ton rythme.
-                        </p>
-                      </article>
-                      <article className="presentiel-benefit-cell" role="listitem">
-                        <i className="presentiel-benefit__icon" data-lucide="calendar-check" aria-hidden="true" />
-                        <h3 className="presentiel-benefit__title">Imputabilité</h3>
-                        <p className="presentiel-benefit__text">
-                          Le présentiel ajoute une structure qui soutient l'engagement.
-                        </p>
-                      </article>
-                      <article className="presentiel-benefit-cell" role="listitem">
-                        <i className="presentiel-benefit__icon" data-lucide="activity" aria-hidden="true" />
-                        <h3 className="presentiel-benefit__title">Adaptation à ton état</h3>
-                        <p className="presentiel-benefit__text">
-                          Un entraînement sur mesure, pour toi, selon ton énergie, tes besoins et tes envies.
-                        </p>
-                      </article>
+                      {inPersonBenefits.map((benefit, index) => (
+                        <article
+                          className="presentiel-benefit-cell"
+                          role="listitem"
+                          key={String(benefit._key ?? `${benefit.title ?? 'benefit'}-${index}`)}
+                        >
+                          <i
+                            className="presentiel-benefit__icon"
+                            data-lucide={benefit.icon ?? 'activity'}
+                            aria-hidden="true"
+                          />
+                          <h3 className="presentiel-benefit__title">{benefit.title ?? ''}</h3>
+                          <p className="presentiel-benefit__text">{benefit.text ?? ''}</p>
+                        </article>
+                      ))}
                     </div>
                   </div>
                   <p className="presentiel-closing">
@@ -585,14 +618,13 @@ export default async function Home() {
                   </div>
                   <div className="mission-photo">
                     <div className="mission-photo-frame">
-                      <img
+                      <Image
                         className="mission-photo-img"
                         src={forYouImageSrc}
                         alt={homePage?.forYouImage?.alt ?? "Éliane accotée sur la barre"}
-                        width="682"
-                        height="1024"
+                        width={682}
+                        height={1024}
                         loading="lazy"
-                        decoding="async"
                       />
                     </div>
                   </div>
@@ -714,10 +746,10 @@ export default async function Home() {
                     <div className="faq-contact-card">
                       <p className="faq-section-eyebrow faq-contact-eyebrow">Contact</p>
                       <h3 className="faq-contact-title">
-                        Une question&nbsp;? <em className="faq-contact-accent">Écris,moi.</em>
+                        Une question&nbsp;? <em className="faq-contact-accent">Écris-moi.</em>
                       </h3>
                       <p className="faq-contact-body">
-                        Pour toute question sur l'accompagnement, les offres ou la logistique, n'hésite pas. Je réponds
+                        Pour toute question sur l&apos;accompagnement, les offres ou la logistique, n&apos;hésite pas. Je réponds
                         personnellement.
                       </p>
                       <a className="faq-contact-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>

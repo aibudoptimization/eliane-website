@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
@@ -13,23 +14,28 @@ export default function SiteChrome({
   calBookingUrl = DEFAULT_CAL_BOOKING,
   calLinkNamespace,
 }: SiteChromeProps) {
+  const navItems = [
+    {label: "Approche", href: "/#approche"},
+    {label: "Accompagnement", href: "/#accompagnement"},
+    {label: "Témoignages", href: "/#temoignages"},
+    {label: "FAQ", href: "/#faq"},
+  ];
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
 
   return (
     <>
       <header className="site-nav" id="site-nav" data-nav>
-        <a className="nav-logo" href="/" aria-label="Éliane Larre — Accueil">
+        <Link className="nav-logo" href="/" aria-label="Éliane Larre — Accueil">
           <em>Éliane Larre</em>
-        </a>
+        </Link>
         <nav aria-label="Navigation principale">
           <ul className="nav-desktop">
-            <li>
-              <a href="/#introduction">Introduction</a>
-            </li>
-            <li>
-              <a href="/#faq">FAQ</a>
-            </li>
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))}
           </ul>
         </nav>
         <a
@@ -54,16 +60,13 @@ export default function SiteChrome({
 
       <div className="nav-mobile-panel" id="nav-mobile" data-nav-panel hidden>
         <ul>
-          <li>
-            <a href="/#introduction" data-nav-link>
-              Introduction
-            </a>
-          </li>
-          <li>
-            <a href="/#faq" data-nav-link>
-              FAQ
-            </a>
-          </li>
+          {navItems.map((item) => (
+            <li key={`mobile-${item.href}`}>
+              <a href={item.href} data-nav-link>
+                {item.label}
+              </a>
+            </li>
+          ))}
         </ul>
         <a
           className="btn btn-primary nav-mobile-cta"
