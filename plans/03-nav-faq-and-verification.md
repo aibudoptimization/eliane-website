@@ -176,10 +176,10 @@ Manually test the homepage at three viewports: 375px, 768px, 1280px. For each vi
 
 ## Step 10 — Commit and push
 
-- [ ] `git add -A`
-- [ ] `git commit -m "chore(next-site): rebuild top nav, sweep dead CSS, final verification"`
-- [ ] `git push -u origin chore/03-nav-and-verify`
-- [ ] Open PR against `nextjs-migration`.
+- [x] `git add -A`
+- [x] `git commit -m "chore(next-site): finalize nav polish and verification"`
+- [x] `git push -u origin chore/03-nav-and-verify`
+- [x] Open PR against `nextjs-migration`. *(PR #53)*
 
 ---
 
