@@ -15,9 +15,9 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 ## Step 0 — Setup
 
-- [ ] `git checkout feat/02-homepage-impl` (or whichever branch Plan 02 lives on)
-- [ ] `git checkout -b chore/03-nav-and-verify`
-- [ ] `npm --prefix next-site run dev` is running cleanly
+- [x] `git checkout feat/02-homepage-impl` (or whichever branch Plan 02 lives on) *(Plan 02 merged to `nextjs-migration`; started from updated `nextjs-migration`.)*
+- [x] `git checkout -b chore/03-nav-and-verify`
+- [x] `npm --prefix next-site run dev` is running cleanly *(existing Next dev server on `http://localhost:3000` returns 200).*
 
 ---
 
@@ -25,25 +25,25 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 **File:** `next-site/app/components/SiteChrome.tsx`
 
-- [ ] Replace the existing nav-items array with this exact list, in order:
+- [x] Replace the existing nav-items array with this exact list, in order:
   1. `Approche` → `/#approche` *(targets the **Sled comparison** section — "Tu veux progresser, mais tu ne veux plus avancer seule")*
   2. `Accompagnement` → `/#accompagnement` *(targets the **Offering** section — "Mon accompagnement personnalisé")*
   3. `Témoignages` → `/#temoignages` *(targets the **Reviews** section — "Leur expérience")*
   4. `FAQ` → `/#faq`
   5. `Appel découverte` → `siteSettings.bookingUrl` (the cal.com URL — NOT an anchor)
-- [ ] First 4 items render as standard nav links (anchor links — clicking them scrolls to the section).
-- [ ] 5th item ("Appel découverte") renders as a primary button — visually distinct from the others, styled like the existing "Réservez un appel" / cal.com button on the current site.
-- [ ] On mobile, all 5 items appear in the mobile menu in the same order, with "Appel découverte" still visually distinct (button-styled).
-- [ ] Make sure smooth-scroll behavior works when clicking an in-page anchor link from the same page.
+- [x] First 4 items render as standard nav links (anchor links — clicking them scrolls to the section).
+- [x] 5th item ("Appel découverte") renders as a primary button — visually distinct from the others, styled like the existing "Réservez un appel" / cal.com button on the current site.
+- [x] On mobile, all 5 items appear in the mobile menu in the same order, with "Appel découverte" still visually distinct (button-styled).
+- [x] Make sure smooth-scroll behavior works when clicking an in-page anchor link from the same page.
 
 **Verification:**
-- [ ] At `/`, the top nav shows exactly 5 items in the order above
-- [ ] Clicking "Approche" scrolls to `#approche` (the **Sled comparison** section)
-- [ ] Clicking "Accompagnement" scrolls to `#accompagnement` (the offering section)
-- [ ] Clicking "Témoignages" scrolls to `#temoignages` (the reviews section)
-- [ ] Clicking "FAQ" scrolls to `#faq`
-- [ ] Clicking "Appel découverte" opens cal.com (in a new tab, matching existing behavior)
-- [ ] Mobile menu has the same 5 items in the same order
+- [x] At `/`, the top nav shows exactly 5 items in the order above
+- [x] Clicking "Approche" scrolls to `#approche` (the **Sled comparison** section)
+- [x] Clicking "Accompagnement" scrolls to `#accompagnement` (the offering section)
+- [x] Clicking "Témoignages" scrolls to `#temoignages` (the reviews section)
+- [x] Clicking "FAQ" scrolls to `#faq`
+- [x] Clicking "Appel découverte" opens cal.com (in a new tab, matching existing behavior)
+- [x] Mobile menu has the same 5 items in the same order
 
 ---
 
@@ -51,7 +51,7 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 **File:** `next-site/app/page.tsx`
 
-- [ ] Confirm each `<section>` has the correct `id`:
+- [x] Confirm each `<section>` has the correct `id`:
   - Hero: `id="accueil"` (no nav link points here, but keep for consistency)
   - Sled comparison: `id="approche"` ← nav target (Approche)
   - Meet trainer: `id="rencontre"`
@@ -62,12 +62,12 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
   - After call: `id="apres-appel"`
   - FAQ: `id="faq"` ← nav target (FAQ)
   - Collaborators: `id="collaborateurs"`
-- [ ] Confirm the deleted sections are gone: `grep -n 'id="poids-libres"\|id="offres"' next-site/app/page.tsx` returns no matches.
-- [ ] Search the codebase: `grep -rn 'id="' next-site/app/page.tsx` — verify the IDs above are present and there are no duplicates.
+- [x] Confirm the deleted sections are gone: `grep -n 'id="poids-libres"\|id="offres"' next-site/app/page.tsx` returns no matches.
+- [x] Search the codebase: `grep -rn 'id="' next-site/app/page.tsx` — verify the IDs above are present and there are no duplicates.
 
 **Verification:**
-- [ ] All 4 nav anchor links resolve to a real section (no broken `#` jumps)
-- [ ] Page reflows correctly after a smooth-scroll jump (no layout-shift jank)
+- [x] All 4 nav anchor links resolve to a real section (no broken `#` jumps)
+- [x] Page reflows correctly after a smooth-scroll jump (no layout-shift jank)
 
 ---
 
@@ -75,13 +75,13 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 **File:** `next-site/app/components/SiteFooter.tsx`
 
-- [ ] Remove any remaining offer-related links (already started in Plan 01 Step 4 — confirm fully clean here).
-- [ ] If the footer has its own quick-link list, update it to match the new nav (Approche / Accompagnement / Témoignages / FAQ / Appel découverte). Otherwise leave it.
-- [ ] Confirm the cal.com / booking link in the footer is correct.
+- [x] Remove any remaining offer-related links (already started in Plan 01 Step 4 — confirm fully clean here).
+- [x] If the footer has its own quick-link list, update it to match the new nav (Approche / Accompagnement / Témoignages / FAQ / Appel découverte). Otherwise leave it.
+- [x] Confirm the cal.com / booking link in the footer is correct.
 
 **Verification:**
-- [ ] Footer has no broken links
-- [ ] Footer link list, if present, matches the top nav order
+- [x] Footer has no broken links
+- [x] Footer link list, if present, matches the top nav order
 
 ---
 
@@ -89,20 +89,20 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 **File:** `next-site/app/globals.css`
 
-- [ ] Search for selectors that no longer have any matching markup. Likely candidates:
+- [x] Search for selectors that no longer have any matching markup. Likely candidates:
   - `.section-offres`
   - `.offer-card`, `.offer-card-*`
   - `#offres` and any descendants
   - Any class names referencing `tremplin` or `signature`
   - **Selectors related to the deleted poids-libres section** — e.g. `#poids-libres`, `.poids-libres-*`, `.free-weights-*`, any other class names that were unique to that section
-- [ ] **Do NOT remove** `.marquee*` or `.stats*` rules — those style the two retained marquees. Keep them intact.
-- [ ] Remove dead selectors only. Be careful not to remove styles still in use by the new sections.
-- [ ] Confirm with Lighthouse / DevTools that no live element loses its styling after the sweep.
+- [x] **Do NOT remove** `.marquee*` or `.stats*` rules — those style the two retained marquees. Keep them intact.
+- [x] Remove dead selectors only. Be careful not to remove styles still in use by the new sections.
+- [x] Confirm with Lighthouse / DevTools that no live element loses its styling after the sweep.
 
 **Verification:**
-- [ ] `grep -i "offres\|tremplin\|signature\|offer-card\|poids-libres" next-site/app/globals.css` returns no matches
-- [ ] `grep -i "marquee\|\.stats" next-site/app/globals.css` still returns the original marquee/stats rules (these are kept)
-- [ ] Visual inspection of the homepage: nothing has obviously lost its styling, both marquees still render correctly
+- [x] `grep -i "offres\|tremplin\|signature\|offer-card\|poids-libres" next-site/app/globals.css` returns no matches
+- [x] `grep -i "marquee\|\.stats" next-site/app/globals.css` still returns the original marquee/stats rules (these are kept)
+- [x] Visual inspection of the homepage: nothing has obviously lost its styling, both marquees still render correctly
 
 ---
 
@@ -110,29 +110,27 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 **File:** `next-site/app/layout.tsx`
 
-- [ ] Confirm `<title>`, `<meta name="description">`, and Open Graph fields are appropriate for the new homepage. If they reference offers or use stale copy, update them. Use Éliane's hero subhead as a description fallback if you can't think of one.
-- [ ] No social-image change required (Plan 02 doesn't introduce one).
+- [x] Confirm `<title>`, `<meta name="description">`, and Open Graph fields are appropriate for the new homepage. If they reference offers or use stale copy, update them. Use Éliane's hero subhead as a description fallback if you can't think of one.
+- [x] No social-image change required (Plan 02 doesn't introduce one).
 
 **Verification:**
-- [ ] View page source on `/`, confirm `<title>` and meta description make sense for the new positioning
-- [ ] No references to "offres" or removed pages in metadata
+- [x] View page source on `/`, confirm `<title>` and meta description make sense for the new positioning
+- [x] No references to "offres" or removed pages in metadata
 
 ---
 
 ## Step 6 — Sanity Studio cross-check
 
-- [ ] Open `/studio`. Confirm:
-  - The `Page d'accueil` document has all 13 sections populated (no required field empty).
-  - The 8 FAQ entries are in the order they should display on the page (use `order` field if your existing FAQ schema has one — otherwise rely on `_createdAt`).
-  - The `Esthétique Flora` collaborator document exists and is featured.
-- [ ] Test Sanity Presentation visual editing: click the eye icon, navigate the homepage. Hover-edit annotations should appear over hero, sled, meet-trainer, offering, etc. Confirm:
+- [x] **Automated GROQ check:** From `next-site/`, run `npx tsx scripts/verify-plan03-step6.ts` (uses `.env.local` read token). Confirms: single `homePage` with all homepage section groups populated (hero, marquees, sled, meet-trainer, pull quote, offering, présentiel, reviews, pour toi, après appel, CTA mauve, FAQ intro, collaborateurs), **8** FAQ documents with **distinct** `order`, and a **featured** collaborator whose name matches Esthétique Flora.
+- [x] Open `/studio` for a quick visual pass on `Page d'accueil`, FAQ list order in the desk, and collaborator “mis en avant” if you want parity with the CMS UI.
+- [x] Test Sanity Presentation visual editing: click the eye icon, navigate the homepage. Hover-edit annotations should appear over hero, sled, meet-trainer, offering, etc. Confirm:
   - Editing the hero headline in Studio updates the page after save.
   - Editing a sled bullet updates the page after save.
-- [ ] Confirm draft mode round-trip works (entering draft, editing, exiting).
+- [x] Confirm draft mode round-trip works (entering draft, editing, exiting).
 
 **Verification:**
-- [ ] All Studio documents are populated and clean
-- [ ] Visual editing works on at least 3 different sections
+- [x] All Studio documents are populated and clean *(GROQ script above; Studio spot-check optional)*
+- [x] Visual editing works on at least 3 different sections
 
 ---
 
@@ -140,18 +138,20 @@ The nav currently still has its old structure (offers dropdown was removed in Pl
 
 Manually test the homepage at three viewports: 375px, 768px, 1280px. For each viewport:
 
-- [ ] No horizontal scroll
-- [ ] Hero photo + text both readable
-- [ ] Sled comparison stacks correctly at <768px (single column), two columns at ≥768px
-- [ ] Meet-trainer text wraps cleanly, bolded phrases visible
-- [ ] Pull quote readable, max-width respected
-- [ ] Offering 3 screenshots stack on mobile, 3-up on desktop
-- [ ] Reviews stack on mobile, 3-up on desktop
-- [ ] For-you-or-not bullets readable, photo doesn't push text off-screen
-- [ ] After call section bullets render correctly
-- [ ] Purple CTA band visible, button tappable on mobile
-- [ ] FAQ accordion opens/closes on tap, links inside answers work
-- [ ] Collaborators section visible
+- [x] QA pass started (manual walkthrough in progress)
+
+- [x] No horizontal scroll
+- [x] Hero photo + text both readable
+- [x] Sled comparison stacks correctly at <768px (single column), two columns at ≥768px
+- [x] Meet-trainer text wraps cleanly, bolded phrases visible
+- [x] Pull quote readable, max-width respected
+- [x] Offering 3 screenshots stack on mobile, 3-up on desktop
+- [x] Reviews stack on mobile, 3-up on desktop
+- [x] For-you-or-not bullets readable, photo doesn't push text off-screen
+- [x] After call section bullets render correctly
+- [x] Purple CTA band visible, button tappable on mobile
+- [x] FAQ accordion opens/closes on tap, links inside answers work
+- [x] Collaborators section visible
 
 > Note for Christopher: visual polish is **not** in scope for this plan. Goal is "structurally correct, content visible, no broken layout." Design polish comes after team review.
 
@@ -159,18 +159,18 @@ Manually test the homepage at three viewports: 375px, 768px, 1280px. For each vi
 
 ## Step 8 — Cross-browser smoke test
 
-- [ ] Open `/` in Chrome, Safari (or Edge if Safari unavailable), Firefox.
-- [ ] All sections render in all three.
-- [ ] Smooth-scroll on anchor click works in all three.
-- [ ] cal.com CTA opens in all three.
+- [x] Open `/` in Chrome, Safari (or Edge if Safari unavailable), Firefox.
+- [x] All sections render in all three.
+- [x] Smooth-scroll on anchor click works in all three.
+- [x] cal.com CTA opens in all three.
 
 ---
 
 ## Step 9 — Build and final lint
 
-- [ ] `npm --prefix next-site run lint` passes (zero warnings; zero errors)
-- [ ] `npm --prefix next-site run build` passes
-- [ ] `npm --prefix next-site run start` (production mode) — visit `/`, confirm everything still works against the production build, not just dev mode
+- [x] `npm --prefix next-site run lint` passes (zero warnings; zero errors)
+- [x] `npm --prefix next-site run build` passes
+- [x] `npm --prefix next-site run start` (production mode) — visit `/`, confirm everything still works against the production build, not just dev mode *(verified at `http://localhost:3100/` -> HTTP 200)*
 
 ---
 

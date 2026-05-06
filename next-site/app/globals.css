@@ -157,24 +157,7 @@ button:focus-visible {
   color: var(--plum);
 }
 
-/* Offres: dropdown only ≥1280px; 901–1279px uses flat top-level links (.nav-offres-flat-md) */
-.nav-offres-flat-md {
-  display: none;
-}
-
-@media (min-width: 901px) and (max-width: 1279px) {
-  .nav-offres-flat-md {
-    display: revert;
-  }
-}
-
-@media (max-width: 1279px) {
-  .nav-offres-dropdown--lg {
-    display: none;
-  }
-}
-
-/* Desktop “Offres” dropdown (markup lives in .nav-desktop; hidden <901px with the rest) */
+/* Desktop dropdown (markup lives in .nav-desktop; hidden <901px with the rest) */
 .nav-dropdown {
   position: relative;
   align-self: stretch;
@@ -407,6 +390,31 @@ button:focus-visible {
 }
 
 @media (max-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    overscroll-behavior-x: none;
+    touch-action: pan-y;
+  }
+
+  #contenu-principal {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .marquee,
+  .stats-marquee-wrap {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .site-nav {
+    padding-inline: clamp(0.75rem, 3.5vw, 1rem);
+  }
+
   .nav-desktop {
     display: none;
   }
@@ -457,14 +465,6 @@ button:focus-visible {
   background: var(--plum-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-cta);
-}
-
-.btn--offres-cta {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.85rem 1.25rem;
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
 }
 
 .btn-ghost {
@@ -586,6 +586,8 @@ button:focus-visible {
   line-height: 1.08;
   color: var(--ink);
   margin-bottom: 1.25rem;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .hero h1 em {
@@ -751,6 +753,20 @@ button:focus-visible {
 
 /* Narrow viewports: normal wrap, no column overflow (per spec <768px; stacked hero uses this from 900px down) */
 @media (max-width: 767px) {
+  .hero-copy {
+    padding-inline: 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.95rem, 8.8vw, 2.4rem);
+    line-height: 1.12;
+  }
+
+  .hero-lead {
+    max-width: none;
+    overflow-wrap: anywhere;
+  }
+
   .hero-headline-pull {
     display: inline;
     width: auto;
@@ -813,6 +829,7 @@ button:focus-visible {
 
 .marquee-inner {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 2.5rem;
   padding-right: 2.5rem;
@@ -820,6 +837,7 @@ button:focus-visible {
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .marquee-sep {
@@ -916,6 +934,7 @@ button:focus-visible {
 
 .stats-marquee-inner {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 2.5rem;
   padding-right: 2.5rem;
@@ -925,6 +944,7 @@ button:focus-visible {
   letter-spacing: 0.02em;
   color: var(--gold);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .stats-marquee-sep {
@@ -2492,343 +2512,6 @@ button:focus-visible {
   }
 }
 
-.poids-libres-list {
-  margin-top: clamp(2rem, 3vw, 3rem);
-  max-width: 42rem;
-}
-
-.poids-libres-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
-  gap: clamp(3rem, 5vw, 4rem);
-  align-items: start;
-}
-
-.poids-libres-media {
-  min-width: 0;
-}
-
-.poids-libres-media-frame {
-  margin-top: 0;
-  transform: translateY(clamp(3.75rem, 6vw, 5rem));
-  border-radius: clamp(16px, 2vw, 24px);
-  overflow: hidden;
-  background: var(--beige-deep);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-}
-
-.poids-libres-media-img {
-  display: block;
-  width: 100%;
-  max-height: 600px;
-  min-height: 0;
-  object-fit: cover;
-  object-position: center 35%;
-}
-
-.poids-libres-content {
-  min-width: 0;
-}
-
-.poids-libres-content h2 {
-  max-width: 22ch;
-  margin-bottom: 0;
-  font-size: clamp(1.8rem, 3.2vw, 2.95rem);
-  text-wrap: balance;
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .poids-libres-layout {
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
-    gap: clamp(2rem, 4vw, 2.5rem);
-  }
-
-  .poids-libres-media-frame {
-    transform: translateY(clamp(1.875rem, 4vw, 2.5rem));
-  }
-}
-
-@media (max-width: 767px) {
-  .poids-libres-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .poids-libres-media-img {
-    max-height: 400px;
-  }
-
-  .poids-libres-media-frame {
-    transform: none;
-  }
-
-  .poids-libres-list {
-    margin-top: 1.5rem;
-  }
-}
-
-.poids-libres-cta-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: clamp(3rem, 5vw, 4rem);
-}
-
-/* —— Offres (homepage) —— */
-.section-inner--offres {
-  max-width: 68rem;
-}
-
-.section-offres {
-  padding-top: clamp(5rem, 10vw, 6rem);
-  padding-bottom: clamp(5rem, 10vw, 6rem);
-}
-
-.offres-head {
-  max-width: 40rem;
-  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
-}
-
-.offres-head h2 {
-  margin-bottom: 1rem;
-}
-
-.offres-lead {
-  margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.75;
-  color: var(--muted);
-  max-width: 36rem;
-}
-
-.offres-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  align-items: stretch;
-}
-
-.offres-card--tremplin {
-  order: 2;
-}
-
-.offres-card--signature {
-  order: 1;
-}
-
-@media (min-width: 768px) {
-  .offres-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1.5rem, 3vw, 2rem);
-  }
-
-  .offres-card--tremplin {
-    order: 1;
-  }
-
-  .offres-card--signature {
-    order: 2;
-  }
-}
-
-@media (min-width: 1024px) {
-  .offres-grid {
-    gap: clamp(2rem, 3vw, 3rem);
-  }
-}
-
-.offres-card {
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 0;
-  padding: clamp(1.75rem, 3vw, 2.5rem);
-  border-radius: clamp(14px, 1.5vw, 18px);
-  border: 1px solid rgba(90, 80, 72, 0.14);
-  background: #faf7f3;
-  box-shadow: 0 6px 28px rgba(26, 20, 16, 0.06);
-}
-
-.offres-card--signature {
-  background: linear-gradient(180deg, rgba(85, 39, 114, 0.07) 0%, #faf7f3 42%);
-  border-color: rgba(85, 39, 114, 0.2);
-}
-
-.offres-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1;
-  font-family: var(--font-sans);
-  font-size: 0.5625rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  line-height: 1;
-  pointer-events: none;
-}
-
-.offres-badge--muted {
-  color: rgba(90, 80, 72, 0.62);
-  background: rgba(246, 241, 234, 0.95);
-  border: 1px solid rgba(90, 80, 72, 0.12);
-  padding: 0.35rem 0.55rem;
-  border-radius: 4px;
-  letter-spacing: 0.12em;
-}
-
-.offres-badge--popular {
-  top: 0.4rem;
-  right: 0.5rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: 999px;
-  color: var(--white);
-  background: var(--plum);
-  box-shadow: 0 4px 14px rgba(85, 39, 114, 0.28);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  transform: translate(8%, -35%);
-  pointer-events: none;
-}
-
-.offres-card__body {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  min-width: 0;
-  padding-right: 0.25rem;
-}
-
-.offres-card__title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--ink);
-  margin: 0 0 0.35rem;
-}
-
-.offres-card__duration {
-  margin: 0 0 1rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-style: italic;
-  color: rgba(90, 80, 72, 0.72);
-}
-
-.offres-card__pitch {
-  margin: 0 0 1.25rem;
-  font-size: 0.9375rem;
-  line-height: 1.55;
-  color: var(--mid);
-  max-width: 26rem;
-}
-
-.offres-feature-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.offres-feature-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 0.9375rem;
-  line-height: 1.55;
-  color: var(--mid);
-}
-
-.offres-feature-list li::before {
-  content: '';
-  flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
-  margin-top: 0.38rem;
-  background-color: var(--plum);
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M13.78 4.22a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0L2.22 7.78a.75.75 0 1 1 1.06-1.06L6.5 10l5.72-5.72a.75.75 0 0 1 1.06 0z'/%3E%3C/svg%3E");
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M13.78 4.22a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0L2.22 7.78a.75.75 0 1 1 1.06-1.06L6.5 10l5.72-5.72a.75.75 0 0 1 1.06 0z'/%3E%3C/svg%3E");
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-
-.offres-ideal {
-  margin-top: 1.35rem;
-  padding-top: 1.15rem;
-  border-top: 1px solid rgba(26, 20, 16, 0.08);
-}
-
-.offres-ideal__label {
-  margin: 0 0 0.35rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: rgba(90, 80, 72, 0.65);
-}
-
-.offres-ideal__text {
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--mid);
-}
-
-.offres-card__cta {
-  margin-top: auto;
-  padding-top: 1.5rem;
-}
-
-.offres-helper {
-  margin-top: clamp(3rem, 5vw, 4rem);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  max-width: 32rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.offres-helper__line {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-  font-style: italic;
-  font-weight: 400;
-  color: rgba(90, 80, 72, 0.85);
-}
-
-.offres-helper__sub {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--mid);
-}
-
-.offres-helper .btn-primary {
-  margin-top: 0.35rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .offres-badge--popular {
-    transform: none;
-    top: 0.65rem;
-    right: 0.65rem;
-  }
-}
-
 /* —— FAQ (dark plum + contact) —— */
 .faq-section {
   background: var(--plum);
@@ -3464,7 +3147,7 @@ cal-modal-box * {
   z-index: 99999 !important;
 }
 
-/* —— Offer detail pages (e.g. Le Tremplin) —— */
+/* —— Legacy detail pages —— */
 .offer-main {
   padding-top: calc(var(--nav-h) + clamp(2.5rem, 5vw, 4rem));
 }
@@ -3733,14 +3416,6 @@ cal-modal-box * {
     gap: 1.5rem;
   }
 
-  /* Offre signature page: DOM = current first for mobile; desktop = Tremplin left, Signature right */
-  .offer-compare-columns--signature-page .offer-compare-col--other {
-    order: 1;
-  }
-
-  .offer-compare-columns--signature-page .offer-compare-col--current {
-    order: 2;
-  }
 }
 
 .offer-compare-col {

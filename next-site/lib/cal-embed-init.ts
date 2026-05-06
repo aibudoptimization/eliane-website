@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Cal.com vanilla embed — ported from Vite /src/cal-embed.js (logic unchanged).
@@ -60,15 +59,14 @@ function installCalQueueSnippet() {
   const C = window;
   const A = CAL_EMBED_SRC;
   const L = "init";
-  const p = (a: any, ar: any) => {
+const p = (a: any, ar: unknown[]) => {
     a.q.push(ar);
   };
   const d = C.document;
   C.Cal =
     C.Cal ||
-    function () {
+    function (...ar: unknown[]) {
       const cal = C.Cal;
-      const ar = arguments;
       if (!cal.loaded) {
         cal.ns = {};
         cal.q = cal.q || [];
@@ -84,8 +82,8 @@ function installCalQueueSnippet() {
         cal.loaded = true;
       }
       if (ar[0] === L) {
-        const api = function () {
-          p(api, arguments);
+        const api = function (...args: unknown[]) {
+          p(api, args);
         };
         api.q = api.q || [];
         const namespace = ar[1];

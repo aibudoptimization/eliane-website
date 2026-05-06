@@ -360,6 +360,97 @@ export default defineType({
     }),
 
     defineField({
+      name: 'inPersonHeadline',
+      title: 'Titre de section',
+      type: 'string',
+      group: 'inPerson',
+      initialValue: 'Pourquoi le présentiel',
+    }),
+    defineField({
+      name: 'inPersonIntro',
+      title: 'Introduction',
+      type: 'text',
+      rows: 3,
+      group: 'inPerson',
+      initialValue:
+        "Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer.",
+    }),
+    defineField({
+      name: 'inPersonBenefits',
+      title: 'Cartes bénéfices',
+      description: 'Cartes affichées dans la section présentiel (icône, titre, texte).',
+      type: 'array',
+      group: 'inPerson',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'icon',
+              title: 'Icône',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Oeil (eye)', value: 'eye'},
+                  {title: 'Bouclier (shield-check)', value: 'shield-check'},
+                  {title: 'Calendrier (calendar-check)', value: 'calendar-check'},
+                  {title: 'Activite (activity)', value: 'activity'},
+                ],
+                layout: 'dropdown',
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'title',
+              title: 'Titre',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'text',
+              title: 'Texte',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              subtitle: 'icon',
+            },
+          },
+        },
+      ],
+      initialValue: [
+        {
+          _type: 'object',
+          icon: 'eye',
+          title: 'Correction en temps réel',
+          text: "J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.",
+        },
+        {
+          _type: 'object',
+          icon: 'shield-check',
+          title: 'Progression sécuritaire',
+          text: "Je t'aide à progresser tout en respectant ton rythme.",
+        },
+        {
+          _type: 'object',
+          icon: 'calendar-check',
+          title: 'Imputabilité',
+          text: "Le présentiel ajoute une structure qui soutient l'engagement.",
+        },
+        {
+          _type: 'object',
+          icon: 'activity',
+          title: 'Adaptation à ton état',
+          text: 'Un entraînement sur mesure, pour toi, selon ton énergie, tes besoins et tes envies.',
+        },
+      ],
+      validation: (Rule) => Rule.min(1).max(6),
+    }),
+    defineField({
       name: 'inPersonPunchLine',
       title: 'Phrase de clôture (sous le bloc présentiel)',
       type: 'text',

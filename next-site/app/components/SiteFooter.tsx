@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
@@ -27,9 +28,9 @@ export default function SiteFooter({
       <div className="footer-inner">
         <section className="footer-col footer-col--brand" aria-label="Marque Éliane Larre">
           <p className="footer-brand">
-            <a href="/">
+            <Link href="/">
               <em>Éliane Larre</em>
-            </a>
+            </Link>
           </p>
           <p className="footer-tagline">Entraîneure personnelle</p>
           <p className="footer-location">Montréal, Québec</p>
@@ -39,10 +40,16 @@ export default function SiteFooter({
           <h3 className="footer-title">Navigation</h3>
           <ul className="footer-links">
             <li>
-              <a href="/#introduction">Introduction</a>
+              <Link href="/#approche">Approche</Link>
             </li>
             <li>
-              <a href="/#faq">FAQ</a>
+              <Link href="/#accompagnement">Accompagnement</Link>
+            </li>
+            <li>
+              <Link href="/#temoignages">Témoignages</Link>
+            </li>
+            <li>
+              <Link href="/#faq">FAQ</Link>
             </li>
             <li>
               <a
@@ -86,10 +93,10 @@ export default function SiteFooter({
           <h3 className="footer-title">Légal</h3>
           <ul className="footer-links">
             <li>
-              <a href="/politique-de-confidentialite">Politique de confidentialité</a>
+              <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
             </li>
             <li>
-              <a href="/conditions-utilisation">{"Conditions d'utilisation"}</a>
+              <Link href="/conditions-utilisation">{"Conditions d'utilisation"}</Link>
             </li>
             <li>
               <a href="#" data-cookie-preferences-link>
