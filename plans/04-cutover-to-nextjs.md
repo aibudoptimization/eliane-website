@@ -330,7 +330,7 @@ If anything broken on production:
   git commit -m "docs(plans): mark Plan 03 Step 11 and Plan 04 complete"
   git push -u origin docs/mark-cutover-complete
   ```
-- [ ] Open PR `docs/mark-cutover-complete` → `main`, merge.
+- [x] Open PR `docs/mark-cutover-complete` → `main`, merge.
 
 **Verification:**
 - [x] Plan 03 Step 11 boxes are all `[x]`
