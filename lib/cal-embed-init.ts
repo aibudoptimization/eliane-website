@@ -1,24 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * Cal.com vanilla embed (popup modal on elements with data-cal-link).
- * Loader pattern from Cal embed-core; script: https://app.cal.com/embed/embed.js
+ * Cal.com vanilla embed — ported from Vite /src/cal-embed.js (logic unchanged).
+ * Run once per app load (guarded by window.__ELIANE_CAL_EMBED_INIT__).
  */
 
 const CAL_EMBED_SRC = "https://app.cal.com/embed/embed.js";
 const CAL_NAMESPACE = "appel-decouverte";
-/** Viewports below this use Cal `column_view`; at or above use `month_view`. */
 const CAL_LAYOUT_BREAKPOINT_PX = 768;
-
 const CAL_EMBED_LOAD_FALLBACK_MS = 8000;
 
-/** @type {ReturnType<typeof setTimeout> | null} */
-let calEmbedFallbackTimer = null;
-
-/**
- * @typedef {{ el: HTMLElement, calLink: string, namespace: string, config: Record<string, unknown> }} CalModalIntent
- */
-
-/** @type {CalModalIntent[]} */
-let pendingCalModals = [];
+let calEmbedFallbackTimer: any = null;
+let pendingCalModals: any[] = [];
 
 function clearCalEmbedFallbackTimer() {
   if (calEmbedFallbackTimer != null) {
@@ -57,10 +49,7 @@ function scheduleCalEmbedFallback() {
   }, CAL_EMBED_LOAD_FALLBACK_MS);
 }
 
-/**
- * @param {CalModalIntent} intent
- */
-function enqueuePendingCalModal(intent) {
+function enqueuePendingCalModal(intent: any) {
   pendingCalModals.push(intent);
   intent.el.classList.add("is-cal-loading");
   scheduleCalEmbedFallback();
@@ -70,15 +59,14 @@ function installCalQueueSnippet() {
   const C = window;
   const A = CAL_EMBED_SRC;
   const L = "init";
-  const p = (a, ar) => {
+const p = (a: any, ar: unknown[]) => {
     a.q.push(ar);
   };
   const d = C.document;
   C.Cal =
     C.Cal ||
-    function () {
-      const cal = C.Cal;
-      const ar = arguments;
+    function (...ar: unknown[]) {
+      const cal = C.Cal as any;
       if (!cal.loaded) {
         cal.ns = {};
         cal.q = cal.q || [];
@@ -94,11 +82,11 @@ function installCalQueueSnippet() {
         cal.loaded = true;
       }
       if (ar[0] === L) {
-        const api = function () {
-          p(api, arguments);
+        const api: any = function (...args: unknown[]) {
+          p(api, args);
         };
-        const namespace = ar[1];
         api.q = api.q || [];
+        const namespace = ar[1];
         if (typeof namespace === "string") {
           cal.ns[namespace] = cal.ns[namespace] || api;
           p(cal.ns[namespace], ar);
@@ -110,8 +98,7 @@ function installCalQueueSnippet() {
     };
 }
 
-/** @param {string} tokenName e.g. "--plum" */
-function cssToken(tokenName) {
+function cssToken(tokenName: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
 }
 
@@ -144,27 +131,16 @@ function buildCalUiConfig() {
   };
 }
 
-if (!window.__ELIANE_CAL_EMBED_INIT__) {
-  window.__ELIANE_CAL_EMBED_INIT__ = true;
-  window.__ELIANE_CAL_EMBED_READY__ = false;
-  installCalQueueSnippet();
-  window.Cal("init", CAL_NAMESPACE, { origin: "https://cal.com" });
-  const ns = window.Cal.ns[CAL_NAMESPACE];
-  if (typeof ns === "function") {
-    ns("ui", buildCalUiConfig());
-  }
-}
-
 const DEFAULT_CAL_LINK = "elianelarre/appel-decouverte";
 const DEFAULT_CAL_NAMESPACE = "appel-decouverte";
 const DEFAULT_CAL_CONFIG = { layout: "month_view" };
 
-function parseCalConfig(raw) {
+function parseCalConfig(raw: string | undefined) {
   if (!raw || typeof raw !== "string") return { ...DEFAULT_CAL_CONFIG };
   try {
-    const parsed = JSON.parse(raw);
+    const parsed = JSON.parse(raw) as unknown;
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-      return { ...DEFAULT_CAL_CONFIG, ...parsed };
+      return { ...DEFAULT_CAL_CONFIG, ...(parsed as Record<string, unknown>) };
     }
     return { ...DEFAULT_CAL_CONFIG };
   } catch {
@@ -172,7 +148,7 @@ function parseCalConfig(raw) {
   }
 }
 
-function stripNewTabAttrs(el) {
+function stripNewTabAttrs(el: HTMLElement) {
   el.removeAttribute("target");
   const rel = el.getAttribute("rel");
   if (rel && rel.includes("noopener")) {
@@ -181,9 +157,7 @@ function stripNewTabAttrs(el) {
 }
 
 function queryCalModalTriggers() {
-  const list = document.querySelectorAll(
-    "a[data-cal-link], button[data-cal-link], [data-cal-link]",
-  );
+  const list = document.querySelectorAll("a[data-cal-link], button[data-cal-link], [data-cal-link]");
   return [...new Set(list)];
 }
 
@@ -235,4 +209,18 @@ function scheduleCalModalBinding() {
   }
 }
 
-scheduleCalModalBinding();
+export function initCalEmbed(): void {
+  if (window.__ELIANE_CAL_EMBED_INIT__) return;
+  window.__ELIANE_CAL_EMBED_INIT__ = true;
+  window.__ELIANE_CAL_EMBED_READY__ = false;
+  installCalQueueSnippet();
+  const cal = window.Cal;
+  if (typeof cal === "function") {
+    cal("init", CAL_NAMESPACE, { origin: "https://cal.com" });
+  }
+  const ns = window.Cal?.ns?.[CAL_NAMESPACE];
+  if (typeof ns === "function") {
+    ns("ui", buildCalUiConfig());
+  }
+  scheduleCalModalBinding();
+}

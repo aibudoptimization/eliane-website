@@ -1,4 +1,5 @@
 import {defineType, defineField} from 'sanity'
+import {linkMark} from './linkMark'
 
 export default defineType({
   name: 'faq',
@@ -14,20 +15,36 @@ export default defineType({
     defineField({
       name: 'answer',
       title: 'Réponse',
-      type: 'text',
-      rows: 5,
-      validation: (Rule) => Rule.required(),
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [{title: 'Normal', value: 'normal'}],
+          lists: [
+            {title: 'Liste à puces', value: 'bullet'},
+            {title: 'Liste numérotée', value: 'number'},
+          ],
+          marks: {
+            decorators: [
+              {title: 'Gras', value: 'strong'},
+              {title: 'Italique', value: 'em'},
+            ],
+            annotations: [linkMark],
+          },
+        },
+      ],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'order',
-      title: 'Ordre d\'affichage',
+      title: "Ordre d'affichage",
       type: 'number',
       validation: (Rule) => Rule.required(),
     }),
   ],
   orderings: [
     {
-      title: 'Ordre d\'affichage',
+      title: "Ordre d'affichage",
       name: 'displayOrder',
       by: [{field: 'order', direction: 'asc'}],
     },
