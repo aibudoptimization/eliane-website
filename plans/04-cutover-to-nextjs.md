@@ -273,8 +273,8 @@ If anything references `next-site/`, fix it now.
 
 After Christopher approves Step 9:
 
-- [ ] Open a PR on GitHub: `chore/04-cutover-to-nextjs` → `main`. Title: `chore: cut over elianelarre.com to Next.js`.
-- [ ] In the PR description, link the preview URL and note:
+- [x] Open a PR on GitHub: `chore/04-cutover-to-nextjs` → `main`. Title: `chore: cut over elianelarre.com to Next.js`.
+- [x] In the PR description, link the preview URL and note:
   - Tag `pre-nextjs-cutover` is the rollback target
   - Sanity CORS includes the production domain (verified pre-flight)
   - Vercel env vars are set (verified pre-flight)
