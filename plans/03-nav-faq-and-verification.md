@@ -192,6 +192,8 @@ Manually test the homepage at three viewports: 375px, 768px, 1280px. For each vi
 - [x] Confirm Sanity Studio loads at `<preview-url>/studio`.
 - [x] Confirm Sanity CORS is updated to allow the preview URL (if not, Studio will fail with a CORS error in the browser console).
 
+Satisfied by Plan 04 cutover — see `plans/04-cutover-to-nextjs.md` Step 9.
+
 ---
 
 ## Final verification checklist for Plan 03

@@ -279,14 +279,14 @@ After Christopher approves Step 9:
   - Sanity CORS includes the production domain (verified pre-flight)
   - Vercel env vars are set (verified pre-flight)
   - Plan 03 Step 11 is satisfied by this PR's preview verification
-- [ ] Wait for Christopher's approval on the PR.
-- [ ] Merge the PR (Christopher will press the button).
-- [ ] Vercel automatically queues a Production deploy on `main`. Watch the deploy in the Vercel Deployments tab.
+- [x] Wait for Christopher's approval on the PR.
+- [x] Merge the PR (Christopher will press the button).
+- [x] Vercel automatically queues a Production deploy on `main`. Watch the deploy in the Vercel Deployments tab.
 
 **Verification:**
-- [ ] PR is merged into `main`
-- [ ] Vercel Production deploy succeeds (logs show Next.js build, no errors)
-- [ ] Production deploy completes within ~3 minutes
+- [x] PR is merged into `main`
+- [x] Vercel Production deploy succeeds (logs show Next.js build, no errors)
+- [x] Production deploy completes within ~3 minutes
 
 ---
 
@@ -294,33 +294,33 @@ After Christopher approves Step 9:
 
 Once the Production deploy is live:
 
-- [ ] Visit `https://elianelarre.com` in an **incognito window** (avoids cached old Vite assets):
-  - [ ] Homepage loads, all sections render
-  - [ ] No console errors
-  - [ ] `https://elianelarre.com/studio` loads, Studio renders
-  - [ ] FAQ links work
-  - [ ] CTA buttons go to cal.com
-- [ ] Same checks at `https://www.elianelarre.com` (with the `www`) — both should work
-- [ ] Mobile check: load production on a phone, scroll through, tap a few CTAs
-- [ ] Run `curl -sI https://elianelarre.com | head -5` — confirm HTTP 200 and `server: Vercel`
+- [x] Visit `https://elianelarre.com` in an **incognito window** (avoids cached old Vite assets):
+  - [x] Homepage loads, all sections render
+  - [x] No console errors
+  - [x] `https://elianelarre.com/studio` loads, Studio renders
+  - [x] FAQ links work
+  - [x] CTA buttons go to cal.com
+- [x] Same checks at `https://www.elianelarre.com` (with the `www`) — both should work
+- [x] Mobile check: load production on a phone, scroll through, tap a few CTAs
+- [x] Run `curl -sI https://elianelarre.com | head -5` — confirm HTTP 200 and `server: Vercel`
 
 If anything broken on production:
 - [ ] Stop. Tell Christopher.
 - [ ] Together, decide: fix forward (commit a hotfix, push to `main`) or revert (`git revert <merge-sha> && git push origin main`).
 
 **Verification:**
-- [ ] Production loads at both apex and www
-- [ ] Studio loads on production
-- [ ] No 500 errors in Vercel logs (check Vercel project → Logs)
-- [ ] No CORS errors in browser DevTools when loading production
+- [x] Production loads at both apex and www
+- [x] Studio loads on production
+- [x] No 500 errors in Vercel logs (check Vercel project → Logs)
+- [x] No CORS errors in browser DevTools when loading production
 
 ---
 
 ## Step 12 — Mark Plan 03 Step 11 complete and commit plan updates
 
-- [ ] In `plans/03-nav-faq-and-verification.md`, find the four checkboxes under Step 11 — change each `- [ ]` to `- [x]`. Add a note at the end of that step: "Satisfied by Plan 04 cutover — see `plans/04-cutover-to-nextjs.md` Step 9."
-- [ ] In `plans/04-cutover-to-nextjs.md` (this file), check off all the boxes you completed.
-- [ ] Commit on `main` (or open a small follow-up PR — your call):
+- [x] In `plans/03-nav-faq-and-verification.md`, find the four checkboxes under Step 11 — change each `- [ ]` to `- [x]`. Add a note at the end of that step: "Satisfied by Plan 04 cutover — see `plans/04-cutover-to-nextjs.md` Step 9."
+- [x] In `plans/04-cutover-to-nextjs.md` (this file), check off all the boxes you completed.
+- [x] Commit on `main` (or open a small follow-up PR — your call):
   ```
   git checkout main
   git pull origin main
@@ -330,11 +330,11 @@ If anything broken on production:
   git commit -m "docs(plans): mark Plan 03 Step 11 and Plan 04 complete"
   git push -u origin docs/mark-cutover-complete
   ```
-- [ ] Open PR `docs/mark-cutover-complete` → `main`, merge.
+- [x] Open PR `docs/mark-cutover-complete` → `main`, merge.
 
 **Verification:**
-- [ ] Plan 03 Step 11 boxes are all `[x]`
-- [ ] Plan 04 boxes are all `[x]`
+- [x] Plan 03 Step 11 boxes are all `[x]`
+- [x] Plan 04 boxes are all `[x]`
 
 ---
 
@@ -358,17 +358,17 @@ These are not for execution by Cursor right now. Listing for Christopher's refer
 
 ## Final verification checklist for Plan 04
 
-- [ ] `pre-nextjs-cutover` tag exists on remote
-- [ ] All Vite root files are deleted
-- [ ] `next-site/` directory no longer exists; its contents are at the repo root
-- [ ] `npm run lint` and `npm run build` both pass at the new root
-- [ ] Vercel preview deploy of the cutover branch succeeded as Next.js
-- [ ] Preview URL passed all smoke checks
-- [ ] PR merged to `main`, production deploy succeeded
-- [ ] `https://elianelarre.com` and `https://www.elianelarre.com` both load the new Next.js site
-- [ ] Studio loads on production at `/studio`
-- [ ] Plan 03 Step 11 marked complete
-- [ ] No 500 errors in Vercel logs
+- [x] `pre-nextjs-cutover` tag exists on remote
+- [x] All Vite root files are deleted
+- [x] `next-site/` directory no longer exists; its contents are at the repo root
+- [x] `npm run lint` and `npm run build` both pass at the new root
+- [x] Vercel preview deploy of the cutover branch succeeded as Next.js
+- [x] Preview URL passed all smoke checks
+- [x] PR merged to `main`, production deploy succeeded
+- [x] `https://elianelarre.com` and `https://www.elianelarre.com` both load the new Next.js site
+- [x] Studio loads on production at `/studio`
+- [x] Plan 03 Step 11 marked complete
+- [x] No 500 errors in Vercel logs
 
 ---
 
