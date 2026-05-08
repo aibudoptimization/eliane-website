@@ -187,10 +187,10 @@ Manually test the homepage at three viewports: 375px, 768px, 1280px. For each vi
 
 (Christopher will set up the preview Vercel project separately — see brainstorming notes from earlier session.)
 
-- [ ] Once the preview project is configured, push the merged `nextjs-migration` branch and open the deployed URL.
-- [ ] Confirm the same checks from Step 7 pass on the deployed URL.
-- [ ] Confirm Sanity Studio loads at `<preview-url>/studio`.
-- [ ] Confirm Sanity CORS is updated to allow the preview URL (if not, Studio will fail with a CORS error in the browser console).
+- [x] Once the preview project is configured, push the merged `nextjs-migration` branch and open the deployed URL.
+- [x] Confirm the same checks from Step 7 pass on the deployed URL.
+- [x] Confirm Sanity Studio loads at `<preview-url>/studio`.
+- [x] Confirm Sanity CORS is updated to allow the preview URL (if not, Studio will fail with a CORS error in the browser console).
 
 ---
 

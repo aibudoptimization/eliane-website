@@ -219,51 +219,51 @@ If anything references `next-site/`, fix it now.
 
 ## Step 8 — Commit and push the cutover branch
 
-- [ ] `git add -A`
-- [ ] Sanity check the staged diff: `git status` should show:
+- [x] `git add -A`
+- [x] Sanity check the staged diff: `git status` should show:
   - Many deletes (Vite root files)
   - Many renames (next-site/* → root)
   - Maybe a `.gitignore` rename
   - No accidental modifications outside scope
-- [ ] Commit:
+- [x] Commit:
   ```
   git commit -m "chore(repo): cutover to Next.js — delete Vite root, hoist next-site to root"
   ```
-- [ ] Push:
+- [x] Push:
   ```
   git push -u origin chore/04-cutover-to-nextjs
   ```
 
 **Verification:**
-- [ ] Branch appears on GitHub at `aibudoptimization/<repo>/tree/chore/04-cutover-to-nextjs`
-- [ ] Vercel automatically queues a preview deployment for this push (visible on the Vercel project's Deployments tab)
+- [x] Branch appears on GitHub at `aibudoptimization/<repo>/tree/chore/04-cutover-to-nextjs`
+- [x] Vercel automatically queues a preview deployment for this push (visible on the Vercel project's Deployments tab)
 
 ---
 
 ## Step 9 — Vercel preview verification (this satisfies Plan 03 Step 11)
 
-- [ ] Open the Vercel project (`eliane-website`) → Deployments. The latest preview deploy for `chore/04-cutover-to-nextjs` should be building.
-- [ ] Watch the build logs:
+- [x] Open the Vercel project (`eliane-website`) → Deployments. The latest preview deploy for `chore/04-cutover-to-nextjs` should be building.
+- [x] Watch the build logs:
   - Framework should auto-detect as **Next.js** (not Vite)
   - No `npm run build` failures
   - No missing-env-var errors (if you see one, the env vars from pre-flight aren't set on Preview environment — go add them, then redeploy)
-- [ ] Once the deploy succeeds, open the preview URL Vercel gives you (something like `eliane-website-git-chore-04-cutover-to-nextjs-aibudoptimization.vercel.app`).
-- [ ] Smoke test on the **preview URL**:
-  - [ ] Homepage loads. All Plan 02 sections render: hero, both marquees, sled, meet trainer, pull quote, offering, in-person, reviews, for-you-or-not, after-call, purple CTA, FAQ, collaborators
-  - [ ] Top nav shows: Approche, Accompagnement, Témoignages, FAQ, Appel découverte. Each anchor link scrolls to the right section. "Appel découverte" opens cal.com.
-  - [ ] FAQ links (Ataraxia, Psycom, Précision Nutrition) are clickable and open in new tabs
-  - [ ] No console errors in DevTools
-  - [ ] No CORS errors when Sanity content fetches (would appear in Network tab)
-  - [ ] `/studio` loads at `<preview-url>/studio` — Studio interface renders, no schema errors, no CORS errors
-  - [ ] Sanity Presentation visual editing works on the preview URL
-  - [ ] Mobile viewport (DevTools 375px): no horizontal scroll, sections readable, marquee 2 scrolls
-  - [ ] Repeat at 1280px: marquee 2 shows static 3-column grid
-- [ ] If any of the above fails: fix on `chore/04-cutover-to-nextjs` (commit, push), Vercel redeploys automatically, retest.
+- [x] Once the deploy succeeds, open the preview URL Vercel gives you (something like `eliane-website-git-chore-04-cutover-to-nextjs-aibudoptimization.vercel.app`).
+- [x] Smoke test on the **preview URL**:
+  - [x] Homepage loads. All Plan 02 sections render: hero, both marquees, sled, meet trainer, pull quote, offering, in-person, reviews, for-you-or-not, after-call, purple CTA, FAQ, collaborators
+  - [x] Top nav shows: Approche, Accompagnement, Témoignages, FAQ, Appel découverte. Each anchor link scrolls to the right section. "Appel découverte" opens cal.com.
+  - [x] FAQ links (Ataraxia, Psycom, Précision Nutrition) are clickable and open in new tabs
+  - [x] No console errors in DevTools
+  - [x] No CORS errors when Sanity content fetches (would appear in Network tab)
+  - [x] `/studio` loads at `<preview-url>/studio` — Studio interface renders, no schema errors, no CORS errors
+  - [x] Sanity Presentation visual editing works on the preview URL
+  - [x] Mobile viewport (DevTools 375px): no horizontal scroll, sections readable, marquee 2 scrolls
+  - [x] Repeat at 1280px: marquee 2 shows static 3-column grid
+- [x] If any of the above fails: fix on `chore/04-cutover-to-nextjs` (commit, push), Vercel redeploys automatically, retest.
 
 **Verification:**
-- [ ] Vercel build succeeds with Next.js detection
-- [ ] All preview-URL smoke checks pass
-- [ ] **Update `plans/03-nav-faq-and-verification.md`**: open the file and check off all four boxes under "Step 11 — Vercel preview deployment check" (since this Plan 04 Step 9 satisfies them).
+- [x] Vercel build succeeds with Next.js detection
+- [x] All preview-URL smoke checks pass
+- [x] **Update `plans/03-nav-faq-and-verification.md`**: open the file and check off all four boxes under "Step 11 — Vercel preview deployment check" (since this Plan 04 Step 9 satisfies them).
 
 > **Do not proceed past this step without Christopher's explicit approval.** The next step merges to `main` and changes production. Stop here, summarize the preview verification results, and wait for Christopher's "go".
 
