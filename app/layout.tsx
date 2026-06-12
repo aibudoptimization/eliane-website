@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { draftMode } from "next/headers";
+import { draftMode, headers } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import CalEmbed from "./components/CalEmbed";
 import ClientScripts from "./components/ClientScripts";
@@ -30,6 +30,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  const isStudio = pathname.startsWith("/studio");
+
+  if (isStudio) {
+    return (
+      <html lang="fr">
+        <body>{children}</body>
+      </html>
+    );
+  }
+
   const isDraftMode = (await draftMode()).isEnabled;
   const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
   const calBookingUrl =

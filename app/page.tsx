@@ -3,17 +3,50 @@ import {PortableText, type PortableTextComponents} from '@portabletext/react'
 import type {TypedObject} from '@portabletext/types'
 import Image from 'next/image'
 import {portableTextToPlainText} from '@/lib/portableTextPlainText'
+import {MeetTrainerSection} from '@/app/components/MeetTrainerSection'
+import {AccompagnementSection} from '@/app/components/AccompagnementSection'
+import {PresentielSection} from '@/app/components/PresentielSection'
+import {AfterCallSection} from '@/app/components/AfterCallSection'
+import {PourToiSection} from '@/app/components/PourToiSection'
+import {TestimonialsSection, type TestimonialVideoItem} from '@/app/components/TestimonialsSection'
 import {urlFor} from '@/sanity/imageUrl'
 import {sanityFetch} from '@/sanity/live'
 import {COLLABORATORS_QUERY, FAQS_QUERY, HOMEPAGE_QUERY, SITE_SETTINGS_QUERY} from '@/sanity/queries'
 
+const HERO_HEADLINE_ACCENT_PHRASES = [
+  'progresser durablement',
+  'confiance',
+  'recommencer',
+] as const
+
+const DEFAULT_HERO_HEADLINE =
+  "Un service d'accompagnement personnalisé pour t'entraîner avec confiance, progresser durablement et arrêter de toujours recommencer"
+
+const heroHeadlineAccentPattern = new RegExp(
+  `(${HERO_HEADLINE_ACCENT_PHRASES.map((phrase) =>
+    phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+  ).join('|')})`,
+  'gi',
+)
+
+function highlightHeroHeadline(text: string): ReactNode[] {
+  return text.split(heroHeadlineAccentPattern).map((part, index) => {
+    if (
+      HERO_HEADLINE_ACCENT_PHRASES.some((phrase) => phrase.toLowerCase() === part.toLowerCase())
+    ) {
+      return (
+        <span key={`${part}-${index}`} className="accent">
+          {part}
+        </span>
+      )
+    }
+    return part
+  })
+}
+
 const heroHeadlineComponents: PortableTextComponents = {
   marks: {
-    em: ({ children }) => (
-      <span className="hero-headline-pull">
-        <em>{children}</em>
-      </span>
-    ),
+    em: ({ children }) => <span className="accent">{children}</span>,
     strong: ({ children }) => <strong>{children}</strong>,
   },
   block: {
@@ -21,6 +54,87 @@ const heroHeadlineComponents: PortableTextComponents = {
   },
 }
 
+const DEFAULT_APPROCHE_HEADLINE = 'Tu veux progresser, mais tu ne veux plus avancer seule.'
+
+/** Matches default Approche title so we can apply desktop line-break layouts. */
+const APPROCHE_HEADLINE_PATTERN =
+  /^Tu veux progresser,\s*mais\s+tu\s+ne veux plus avancer seule\.?$/i
+
+function portableTextHasMarks(value: PortableTextValue): boolean {
+  for (const block of value) {
+    if (block._type !== 'block' || !Array.isArray((block as {children?: unknown[]}).children)) {
+      continue
+    }
+    for (const child of (block as unknown as {children: {_type?: string; marks?: string[]}[]})
+      .children) {
+      if (child._type === 'span' && Array.isArray(child.marks) && child.marks.length > 0) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+function renderApprocheHeadline(headline: PortableTextValue | undefined): ReactNode {
+  if (headline?.length && portableTextHasMarks(headline)) {
+    return <PortableText value={headline} components={heroHeadlineComponents} />
+  }
+
+  const text = headline?.length
+    ? portableTextToPlainText(headline).trim()
+    : DEFAULT_APPROCHE_HEADLINE
+
+  if (!APPROCHE_HEADLINE_PATTERN.test(text)) {
+    return text
+  }
+
+  return (
+    <span className="approche-headline">
+      <span className="approche-headline-flow">{text}</span>
+      <span className="approche-headline-layout approche-headline-layout--wide">
+        Tu veux progresser,
+        <br />
+        mais tu ne veux plus avancer seule.
+      </span>
+      <span className="approche-headline-layout approche-headline-layout--medium">
+        Tu veux progresser,
+        <br />
+        mais tu
+        <br />
+        ne veux plus avancer seule.
+      </span>
+      <span className="approche-headline-layout approche-headline-layout--narrow">
+        Tu veux progresser, mais
+        <br />
+        tu
+        <br />
+        ne veux plus avancer seule.
+      </span>
+    </span>
+  )
+}
+
+function HeroCtaArrow() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  )
+}
+
+type MeetTrainerCard = {_key?: string; label?: string; body?: string}
+type OfferingPillar = {_key?: string; title?: string; description?: string}
 type FaqItem = { _id: string; question?: string; answer?: unknown }
 type Collaborator = {
   _id: string
@@ -36,11 +150,11 @@ type Collaborator = {
 type PortableTextValue = TypedObject[]
 type SledListItem = { _key?: string; text?: PortableTextValue }
 type ReviewItem = { _key?: string; name?: string; rating?: number; excerpt?: string }
-type InPersonBenefit = {
+type PresentielCard = {
   _key?: string
-  icon?: string
   title?: string
-  text?: string
+  description?: string
+  iconName?: string
 }
 
 const faqAnswerComponents: PortableTextComponents = {
@@ -93,16 +207,6 @@ const sledItemComponents: PortableTextComponents = {
   },
 }
 
-const meetTrainerBodyComponents: PortableTextComponents = {
-  marks: {
-    strong: ({ children }) => <strong className="meet-trainer-strong">{children}</strong>,
-    em: ({ children }) => <em>{children}</em>,
-  },
-  block: {
-    normal: ({ children }) => <p>{children}</p>,
-  },
-}
-
 export default async function Home() {
   const [
     { data: homePage },
@@ -142,101 +246,121 @@ export default async function Home() {
     homePage?.meetTrainerImage?.asset != null
       ? urlFor(homePage.meetTrainerImage).width(1200).url()
       : '/images/eliane-hero.jpg'
-  const sledImageSrc =
-    homePage?.sledImage?.asset != null
-      ? urlFor(homePage.sledImage).width(1400).url()
-      : '/images/eliane-mission-sled-push.png'
   const offeringImages = Array.isArray(homePage?.offeringImages) ? homePage.offeringImages : []
-  const offeringFeatures = Array.isArray(homePage?.offeringFeatures) ? homePage.offeringFeatures : []
+  const offeringAppImageSrc = (() => {
+    if (homePage?.offeringAppImage?.asset != null) {
+      return urlFor(homePage.offeringAppImage).width(1200).url()
+    }
+    const legacy = offeringImages[0]
+    if (legacy?.asset != null) {
+      return urlFor(legacy).width(1200).url()
+    }
+    return '/images/eliane-hero.jpg'
+  })()
+  const offeringAppImageLightboxSrc = (() => {
+    if (homePage?.offeringAppImage?.asset != null) {
+      return urlFor(homePage.offeringAppImage).width(2400).url()
+    }
+    const legacy = offeringImages[0]
+    if (legacy?.asset != null) {
+      return urlFor(legacy).width(2400).url()
+    }
+    return offeringAppImageSrc
+  })()
+  const offeringAppImageAlt =
+    homePage?.offeringAppImage?.alt ??
+    (typeof offeringImages[0]?.alt === 'string' ? offeringImages[0].alt : undefined)
   const reviewsList: ReviewItem[] = Array.isArray(homePage?.reviewsList) ? homePage.reviewsList : []
-  const defaultInPersonBenefits: InPersonBenefit[] = [
-    {
-      icon: 'eye',
-      title: 'Correction en temps réel',
-      text: "J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.",
-    },
-    {
-      icon: 'shield-check',
-      title: 'Progression sécuritaire',
-      text: "Je t'aide à progresser tout en respectant ton rythme.",
-    },
-    {
-      icon: 'calendar-check',
-      title: 'Imputabilité',
-      text: "Le présentiel ajoute une structure qui soutient l'engagement.",
-    },
-    {
-      icon: 'activity',
-      title: 'Adaptation à ton état',
-      text: 'Un entraînement sur mesure, pour toi, selon ton énergie, tes besoins et tes envies.',
-    },
-  ]
-  const inPersonBenefits: InPersonBenefit[] =
-    Array.isArray(homePage?.inPersonBenefits) && homePage.inPersonBenefits.length > 0
-      ? homePage.inPersonBenefits
-      : defaultInPersonBenefits
+  const testimonialVideos: TestimonialVideoItem[] | undefined = (() => {
+    type SanityTestimonialVideo = {
+      _key?: string
+      reviewerName?: string
+      reviewerRole?: string
+      video?: {asset?: {url?: string}}
+      poster?: {asset?: unknown}
+    }
+    const fromSanity = Array.isArray(homePage?.testimonialVideos)
+      ? (homePage.testimonialVideos as SanityTestimonialVideo[])
+      : []
+    const mapped = fromSanity
+      .map((entry) => ({
+        _key: entry._key,
+        name: entry.reviewerName?.trim() ?? '',
+        role: entry.reviewerRole?.trim() || 'Cliente',
+        videoSrc: typeof entry.video?.asset?.url === 'string' ? entry.video.asset.url : undefined,
+        posterSrc:
+          entry.poster?.asset != null ? urlFor(entry.poster as Parameters<typeof urlFor>[0]).width(600).url() : undefined,
+      }))
+      .filter((entry) => entry.name)
+
+    if (mapped.length > 0) return mapped
+
+    if (reviewsList.length > 0) {
+      return reviewsList
+        .map((review, index) => ({
+          _key: review._key ?? `legacy-review-${index}`,
+          name: review.name?.trim() ?? '',
+          role: 'Cliente',
+        }))
+        .filter((entry) => entry.name)
+    }
+
+    return undefined
+  })()
   const featuredCollaborators = Array.isArray(collaborators)
     ? collaborators.filter((collaborator: Collaborator) => collaborator?.featured)
     : []
   const otherCollaborators = Array.isArray(collaborators)
     ? collaborators.filter((collaborator: Collaborator) => !collaborator?.featured)
     : []
-  const heroKicker = (homePage?.heroKicker ?? 'ENTRAÎNEURE PERSONNELLE • MONTRÉAL').replace(
-    /^\s*[•·]\s*/,
-    '',
-  )
+  const heroKicker =
+    homePage?.heroKicker ?? 'Éliane Larre - Entraîneure personnelle à Montréal'
   const heroCtaLabel = homePage?.heroCtaLabel ?? 'Je veux discuter de mes objectifs'
   const heroCtaSubtext =
     homePage?.heroCtaSubtext ??
     "Appel gratuit, sans engagement pour voir si l'accompagnement est adapté à toi."
-  const meetTrainerCtaUrl =
-    homePage?.meetTrainerCtaUrl ??
+  const instagramUrl =
     siteSettings?.instagramUrl ??
     'https://www.instagram.com/eliane.au.naturel'
-  const defaultMarqueeOneItems = [
+  const meetTrainerCtaUrl =
+    homePage?.meetTrainerCtaUrl ??
+    instagramUrl
+  const defaultMarqueeItems = [
     'Entraînements en présentiel',
     'À Montréal',
     '10+ années de pratique',
     'Approche personnalisée',
-  ]
-  const defaultMarqueeTwoItems = [
     'Approche durable',
-    'Accompagnement personnalisé',
     'Progression mesurable',
   ]
   const isStringArray = (value: unknown): value is string[] =>
     Array.isArray(value) && value.every((entry) => typeof entry === 'string')
-  const marqueeOneItems: string[] =
-    Array.isArray(homePage?.marqueeOneItems) && homePage.marqueeOneItems.length > 0
-      ? homePage.marqueeOneItems
-      : defaultMarqueeOneItems
-  const marqueeTwoItems: string[] =
-    isStringArray(homePage?.marqueeTwoItems) && homePage.marqueeTwoItems.length === 3
-      ? homePage.marqueeTwoItems
-      : defaultMarqueeTwoItems
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    isStringArray(homePage?.marqueeTwoItems) &&
-    homePage.marqueeTwoItems.length !== 3
-  ) {
-    console.warn(
-      '[homepage] marqueeTwoItems should contain exactly 3 items; using fallback defaults instead.',
-    )
+  const mergeLegacyMarqueeItems = (): string[] => {
+    const legacy = [
+      ...(isStringArray(homePage?.marqueeOneItems) ? homePage.marqueeOneItems : []),
+      ...(isStringArray(homePage?.marqueeTwoItems) ? homePage.marqueeTwoItems : []),
+    ]
+    const seen = new Set<string>()
+    return legacy.filter((item) => {
+      if (seen.has(item)) return false
+      seen.add(item)
+      return true
+    })
   }
 
-  const renderMarqueeItems = (items: string[]) =>
-    items.flatMap((item, index) => [
-      <span key={`${item}-${index}`}>{item}</span>,
-      <span className="marquee-sep" key={`sep-${item}-${index}`}>
-        ·
-      </span>,
-    ])
+  const marqueeItems: string[] = (() => {
+    if (isStringArray(homePage?.marqueeItems) && homePage.marqueeItems.length >= 2) {
+      return homePage.marqueeItems
+    }
+    const legacy = mergeLegacyMarqueeItems()
+    return legacy.length >= 2 ? legacy : defaultMarqueeItems
+  })()
 
-  const renderStatsMarqueeItems = (items: string[]) =>
+  const renderMarqueeStrip = (items: string[], stripKey: string) =>
     items.flatMap((item, index) => [
-      <span key={`${item}-${index}`}>{item}</span>,
-      <span className="stats-marquee-sep" key={`sep-${item}-${index}`}>
+      <span key={`${stripKey}-${item}-${index}`}>{item}</span>,
+      <span className="marquee-dot" key={`${stripKey}-dot-${item}-${index}`} aria-hidden="true">
         ·
       </span>,
     ])
@@ -248,442 +372,269 @@ export default async function Home() {
     >
       
             <section className="hero" id="accueil">
-              <div className="hero-visual">
-                <p className="sr-only">Portrait d’Éliane.</p>
-                <div className="hero-photo">
-                  <Image
-                    className="hero-img"
-                    src={heroImageSrc}
-                    alt={homePage?.heroImage?.alt ?? ''}
-                    width={1200}
-                    height={1500}
-                    priority
-                  />
+              <div className="hero-inner">
+                <div className="hero-stage">
+                  <div className="hero-content reveal" data-reveal>
+                    <div className="eyebrow">{heroKicker}</div>
+                    <h1>
+                      {highlightHeroHeadline(
+                        Array.isArray(homePage?.heroHeadline) && homePage.heroHeadline.length > 0
+                          ? portableTextToPlainText(homePage.heroHeadline)
+                          : DEFAULT_HERO_HEADLINE,
+                      )}
+                    </h1>
+                    <p className="hero-lead">
+                      {homePage?.heroSubheadline ??
+                        "Un accompagnement sur mesure, conçu pour toi qui veux intégrer l'entraînement à ta vie, ou pour toi qui crois avoir tout essayé sans jamais réussir à maintenir tes objectifs."}
+                    </p>
+                    <div className="hero-cta-stack">
+                      <a
+                        className="btn btn-primary"
+                        href={calBookingUrl}
+                        data-cal-link={calLinkNamespace || undefined}
+                        data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+                      >
+                        {heroCtaLabel}
+                        <HeroCtaArrow />
+                      </a>
+                      <p className="hero-cta-note">{heroCtaSubtext}</p>
+                    </div>
+                  </div>
+                  <div className="hero-image-frame reveal" data-reveal>
+                    <div className="hero-image-inner" data-hero-parallax>
+                      <Image
+                        className="hero-img"
+                        src={heroImageSrc}
+                        alt={
+                          homePage?.heroImage?.alt ??
+                          'Éliane tenant un haltère dans la salle d\'entraînement'
+                        }
+                        width={1000}
+                        height={1200}
+                        priority
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="hero-accent-bar" aria-hidden="true" />
-              </div>
-              <div className="hero-copy">
-                <p className="hero-tag">{heroKicker}</p>
-                <h1>
-                  {Array.isArray(homePage?.heroHeadline) && homePage.heroHeadline.length > 0 ? (
-                    <PortableText value={homePage.heroHeadline} components={heroHeadlineComponents} />
-                  ) : (
-                    <>
-                      Un service personnalisé en présentiel pour t&apos;aider à progresser{' '}
-                      <span className="hero-headline-pull">
-                        <em>de façon claire et durable</em>
-                      </span>
-                      .
-                    </>
-                  )}
-                </h1>
-                <p className="hero-lead">
-                  {homePage?.heroSubheadline ??
-                    "Un accompagnement sur mesure, conçu pour toi qui crois avoir tout essayé, mais qui n'arrives toujours pas à atteindre tes objectifs et à les maintenir."}
-                </p>
-                <div className="hero-actions">
-                  <a
-                    className="btn btn-primary"
-                    href={calBookingUrl}
-                    data-cal-link={calLinkNamespace || undefined}
-                    data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-                    >{heroCtaLabel}</a>
-                  <p className="hero-cta-subtext">{heroCtaSubtext}</p>
+                <div className="hero-stats reveal" data-reveal>
+                  <div>
+                    <div className="hero-stat-num">
+                      <span data-count="12">0</span>+
+                    </div>
+                    <div className="hero-stat-label">Années de pratique</div>
+                  </div>
+                  <div>
+                    <div className="hero-stat-num">
+                      <span data-count="100">0</span>%
+                    </div>
+                    <div className="hero-stat-label">Personnalisé</div>
+                  </div>
+                  <div>
+                    <div className="hero-stat-num">
+                      <span data-count="5">0</span>★
+                    </div>
+                    <div className="hero-stat-label">Note clientes</div>
+                  </div>
                 </div>
               </div>
             </section>
       
-            <div className="marquee" role="presentation">
+            <div className="marquee" aria-hidden="true">
               <div className="marquee-track">
-                <div className="marquee-inner" aria-hidden="true">
-                  {renderMarqueeItems(marqueeOneItems)}
-                  {renderMarqueeItems(marqueeOneItems)}
-                </div>
-                <div className="marquee-inner" aria-hidden="true">
-                  {renderMarqueeItems(marqueeOneItems)}
-                  {renderMarqueeItems(marqueeOneItems)}
+                <div className="marquee-strip">{renderMarqueeStrip(marqueeItems, 'a')}</div>
+                <div className="marquee-strip" aria-hidden="true">
+                  {renderMarqueeStrip(marqueeItems, 'b')}
                 </div>
               </div>
             </div>
       
-            <section
-              className="stats"
-              role="region"
-              aria-label="Approche durable, accompagnement personnalisé, progression mesurable"
-            >
-              <div className="stats-desktop">
-                {marqueeTwoItems.map((item, index) => (
-                  <div className="stat reveal" data-reveal key={`desktop-stat-${item}-${index}`}>
-                    <p className="stat-phrase">{item}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="stats-marquee-wrap" role="presentation">
-                <div className="stats-marquee-track">
-                  <div className="stats-marquee-inner" aria-hidden="true">
-                    {renderStatsMarqueeItems(marqueeTwoItems)}
-                    {renderStatsMarqueeItems(marqueeTwoItems)}
-                  </div>
-                  <div className="stats-marquee-inner" aria-hidden="true">
-                    {renderStatsMarqueeItems(marqueeTwoItems)}
-                    {renderStatsMarqueeItems(marqueeTwoItems)}
-                  </div>
-                </div>
-              </div>
-            </section>
-      
-            <section className="section section-warm" id="approche">
-              <div className="section-inner">
-                <h2>
-                  {Array.isArray(homePage?.sledHeadline) && homePage.sledHeadline.length > 0 ? (
-                    <PortableText value={homePage.sledHeadline} components={heroHeadlineComponents} />
-                  ) : (
-                    'Tu veux progresser, mais tu ne veux plus avancer seule.'
-                  )}
-                </h2>
-                <p className="sled-subheadline">
-                  {homePage?.sledSubheadline ??
-                    "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction."}
-                </p>
-
-                <div className="sled-media">
-                  <Image
-                    src={sledImageSrc}
-                    alt={homePage?.sledImage?.alt ?? "Éliane en effort sur un traîneau de poussée"}
-                    width={1400}
-                    height={900}
-                  />
-                </div>
-
-                <div className="sled-columns">
-                  <div className="sled-column">
-                    <h3>{homePage?.sledFromTitle ?? "Là où tu es aujourd'hui"}</h3>
-                    <ul>
-                      {Array.isArray(homePage?.sledFromItems) &&
-                        homePage.sledFromItems.map((item: SledListItem) => (
-                          <li key={item._key}>
-                            {Array.isArray(item?.text) ? (
-                              <PortableText value={item.text} components={sledItemComponents} />
-                            ) : null}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-
-                  <div className="sled-columns-arrow" aria-hidden="true">
-                    →
-                  </div>
-
-                  <div className="sled-column sled-column--to">
-                    <h3>{homePage?.sledToTitle ?? "Là où je vais t'amener"}</h3>
-                    <ul>
-                      {Array.isArray(homePage?.sledToItems) &&
-                        homePage.sledToItems.map((item: SledListItem) => (
-                          <li key={item._key}>
-                            {Array.isArray(item?.text) ? (
-                              <PortableText value={item.text} components={sledItemComponents} />
-                            ) : null}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="sled-cta">
-                  <a
-                    className="btn btn-primary"
-                    href={calBookingUrl}
-                    data-cal-link={calLinkNamespace || undefined}
-                    data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-                  >
-                    {homePage?.sledCtaLabel ?? "C'est là que je veux aller"}
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            <section className="section section-muted" id="rencontre">
-              <div className="section-inner">
-                <h2 className="sr-only">Rencontre ton entraîneure</h2>
-                <div className="meet-trainer">
-                  <div className="meet-trainer-media">
-                    <Image
-                      src={meetTrainerImageSrc}
-                      alt={homePage?.meetTrainerImage?.alt ?? "Portrait souriant d'Éliane Larre"}
-                      width={1200}
-                      height={1500}
-                    />
-                  </div>
-                  <div className="meet-trainer-copy">
-                    <p className="meet-trainer-kicker">
-                      {homePage?.meetTrainerKicker ?? 'RENCONTRE TON ENTRAÎNEURE'}
+            <section className="section section-approche" id="approche">
+              <div className="section-inner section-inner--approche">
+                <div className="approche-panel">
+                  <header className="approche-intro">
+                    <p className="eyebrow approche-eyebrow">Approche</p>
+                    <h2>{renderApprocheHeadline(homePage?.sledHeadline)}</h2>
+                    <p className="approche-subhead">
+                      {homePage?.sledSubheadline ??
+                        "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction."}
                     </p>
-                    {Array.isArray(homePage?.meetTrainerBody) && homePage.meetTrainerBody.length > 0 ? (
-                      <PortableText
-                        value={homePage.meetTrainerBody}
-                        components={meetTrainerBodyComponents}
-                      />
-                    ) : null}
-                    <p>
-                      <a
-                        className="arrow-text-link mission-instagram-link"
-                        href={meetTrainerCtaUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  </header>
+
+                  <div className="approche-transform-row">
+                    <div className="approche-card approche-card--from">
+                      <p className="approche-card-label">
+                        {homePage?.sledFromTitle ?? "Là où tu es aujourd'hui"}
+                      </p>
+                      <ul>
+                        {Array.isArray(homePage?.sledFromItems) &&
+                          homePage.sledFromItems.map((item: SledListItem) => (
+                            <li key={item._key}>
+                              {Array.isArray(item?.text) ? (
+                                <PortableText value={item.text} components={sledItemComponents} />
+                              ) : null}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+
+                    <div className="approche-transform-arrow" aria-hidden="true">
+                      <svg
+                        width="38"
+                        height="38"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       >
-                        {homePage?.meetTrainerCtaLabel ?? 'Voir mon quotidien sur Instagram'}{' '}
-                        <span className="hero-ghost-arrow" aria-hidden="true">
-                          →
-                        </span>
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {homePage?.pullQuoteEnabled && (
-              <section className="section section-warm pull-quote-section">
-                <div className="section-inner">
-                  <blockquote className="pull-quote-block">
-                    <p>
-                      {homePage?.pullQuoteText ??
-                        "Tu n'as pas besoin d'un autre programme. Tu as besoin d'un cadre, d'un regard expert et d'un accompagnement qui s'adapte réellement à toi."}
-                    </p>
-                  </blockquote>
-                </div>
-              </section>
-            )}
-
-            <section className="section section-warm" id="accompagnement">
-              <div className="section-inner">
-                <h2>{homePage?.offeringHeadline ?? 'Mon accompagnement personnalisé'}</h2>
-                <div className="offering-images">
-                  {offeringImages.map((image: Record<string, unknown>, index: number) => {
-                    const src =
-                      image?.asset != null
-                        ? urlFor(image).width(900).url()
-                        : '/images/eliane-hero.jpg'
-                    const alt =
-                      typeof image?.alt === 'string' && image.alt.trim().length > 0
-                        ? image.alt
-                        : `Aperçu de l'application d'entraînement ${index + 1}`
-
-                    return (
-                      <div className="offering-image-card" key={`${String(image?._key ?? index)}`}>
-                        <Image src={src} alt={alt} width={720} height={1280} loading="lazy" />
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <div className="offering-features">
-                  {offeringFeatures.map((feature: Record<string, unknown>, index: number) => (
-                    <article className="offering-feature" key={`${String(feature?._key ?? index)}`}>
-                      <h3>{typeof feature?.title === 'string' ? feature.title : ''}</h3>
-                      <p>{typeof feature?.description === 'string' ? feature.description : ''}</p>
-                    </article>
-                  ))}
-                </div>
-
-                <div className="offering-cta">
-                  <a
-                    className="btn btn-primary"
-                    href={calBookingUrl}
-                    data-cal-link={calLinkNamespace || undefined}
-                    data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-                  >
-                    {homePage?.offeringCtaLabel ??
-                      "Je veux voir si l'accompagnement est adapté pour moi"}
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            <section className="section section-warm" id="presentiel">
-              <div className="section-inner">
-                <div className="presentiel-block reveal" data-reveal>
-                  <h2>
-                    {homePage?.inPersonHeadline?.includes('présentiel') ? (
-                      <>
-                        {homePage.inPersonHeadline.replace(/présentiel/g, '').trim()}
-                        {' '}
-                        <em>présentiel</em>
-                      </>
-                    ) : (
-                      <>
-                        {homePage?.inPersonHeadline ?? 'Pourquoi le'}
-                        {' '}
-                        <em>présentiel</em>
-                      </>
-                    )}
-                  </h2>
-                  <p className="presentiel-intro">
-                    {homePage?.inPersonIntro ??
-                      "Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer."}
-                  </p>
-                  <div className="presentiel-mid">
-                    <div className="presentiel-benefits" role="list">
-                      {inPersonBenefits.map((benefit, index) => (
-                        <article
-                          className="presentiel-benefit-cell"
-                          role="listitem"
-                          key={String(benefit._key ?? `${benefit.title ?? 'benefit'}-${index}`)}
-                        >
-                          <i
-                            className="presentiel-benefit__icon"
-                            data-lucide={benefit.icon ?? 'activity'}
-                            aria-hidden="true"
-                          />
-                          <h3 className="presentiel-benefit__title">{benefit.title ?? ''}</h3>
-                          <p className="presentiel-benefit__text">{benefit.text ?? ''}</p>
-                        </article>
-                      ))}
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
                     </div>
-                  </div>
-                  <p className="presentiel-closing">
-                    <em
-                      >{homePage?.inPersonPunchLine ??
-                        "Un programme peut te dire quoi faire.\nUn accompagnement en présentiel te montre comment le faire et t'aide à progresser plus rapidement qu'en étant seule."}</em
-                    >
-                  </p>
-                </div>
-              </div>
-            </section>
-      
-            <section className="section section-muted" id="temoignages">
-              <div className="section-inner">
-                <h2>{homePage?.reviewsHeadline ?? 'Leur expérience'}</h2>
-                <div className="reviews-grid">
-                  {reviewsList.map((review, index) => {
-                    const rating = Math.max(0, Math.min(5, review.rating ?? 0))
-                    const filledStars = '★'.repeat(rating)
-                    const emptyStars = '☆'.repeat(5 - rating)
-                    return (
-                      <article className="review-card" key={`${String(review._key ?? index)}`}>
-                        <h3>{review.name ?? ''}</h3>
-                        <p className="review-stars" aria-label={`Note ${rating} sur 5`}>
-                          <span aria-hidden="true">
-                            {filledStars}
-                            {emptyStars}
-                          </span>
-                        </p>
-                        <p>{review.excerpt ?? ''}</p>
-                      </article>
-                    )
-                  })}
-                </div>
-              </div>
-            </section>
 
-            <section className="section section-muted" id="pour-toi">
-              <div className="section-inner">
-                <h2 id="fit-bridge-heading">{homePage?.forYouHeadline ?? 'Pour toi ou pas?'}</h2>
-                <div className="fit-bridge" role="region" aria-labelledby="fit-bridge-heading">
-                  <div className="fit-bridge-layout">
-                    <div className="fit-bridge-card fit-bridge-card--yes">
-                      <p className="fit-bridge-kicker fit-bridge-kicker--yes">{homePage?.forYouYesTitle ?? "C'est pour toi si :"}</p>
-                      <ul className="fit-bridge-list">
-                        {(Array.isArray(homePage?.forYouYesItems) ? homePage.forYouYesItems : []).map(
-                          (item: string, index: number) => (
-                            <li className="fit-bridge-row" key={`yes-${index}`}>
-                              <div className="fit-item">
-                                <span className="fit-icon fit-icon--check" aria-hidden="true">
-                                  ✓
-                                </span>
-                                <span>{item}</span>
-                              </div>
+                    <div className="approche-card approche-card--to">
+                      <p className="approche-card-label">
+                        {homePage?.sledToTitle ?? "Là où je vais t'amener"}
+                      </p>
+                      <ul>
+                        {Array.isArray(homePage?.sledToItems) &&
+                          homePage.sledToItems.map((item: SledListItem) => (
+                            <li key={item._key}>
+                              {Array.isArray(item?.text) ? (
+                                <PortableText value={item.text} components={sledItemComponents} />
+                              ) : null}
                             </li>
-                          ),
-                        )}
-                      </ul>
-                    </div>
-                    <div className="fit-bridge-card fit-bridge-card--no">
-                      <p className="fit-bridge-kicker fit-bridge-kicker--no">{homePage?.forYouNoTitle ?? "Ce n'est probablement pas pour toi si :"}</p>
-                      <ul className="fit-bridge-list">
-                        {(Array.isArray(homePage?.forYouNoItems) ? homePage.forYouNoItems : []).map(
-                          (item: string, index: number) => (
-                            <li className="fit-bridge-row" key={`no-${index}`}>
-                              <div className="fit-item">
-                                <span className="fit-icon fit-icon--cross fit-icon--cross-muted" aria-hidden="true">
-                                  ×
-                                </span>
-                                <span>{item}</span>
-                              </div>
-                            </li>
-                          ),
-                        )}
+                          ))}
                       </ul>
                     </div>
                   </div>
-                  <div className="mission-photo">
-                    <div className="mission-photo-frame">
-                      <Image
-                        className="mission-photo-img"
-                        src={forYouImageSrc}
-                        alt={homePage?.forYouImage?.alt ?? "Éliane accotée sur la barre"}
-                        width={682}
-                        height={1024}
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                  <p className="fit-bridge-footer">{homePage?.forYouFooter}</p>
-                  <p className="fit-bridge-cta-row">
+
+                  <div className="approche-footer">
                     <a
-                      className="btn btn-primary"
+                      className="btn btn-primary approche-cta"
                       href={calBookingUrl}
                       data-cal-link={calLinkNamespace || undefined}
                       data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
                     >
-                      {homePage?.forYouCtaLabel ?? "Je veux savoir si c'est pour moi"}
+                      {homePage?.sledCtaLabel ?? "C'est là que je veux aller"}
+                      <HeroCtaArrow />
                     </a>
-                  </p>
+                  </div>
                 </div>
               </div>
             </section>
 
-            <section className="section section-warm" id="apres-appel">
-              <div className="section-inner">
-                <h2>{homePage?.afterCallHeadline ?? "Comment ça se passe après l'appel?"}</h2>
-                <p className="after-call-intro">
-                  {homePage?.afterCallIntro ?? "L'appel découverte sert à :"}
-                </p>
-                <ul className="after-call-list">
-                  {(Array.isArray(homePage?.afterCallItems) ? homePage.afterCallItems : []).map(
-                    (item: string, index: number) => (
-                      <li key={`after-call-${index}`}>{item}</li>
-                    ),
-                  )}
-                </ul>
-                <p className="after-call-footer">
-                  {homePage?.afterCallFooter ??
-                    "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi."}
-                </p>
-                <p className="after-call-cta-row">
-                  <a
-                    className="btn btn-primary"
-                    href={calBookingUrl}
-                    data-cal-link={calLinkNamespace || undefined}
-                    data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-                  >
-                    {homePage?.afterCallCtaLabel ?? "Je suis prête à avoir plus d'informations"}
-                  </a>
-                </p>
-              </div>
-            </section>
+            <MeetTrainerSection
+              kicker={homePage?.meetTrainerKicker}
+              imageSrc={meetTrainerImageSrc}
+              imageAlt={homePage?.meetTrainerImage?.alt ?? "Portrait souriant d'Éliane Larre"}
+              cards={
+                Array.isArray(homePage?.meetTrainerCards)
+                  ? (homePage.meetTrainerCards as MeetTrainerCard[])
+                  : undefined
+              }
+              quote={homePage?.meetTrainerQuote}
+              ctaLabel={homePage?.meetTrainerCtaLabel}
+              ctaUrl={meetTrainerCtaUrl}
+            />
+
+            <AccompagnementSection
+              eyebrow={homePage?.offeringEyebrow}
+              title={homePage?.offeringTitle}
+              lead={homePage?.offeringLead}
+              pillars={
+                Array.isArray(homePage?.offeringFeatures)
+                  ? (homePage.offeringFeatures as OfferingPillar[])
+                  : undefined
+              }
+              appKicker={homePage?.offeringAppKicker}
+              appTitle={homePage?.offeringAppTitle}
+              appDescription={homePage?.offeringAppDescription}
+              appImageSrc={offeringAppImageSrc}
+              appImageLightboxSrc={offeringAppImageLightboxSrc}
+              appImageAlt={offeringAppImageAlt}
+              ctaLabel={homePage?.offeringCtaLabel}
+              ctaUrl={calBookingUrl}
+              calLinkNamespace={calLinkNamespace || undefined}
+            />
+
+            <PresentielSection
+              eyebrow={homePage?.inPersonEyebrow ?? homePage?.inPersonHeadline}
+              title={homePage?.inPersonTitle}
+              intro={homePage?.inPersonIntro}
+              cards={
+                Array.isArray(homePage?.presentielCards)
+                  ? (homePage.presentielCards as PresentielCard[])
+                  : undefined
+              }
+              legacyBenefits={
+                Array.isArray(homePage?.inPersonBenefits) ? homePage.inPersonBenefits : undefined
+              }
+              quote={homePage?.locationQuote}
+              legacyQuote={homePage?.inPersonPunchLine}
+            />
+      
+            <TestimonialsSection
+              eyebrow={homePage?.reviewsEyebrow ?? homePage?.reviewsHeadline}
+              title={homePage?.reviewsTitle}
+              videos={testimonialVideos}
+            />
+
+            <PourToiSection
+              eyebrow={homePage?.forYouEyebrow ?? homePage?.forYouHeadline}
+              title={homePage?.forYouTitle}
+              yesLabel={homePage?.forYouYesTitle}
+              yesItems={
+                Array.isArray(homePage?.forYouYesItems) ? (homePage.forYouYesItems as string[]) : undefined
+              }
+              noLabel={homePage?.forYouNoTitle}
+              noItems={
+                Array.isArray(homePage?.forYouNoItems) ? (homePage.forYouNoItems as string[]) : undefined
+              }
+              footer={homePage?.forYouFooter}
+              ctaLabel={homePage?.forYouCtaLabel}
+              ctaUrl={calBookingUrl}
+              calLinkNamespace={calLinkNamespace || undefined}
+              imageSrc={forYouImageSrc}
+              imageAlt={homePage?.forYouImage?.alt}
+            />
+
+            <AfterCallSection
+              eyebrow={homePage?.afterCallEyebrow}
+              title={homePage?.afterCallHeadline}
+              intro={homePage?.afterCallIntro ?? homePage?.afterCallFooter}
+              steps={
+                Array.isArray(homePage?.afterCallSteps)
+                  ? (homePage.afterCallSteps as Array<{title?: string; description?: string}>)
+                  : undefined
+              }
+              ctaLabel={homePage?.afterCallCtaLabel}
+              ctaUrl={calBookingUrl}
+              calLinkNamespace={calLinkNamespace || undefined}
+            />
 
             <section className="section section-muted">
               <div className="section-inner purple-cta-band">
-                <h2>{homePage?.purpleCtaHeadline ?? 'Es-tu prête à investir en toi ?'}</h2>
+                <p className="purple-cta-band-eyebrow">Prochaine étape</p>
+                <div className="purple-cta-band-accent-bar" aria-hidden="true" />
+                <h2>
+                  {homePage?.purpleCtaHeadline
+                    ? homePage.purpleCtaHeadline
+                    : <>Es-tu prête à <em>investir</em> en toi&nbsp;?</>}
+                </h2>
                 <p className="purple-cta-button-row">
                   <a
-                    className="btn btn-primary btn-purple-cta"
+                    className="btn btn-purple-cta"
                     href={calBookingUrl}
                     data-cal-link={calLinkNamespace || undefined}
                     data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
                   >
                     {homePage?.purpleCtaButtonLabel ?? "Je veux passer à l'action"}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
                   </a>
                 </p>
                 <p className="purple-cta-footer">
@@ -694,12 +645,41 @@ export default async function Home() {
 
             <section className="faq-section" id="faq" aria-labelledby="faq-heading">
               <div className="faq-section-inner">
-                <header className="faq-section-header reveal" data-reveal>
-                  <h2 id="faq-heading">
-                    {homePage?.faqHeadline ?? 'Questions fréquentes'}
-                  </h2>
-                </header>
                 <div className="faq-layout">
+                  {/* LEFT — heading + Instagram-first contact */}
+                  <div className="faq-intro-col reveal" data-reveal>
+                    <p className="faq-section-eyebrow">FAQ</p>
+                    <h2 id="faq-heading">
+                      {homePage?.faqHeadline ?? <>Questions <em className="faq-heading-accent">fréquentes.</em></>}
+                    </h2>
+                    <p className="faq-contact-body faq-intro-body">
+                      Pour toute question sur l&apos;accompagnement, les offres ou la logistique,
+                      n&apos;hésite pas. Je réponds personnellement.
+                    </p>
+                    <a
+                      className="faq-contact-instagram"
+                      href={instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Contacter Éliane sur Instagram (nouvel onglet)"
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 11-2.881 0 1.44 1.44 0 012.881 0z" />
+                      </svg>
+                      Écrire sur Instagram
+                    </a>
+                    <a className="faq-contact-email-subtle" href={`mailto:${contactEmail}`}>
+                      ou par courriel&nbsp;: {contactEmail}
+                    </a>
+                  </div>
+
+                  {/* RIGHT — accordion list */}
                   <div className="faq-main">
                     <div className="faq-list" data-faq>
                       {faqs && faqs.length > 0 ? (
@@ -742,28 +722,6 @@ export default async function Home() {
                       ) : null}
                     </div>
                   </div>
-                  <aside className="faq-contact reveal" data-reveal aria-label="Contacter Éliane Larre">
-                    <div className="faq-contact-card">
-                      <p className="faq-section-eyebrow faq-contact-eyebrow">Contact</p>
-                      <h3 className="faq-contact-title">
-                        Une question&nbsp;? <em className="faq-contact-accent">Écris-moi.</em>
-                      </h3>
-                      <p className="faq-contact-body">
-                        Pour toute question sur l&apos;accompagnement, les offres ou la logistique, n&apos;hésite pas. Je réponds
-                        personnellement.
-                      </p>
-                      <a className="faq-contact-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
-                      <div className="faq-contact-sep" role="presentation" />
-                      <p className="faq-contact-or">ou</p>
-                      <a
-                        className="faq-contact-cal"
-                        href={calBookingUrl}
-                        data-cal-link={calLinkNamespace || undefined}
-                        data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-                        >Ou réserve directement un appel découverte<span className="faq-contact-cal-arrow" aria-hidden="true"> →</span></a
-                      >
-                    </div>
-                  </aside>
                 </div>
               </div>
               {faqs && faqs.length > 0 && (
@@ -787,70 +745,48 @@ export default async function Home() {
               )}
             </section>
 
-            {featuredCollaborators.length > 0 && (
+            {(featuredCollaborators.length > 0 || otherCollaborators.length > 0) && (
               <section className="section section-warm" id="collaborateurs">
-                <div className="section-inner">
-                  <h2>{homePage?.collaboratorsHeadline ?? 'Mes collaborateurs'}</h2>
-                  {homePage?.collaboratorsIntro ? (
-                    <p className="collaborators-intro">{homePage.collaboratorsIntro}</p>
-                  ) : null}
-
-                  <div className="collaborators-featured">
-                    {featuredCollaborators.map((collaborator: Collaborator) => {
-                      const content = (
-                        <>
-                          {collaborator?.logo?.asset ? (
-                            <Image
-                              src={urlFor(collaborator.logo).width(600).url()}
-                              alt={collaborator?.logo?.alt ?? collaborator?.name ?? 'Collaborateur'}
-                              width={300}
-                              height={160}
-                            />
-                          ) : (
-                            <p className="collaborator-name">{collaborator?.name}</p>
-                          )}
-                          {collaborator?.description ? (
-                            <p className="collaborator-description">{collaborator.description}</p>
-                          ) : null}
-                        </>
-                      )
-
-                      return collaborator?.website ? (
-                        <a
-                          key={collaborator._id}
-                          className="collaborator-card collaborator-card--featured"
-                          href={collaborator.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {content}
-                        </a>
-                      ) : (
-                        <div
-                          key={collaborator._id}
-                          className="collaborator-card collaborator-card--featured"
-                        >
-                          {content}
-                        </div>
-                      )
-                    })}
-                  </div>
-
-                  {otherCollaborators.length > 0 ? (
-                    <ul className="collaborators-other">
-                      {otherCollaborators.map((collaborator: Collaborator) => (
-                        <li key={collaborator._id}>
-                          {collaborator?.website ? (
-                            <a href={collaborator.website} target="_blank" rel="noopener noreferrer">
-                              {collaborator?.name}
-                            </a>
-                          ) : (
-                            collaborator?.name
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
+                <div className="section-inner collaborators-inner">
+                  <p className="collaborators-eyebrow" aria-hidden="true">
+                    {homePage?.collaboratorsHeadline ?? 'Mes collaborateurs'}
+                  </p>
+                  <ul className="collaborators-list" aria-label={homePage?.collaboratorsHeadline ?? 'Mes collaborateurs'}>
+                    {[...featuredCollaborators, ...otherCollaborators].map((collaborator: Collaborator) => (
+                      <li key={collaborator._id} className="collaborators-item">
+                        {collaborator?.website ? (
+                          <a
+                            className="collaborators-item-link"
+                            href={collaborator.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {collaborator?.logo?.asset ? (
+                              <Image
+                                className="collaborators-logo"
+                                src={urlFor(collaborator.logo).width(400).url()}
+                                alt={collaborator?.logo?.alt ?? collaborator?.name ?? 'Collaborateur'}
+                                width={200}
+                                height={80}
+                              />
+                            ) : (
+                              <span className="collaborators-name">{collaborator?.name}</span>
+                            )}
+                          </a>
+                        ) : collaborator?.logo?.asset ? (
+                          <Image
+                            className="collaborators-logo"
+                            src={urlFor(collaborator.logo).width(400).url()}
+                            alt={collaborator?.logo?.alt ?? collaborator?.name ?? 'Collaborateur'}
+                            width={200}
+                            height={80}
+                          />
+                        ) : (
+                          <span className="collaborators-name">{collaborator?.name}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </section>
             )}

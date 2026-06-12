@@ -1,51 +1,70 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
+
+const NAV_ITEMS = [
+  { label: "Approche", href: "/#approche", section: "approche" },
+  { label: "Accompagnement", href: "/#accompagnement", section: "accompagnement" },
+  { label: "Témoignages", href: "/#temoignages", section: "temoignages" },
+  { label: "FAQ", href: "/#faq", section: "faq" },
+] as const;
 
 export type SiteChromeProps = {
   calBookingUrl?: string;
   calLinkNamespace?: string;
 };
 
+function NavArrowIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
 export default function SiteChrome({
   calBookingUrl = DEFAULT_CAL_BOOKING,
   calLinkNamespace,
 }: SiteChromeProps) {
-  const navItems = [
-    {label: "Approche", href: "/#approche"},
-    {label: "Accompagnement", href: "/#accompagnement"},
-    {label: "Témoignages", href: "/#temoignages"},
-    {label: "FAQ", href: "/#faq"},
-  ];
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
 
+  const calProps = {
+    "data-cal-link": calLinkNamespace || undefined,
+    "data-cal-config": calLinkNamespace ? '{"layout":"month_view"}' : undefined,
+  };
+
   return (
     <>
-      <header className="site-nav" id="site-nav" data-nav>
-        <Link className="nav-logo" href="/" aria-label="Éliane Larre — Accueil">
-          <em>Éliane Larre</em>
-        </Link>
-        <nav aria-label="Navigation principale">
-          <ul className="nav-desktop">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <a href={item.href}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
+      <header className="nav-shell site-nav" id="site-nav" data-nav>
+        <nav className="nav-pill nav-pill--links" aria-label="Navigation principale">
+          {NAV_ITEMS.map((item) => (
+            <a key={item.href} href={item.href} data-section={item.section}>
+              {item.label}
+            </a>
+          ))}
         </nav>
-        <a
-          className="nav-cta nav-cta--outline"
-          href={calBookingUrl}
-          data-cal-link={calLinkNamespace || undefined}
-          data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-        >
-          Appel découverte
-        </a>
+
+        <div className="nav-pill nav-pill--cta" data-nav-cta>
+          <a href={calBookingUrl} {...calProps}>
+            Appel découverte
+            <NavArrowIcon />
+          </a>
+        </div>
+
         <button
           type="button"
           className="nav-toggle"
@@ -54,25 +73,20 @@ export default function SiteChrome({
           data-nav-toggle
           aria-label="Ouvrir le menu"
         >
-          <span className="nav-toggle-bar" aria-hidden="true" />
+          <span aria-hidden="true" />
         </button>
       </header>
 
-      <div className="nav-mobile-panel" id="nav-mobile" data-nav-panel hidden>
-        <ul>
-          {navItems.map((item) => (
-            <li key={`mobile-${item.href}`}>
-              <a href={item.href} data-nav-link>
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div className="nav-overlay" id="nav-mobile" data-nav-panel hidden>
+        {NAV_ITEMS.map((item) => (
+          <a key={`mobile-${item.href}`} href={item.href} data-nav-link>
+            {item.label}
+          </a>
+        ))}
         <a
-          className="btn btn-primary nav-mobile-cta"
+          className="nav-overlay-cta"
           href={calBookingUrl}
-          data-cal-link={calLinkNamespace || undefined}
-          data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+          {...calProps}
           data-nav-link
         >
           Appel découverte
