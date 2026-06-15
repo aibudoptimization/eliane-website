@@ -231,7 +231,7 @@ button:focus-visible {
   align-items: center;
   gap: 8px;
   padding: 14px 24px;
-  color: var(--beige);
+  color: var(--gold);
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 999px;
@@ -428,7 +428,7 @@ button:focus-visible {
 
 .btn-primary {
   background: var(--plum);
-  color: var(--white);
+  color: var(--gold);
 }
 
 .btn-primary:hover {
@@ -554,7 +554,7 @@ button:focus-visible {
   font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
-  color: var(--beige);
+  color: var(--gold);
   box-shadow: 0 8px 24px rgba(85, 39, 114, 0.24);
 }
 
@@ -653,6 +653,12 @@ button:focus-visible {
 
   .hero-stats {
     margin-top: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-image-frame {
+    display: none;
   }
 }
 
@@ -2564,7 +2570,7 @@ button:focus-visible {
   font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
-  color: var(--beige);
+  color: var(--gold);
   box-shadow: 0 8px 24px rgba(85, 39, 114, 0.24);
 }
 
@@ -3219,7 +3225,7 @@ button:focus-visible {
   font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
-  color: var(--beige);
+  color: var(--gold);
   box-shadow: 0 8px 24px rgba(85, 39, 114, 0.24);
 }
 
@@ -3257,6 +3263,7 @@ button:focus-visible {
 
 .testi-header {
   margin-bottom: 48px;
+  text-align: center;
 }
 
 .testi-eyebrow {
@@ -3830,7 +3837,6 @@ button:focus-visible {
 }
 
 .presentiel-card:hover {
-  transform: translateY(-3px);
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -3840,7 +3846,7 @@ button:focus-visible {
 }
 
 .reveal-stagger.is-visible .presentiel-card:hover {
-  transform: translateY(-3px);
+  transform: none;
 }
 
 .reveal-stagger.is-visible .presentiel-card:nth-child(1) {
@@ -3878,7 +3884,7 @@ button:focus-visible {
   font-size: 0.97rem;
   font-weight: 500;
   line-height: 1.35;
-  color: var(--beige);
+  color: var(--gold);
 }
 
 .presentiel-card-body {
@@ -3973,7 +3979,7 @@ button:focus-visible {
 
 .presentiel-quote {
   position: relative;
-  margin: 0;
+  margin: 0 5%;
   padding: 26px 32px;
   background: var(--lavender);
   border-radius: var(--radius);
@@ -3999,6 +4005,7 @@ button:focus-visible {
   font-size: clamp(1.05rem, 0.5vw + 0.95rem, 1.18rem);
   line-height: 1.58;
   color: var(--ink);
+  text-align: center;
 }
 
 .presentiel-quote em {
@@ -4191,7 +4198,11 @@ button:focus-visible {
 }
 
 .faq-panel-inner {
-  padding-bottom: 1.35rem;
+  margin-top: 0.5rem;
+  padding: 1.1rem 1.25rem 1.25rem;
+  background: rgba(228, 192, 69, 0.2);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
   font-family: var(--font-sans);
   font-size: clamp(0.9375rem, 1.2vw, 1.05rem);
   font-weight: 300;
@@ -4239,26 +4250,15 @@ button:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.95rem 1.35rem;
   font-size: clamp(0.875rem, 1.4vw, 0.9375rem);
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--plum);
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  color: var(--gold);
+  transition: opacity 0.2s ease;
 }
 
 .faq-contact-instagram:hover {
-  background: var(--white);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  opacity: 0.8;
 }
 
 .faq-contact-instagram:focus-visible {

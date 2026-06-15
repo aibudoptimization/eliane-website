@@ -51,7 +51,18 @@ export default function SiteChrome({
   return (
     <>
       <header className="nav-shell site-nav" id="site-nav" data-nav>
-        <Link href="/" className="nav-pill nav-pill--wordmark" aria-label="Éliane Larre — Accueil">
+        <Link
+          href="/"
+          className="nav-pill nav-pill--wordmark"
+          aria-label="Éliane Larre — Accueil"
+          onClick={(e) => {
+            if (pathname === "/") {
+              e.preventDefault()
+              const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+              window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })
+            }
+          }}
+        >
           <em>Éliane Larre</em>
         </Link>
 

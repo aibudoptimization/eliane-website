@@ -66,21 +66,36 @@ function NavArrow({direction}: {direction: 'prev' | 'next'}) {
   )
 }
 
+function useMobileDetect() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return isMobile
+}
+
 function VideoCard({
   item,
   position,
   muted,
   onToggleMute,
   onSelect,
+  onMuteChange,
 }: {
   item: TestimonialVideoItem
   position: 'side' | 'center'
   muted: boolean
   onToggleMute: () => void
   onSelect: () => void
+  onMuteChange: (muted: boolean) => void
 }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const isCenter = position === 'center'
+  const isMobile = useMobileDetect()
 
   useEffect(() => {
     const video = videoRef.current
@@ -98,10 +113,46 @@ function VideoCard({
     video.currentTime = 0
   }, [isCenter, item.videoSrc, muted])
 
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !isCenter) return
+
+    const handleFullscreenChange = () => {
+      const isFullscreen =
+        document.fullscreenElement === video ||
+        (document as any).webkitFullscreenElement === video
+      if (!isFullscreen) {
+        video.muted = true
+        onMuteChange(true)
+      }
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
+    }
+  }, [isCenter, onMuteChange])
+
+  function handleCenterTap() {
+    if (!isMobile) return
+    const video = videoRef.current
+    if (!video) return
+    video.muted = false
+    onMuteChange(false)
+    if (typeof (video as any).webkitEnterFullscreen === 'function') {
+      ;(video as any).webkitEnterFullscreen()
+    } else if (typeof video.requestFullscreen === 'function') {
+      void video.requestFullscreen()
+    }
+    void video.play().catch(() => {})
+  }
+
   return (
     <article
       className={`testi-vid-card testi-vid-card--${position}`}
-      onClick={isCenter ? undefined : onSelect}
+      onClick={isCenter ? (isMobile ? handleCenterTap : undefined) : onSelect}
       onKeyDown={
         isCenter
           ? undefined
@@ -112,9 +163,15 @@ function VideoCard({
               }
             }
       }
-      role={isCenter ? undefined : 'button'}
-      tabIndex={isCenter ? undefined : 0}
-      aria-label={isCenter ? undefined : `Voir le témoignage de ${item.name}`}
+      role={isCenter ? (isMobile ? 'button' : undefined) : 'button'}
+      tabIndex={isCenter ? (isMobile ? 0 : undefined) : 0}
+      aria-label={
+        isCenter
+          ? isMobile
+            ? `Voir le témoignage de ${item.name} en plein écran`
+            : undefined
+          : `Voir le témoignage de ${item.name}`
+      }
     >
       {item.videoSrc ? (
         <video
@@ -135,7 +192,7 @@ function VideoCard({
 
       <div className="testi-vid-dim" aria-hidden="true" />
 
-      {isCenter ? (
+      {isCenter && !isMobile ? (
         <button
           type="button"
           className="testi-mute-toggle"
@@ -226,6 +283,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
                       muted={muted}
                       onToggleMute={() => setMuted((value) => !value)}
                       onSelect={() => goTo(index)}
+                      onMuteChange={setMuted}
                     />
                     {slot === 0 ? (
                       <button
