@@ -4,6 +4,16 @@ export const metadata: Metadata = {
   title: "Conditions d'utilisation — Éliane Larre",
   description:
     "Conditions d'utilisation — Éliane Larre, entraîneure personnelle privée à Montréal.",
+  alternates: { canonical: "/conditions-utilisation" },
+  openGraph: {
+    type: "website",
+    locale: "fr_CA",
+    title: "Conditions d'utilisation — Éliane Larre",
+    description:
+      "Conditions d'utilisation — Éliane Larre, entraîneure personnelle privée à Montréal.",
+    siteName: "Éliane Larre",
+  },
+  robots: { index: false },
 };
 
 export default function ConditionsUtilisationPage() {

@@ -1,6 +1,9 @@
-export const metadata = {
-  title: 'Éliane Larre — Studio',
-}
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Éliane Larre — Studio",
+  robots: { index: false, follow: false },
+};
 
 export default function StudioLayout({children}: {children: React.ReactNode}) {
   return children

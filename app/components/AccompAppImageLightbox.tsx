@@ -53,6 +53,7 @@ export function AccompAppImageLightbox({src, lightboxSrc, alt}: AccompAppImageLi
           alt={alt}
           width={1200}
           height={800}
+          sizes="(max-width: 900px) 100vw, 50vw"
           loading="lazy"
           draggable={false}
         />

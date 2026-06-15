@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon accompagnement — Layout mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; font-weight: 300; color: #1a1410; background: #ebe4d9; padding: 60px 40px; }
+.section { background: #f6f1ea; border-radius: 22px; padding: 64px 56px; max-width: 1100px; margin: 0 auto; }
+.eyebrow { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: #552772; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.eyebrow::before { content: ''; width: 24px; height: 1px; background: #552772; opacity: 0.5; }
+.h2 { font-family: 'Playfair Display', serif; font-size: 2.4rem; line-height: 1.12; color: #1a1410; margin-bottom: 16px; }
+.h2 em { font-style: italic; color: #552772; }
+.lead { font-size: 1.02rem; color: #5a5048; line-height: 1.7; margin-bottom: 48px; max-width: 540px; }
+.body { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: start; }
+
+/* Timeline */
+.timeline { position: relative; }
+.tl-track { position: absolute; left: 17px; top: 34px; bottom: 34px; width: 1px; background: rgba(85,39,114,0.15); }
+.tl-item { display: grid; grid-template-columns: 36px 1fr; gap: 20px; padding-bottom: 32px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot { width: 36px; height: 36px; border-radius: 50%; background: #dfc7ed; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: #552772; position: relative; z-index: 1; flex-shrink: 0; }
+.tl-body { padding-top: 6px; }
+.tl-title { font-size: 1.08rem; font-weight: 500; color: #1a1410; margin-bottom: 8px; line-height: 1.3; }
+.tl-desc { font-size: 0.97rem; color: #5a5048; line-height: 1.72; }
+
+/* App panel */
+.app-panel { background: #ebe4d9; border-radius: 22px; overflow: hidden; box-shadow: 0 14px 44px rgba(85,39,114,0.08), 0 4px 12px rgba(26,20,16,0.04); }
+.app-img { background: #111; display: flex; align-items: center; justify-content: center; min-height: 260px; }
+.app-img img { width: 100%; display: block; }
+.app-img-placeholder { color: rgba(246,241,234,0.2); font-size: 0.85rem; letter-spacing: 0.08em; padding: 60px 0; }
+.app-text { padding: 28px 30px 32px; }
+.app-eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #8a8078; margin-bottom: 12px; }
+.app-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: #1a1410; line-height: 1.3; margin-bottom: 12px; }
+.app-desc { font-size: 0.97rem; color: #5a5048; line-height: 1.72; }
+
+/* CTA */
+.cta { margin-top: 52px; text-align: center; }
+.btn { display: inline-flex; align-items: center; gap: 10px; background: #552772; color: #f6f1ea; padding: 16px 30px; border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 0.94rem; font-weight: 500; text-decoration: none; }
+
+@media (max-width: 860px) {
+  .body { grid-template-columns: 1fr; gap: 40px; }
+  .section { padding: 40px 28px; }
+  h2 { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+<section class="section">
+  <div class="eyebrow">Mon accompagnement</div>
+  <h2 class="h2">Un accompagnement <em>personnalisé</em>, du début à la fin.</h2>
+  <p class="lead">Quatre piliers conçus ensemble pour te donner le cadre, la guidance et les outils dont tu as besoin pour progresser sans te perdre en route.</p>
+
+  <div class="body">
+    <div class="timeline">
+      <div class="tl-track"></div>
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-body">
+          <div class="tl-title">Un plan clair</div>
+          <div class="tl-desc">Ton programme est intégré à ton application personnalisée pour t'offrir une structure claire et des outils concrets pour soutenir ta progression.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-body">
+          <div class="tl-title">Séances privées en présentiel</div>
+          <div class="tl-desc">Tu es guidée, corrigée et accompagnée en temps réel pour progresser avec confiance.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-body">
+          <div class="tl-title">Suivi entre les rencontres</div>
+          <div class="tl-desc">Tu n'es pas laissée seule entre deux séances. L'accompagnement te garde engagée, alignée et constante.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">4</div>
+        <div class="tl-body">
+          <div class="tl-title">Enseignements concrets et utiles</div>
+          <div class="tl-desc">Je suis là pour te partager mes connaissances en entraînement et nutrition pour te permettre de comprendre et maintenir tes résultats.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-panel">
+      <div class="app-img">
+        <!-- Replace src with the actual phone PNG path -->
+        <!-- <img src="app-screenshot.png" alt="Application d'entraînement Éliane"> -->
+        <div class="app-img-placeholder">← replace with app-screenshot.png →</div>
+      </div>
+      <div class="app-text">
+        <div class="app-eyebrow">Application personnalisée</div>
+        <div class="app-title">Un outil pensé pour toi, accessible où que tu sois.</div>
+        <div class="app-desc">Tes entraînements, ton historique de progression et tes communications avec moi, regroupés au même endroit. Simple, lisible, fait pour t'accompagner sans t'alourdir.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="https://cal.com/elianelarre/appel-decouverte" class="btn">
+      Je veux voir si l'accompagnement est adapté pour moi →
+    </a>
+  </div>
+</section>
+</body>
+</html>

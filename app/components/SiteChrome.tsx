@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
@@ -50,6 +51,10 @@ export default function SiteChrome({
   return (
     <>
       <header className="nav-shell site-nav" id="site-nav" data-nav>
+        <Link href="/" className="nav-pill nav-pill--wordmark" aria-label="Éliane Larre — Accueil">
+          <em>Éliane Larre</em>
+        </Link>
+
         <nav className="nav-pill nav-pill--links" aria-label="Navigation principale">
           {NAV_ITEMS.map((item) => (
             <a key={item.href} href={item.href} data-section={item.section}>

@@ -12,6 +12,13 @@ import {TestimonialsSection, type TestimonialVideoItem} from '@/app/components/T
 import {urlFor} from '@/sanity/imageUrl'
 import {sanityFetch} from '@/sanity/live'
 import {COLLABORATORS_QUERY, FAQS_QUERY, HOMEPAGE_QUERY, SITE_SETTINGS_QUERY} from '@/sanity/queries'
+import {SITE_URL} from '@/app/layout'
+
+/** Serializes a JSON-LD object and escapes `</` to prevent script-injection
+ *  breakout when embedded in a `<script type="application/ld+json">` tag. */
+function safeJsonLd(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, '\\u003c')
+}
 
 const HERO_HEADLINE_ACCENT_PHRASES = [
   'progresser durablement',
@@ -411,6 +418,7 @@ export default async function Home() {
                         }
                         width={1000}
                         height={1200}
+                        sizes="(max-width: 900px) 100vw, 50vw"
                         priority
                       />
                     </div>
@@ -419,7 +427,7 @@ export default async function Home() {
                 <div className="hero-stats reveal" data-reveal>
                   <div>
                     <div className="hero-stat-num">
-                      <span data-count="12">0</span>+
+                      <span data-count="10">0</span>+
                     </div>
                     <div className="hero-stat-label">Années de pratique</div>
                   </div>
@@ -579,6 +587,7 @@ export default async function Home() {
               eyebrow={homePage?.reviewsEyebrow ?? homePage?.reviewsHeadline}
               title={homePage?.reviewsTitle}
               videos={testimonialVideos}
+              instagramUrl={instagramUrl}
             />
 
             <PourToiSection
@@ -728,7 +737,7 @@ export default async function Home() {
                 <script
                   type="application/ld+json"
                   dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
+                    __html: safeJsonLd({
                       '@context': 'https://schema.org',
                       '@type': 'FAQPage',
                       mainEntity: faqs.map((faq: { question?: string; answer?: unknown }) => ({
@@ -768,6 +777,7 @@ export default async function Home() {
                                 alt={collaborator?.logo?.alt ?? collaborator?.name ?? 'Collaborateur'}
                                 width={200}
                                 height={80}
+                                sizes="(max-width: 600px) 120px, 200px"
                               />
                             ) : (
                               <span className="collaborators-name">{collaborator?.name}</span>
@@ -780,6 +790,7 @@ export default async function Home() {
                             alt={collaborator?.logo?.alt ?? collaborator?.name ?? 'Collaborateur'}
                             width={200}
                             height={80}
+                            sizes="(max-width: 600px) 120px, 200px"
                           />
                         ) : (
                           <span className="collaborators-name">{collaborator?.name}</span>
@@ -790,6 +801,31 @@ export default async function Home() {
                 </div>
               </section>
             )}
+
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: safeJsonLd({
+                  '@context': 'https://schema.org',
+                  '@type': 'HealthAndBeautyBusiness',
+                  name: 'Éliane Larre — Entraîneure personnelle',
+                  url: SITE_URL,
+                  image: `${SITE_URL}/opengraph-image.png`,
+                  email: contactEmail,
+                  description:
+                    "Entraîneure personnelle privée à Montréal. Accompagnement personnalisé en présentiel — séances privées, suivi et programmes sur mesure pour les femmes. Accessible sur Instagram 7j/7.",
+                  areaServed: 'Montréal, QC',
+                  address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: 'Montréal',
+                    addressRegion: 'QC',
+                    addressCountry: 'CA',
+                  },
+                  availableLanguage: 'fr-CA',
+                  sameAs: [instagramUrl],
+                }),
+              }}
+            />
           
     </main>
   );

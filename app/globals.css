@@ -7,8 +7,8 @@
   --white: #ffffff;
   --ink: #1a1410;
   --mid: #5a5048;
-  --muted: #8a8078;
-  --gold: #e4c045;
+  --muted: #5e534a; /* darkened from #8a8078 → ~5.5:1 contrast on --beige (WCAG AA) */
+  --gold: #e4c045; /* decorative / large text only — fails WCAG AA at small sizes on light bg */
   --plum: #552772;
   --plum-soft: #6a4a82;
   --plum-hover: #6a3490;
@@ -166,6 +166,44 @@ button:focus-visible {
 .nav-pill--links a.active {
   color: var(--ink);
   background: rgba(85, 39, 114, 0.08);
+}
+
+.nav-pill--wordmark {
+  position: absolute;
+  left: 32px;
+  top: 50%;
+  transform: translateY(-50%) translateY(10px);
+  padding: 10px 20px;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  text-decoration: none;
+  transition:
+    background 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    opacity 0.45s var(--ease-out),
+    visibility 0.45s var(--ease-out),
+    transform 0.45s var(--ease-out);
+}
+
+.nav-shell.is-past-hero .nav-pill--wordmark {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(-50%) translateY(0);
+}
+
+.nav-pill--wordmark:hover {
+  background: rgba(26, 20, 16, 0.04);
+  transform: translateY(calc(-50% - 1px));
+}
+
+.nav-shell.is-past-hero .nav-pill--wordmark:hover {
+  transform: translateY(calc(-50% - 1px));
 }
 
 .nav-pill--cta {
@@ -423,6 +461,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   padding: calc(var(--nav-h) + 24px) 0 56px;
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
   position: relative;
   overflow: hidden;
 }
@@ -769,6 +808,7 @@ button:focus-visible {
 /* —— Sections —— */
 .section {
   padding: var(--pad-y) var(--pad-x);
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
 }
 
 .section-inner {
@@ -2618,9 +2658,69 @@ button:focus-visible {
   opacity: 0.55;
 }
 
+.bio-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.bio-tab {
+  position: relative;
+  overflow: hidden;
+  padding: 8px 14px 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--mid);
+  border-radius: 8px;
+  transition:
+    color 0.25s var(--ease-out),
+    background 0.25s var(--ease-out);
+}
+
+.bio-tab:hover {
+  color: var(--plum);
+  background: rgba(85, 39, 114, 0.06);
+}
+
+.bio-tab.is-active {
+  color: var(--plum);
+  background: rgba(85, 39, 114, 0.08);
+}
+
+.bio-tab-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: var(--plum);
+  border-radius: 0 1px 1px 0;
+}
+
+.bio-tab-progress.is-running {
+  animation: bioTabFill linear forwards;
+}
+
+@keyframes bioTabFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .bio-card-area {
   position: relative;
-  height: 260px;
+  transition: height 0.35s var(--ease-out);
   margin-bottom: 28px;
 }
 
@@ -2635,77 +2735,21 @@ button:focus-visible {
   padding: 28px 32px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   pointer-events: none;
-  overflow: hidden;
   opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s var(--ease-out);
   z-index: 1;
 }
 
 .bio-card.is-active {
   opacity: 1;
+  transform: none;
   pointer-events: auto;
-  z-index: 3;
-}
-
-.bio-card.is-past {
-  opacity: 0;
-  z-index: 1;
-}
-
-.bio-card.is-peeling {
-  animation: cardPeelOut 1.3s linear forwards;
-  z-index: 4;
-  pointer-events: none;
-  opacity: 1;
-}
-
-.bio-card.is-revealing {
-  opacity: 1;
-  z-index: 3;
-  clip-path: none !important;
-}
-
-@keyframes cardPeelOut {
-  0% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%);
-    opacity: 1;
-  }
-  10% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 90% 100%, 0% 100%);
-  }
-  20% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 80% 100%, 0% 100%);
-  }
-  30% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 70% 100%, 0% 100%);
-  }
-  40% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 60%, 60% 100%, 0% 100%);
-  }
-  50% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 50% 100%, 0% 100%);
-  }
-  60% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 40% 100%, 0% 100%);
-  }
-  70% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 30%, 30% 100%, 0% 100%);
-  }
-  80% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 20%, 20% 100%, 0% 100%);
-  }
-  90% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 10%, 10% 100%, 0% 100%);
-  }
-  99% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 1%, 1% 100%, 0% 100%);
-    opacity: 1;
-  }
-  100% {
-    clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%);
-    opacity: 0;
-  }
+  z-index: 2;
 }
 
 .bio-card p {
@@ -2731,36 +2775,6 @@ button:focus-visible {
   margin-bottom: 12px;
 }
 
-.bio-card-timer {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 20px;
-  height: 20px;
-}
-
-.bio-card-timer svg {
-  transform: rotate(-90deg);
-  width: 100%;
-  height: 100%;
-}
-
-.bio-card-timer .track {
-  fill: none;
-  stroke: var(--plum);
-  stroke-width: 2.5;
-  opacity: 0.15;
-}
-
-.bio-card-timer .ring {
-  fill: none;
-  stroke: var(--plum);
-  stroke-width: 2.5;
-  stroke-dasharray: 75.4;
-  stroke-dashoffset: 75.4;
-  stroke-linecap: round;
-  opacity: 0.55;
-}
 
 .bio-section-quote {
   background: var(--lavender);
@@ -2811,43 +2825,6 @@ button:focus-visible {
   gap: 12px;
 }
 
-.bio-progress {
-  position: absolute;
-  right: -12px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  z-index: 10;
-}
-
-.bio-progress-dot {
-  width: 10px;
-  height: 34px;
-  padding: 0;
-  border-radius: 0 4px 4px 0;
-  background: var(--beige-deep);
-  border: 1px solid rgba(26, 20, 16, 0.1);
-  border-left: none;
-  cursor: pointer;
-  transition:
-    width 0.3s var(--ease-out),
-    background 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
-}
-
-.bio-progress-dot:hover {
-  width: 13px;
-  background: rgba(85, 39, 114, 0.15);
-}
-
-.bio-progress-dot.is-active {
-  width: 14px;
-  background: var(--plum);
-  border-color: var(--plum);
-  box-shadow: 2px 0 8px rgba(85, 39, 114, 0.28);
-}
 
 @media (max-width: 920px) {
   .bio-grid {
@@ -2863,9 +2840,14 @@ button:focus-visible {
     width: 100%;
   }
 
+  .bio-tabs {
+    display: none;
+  }
+
   .bio-card-area {
-    height: auto;
+    height: auto !important;
     min-height: 0;
+    transition: none;
   }
 
   .bio-card,
@@ -2874,30 +2856,29 @@ button:focus-visible {
     inset: auto;
     opacity: 1 !important;
     transform: none !important;
-    clip-path: none !important;
     animation: none !important;
     pointer-events: auto;
     margin-bottom: 14px;
+    transition: none;
   }
 
   .bio-card:last-child {
     margin-bottom: 0;
   }
-
-  .bio-card-timer,
-  .bio-progress {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bio-card.is-peeling {
-    animation: none;
-    opacity: 0;
+  .bio-card {
+    transition: none;
   }
 
-  .bio-card.is-revealing {
-    opacity: 1;
+  .bio-card-area {
+    transition: none;
+  }
+
+  .bio-tab-progress.is-running {
+    animation: none;
+    transform: scaleX(1);
   }
 }
 

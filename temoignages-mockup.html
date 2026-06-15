@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Témoignages vidéo — Layout mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; font-weight: 300; color: #1a1410; background: #ebe4d9; padding: 60px 40px; }
+
+.section { background: #f6f1ea; border-radius: 22px; padding: 64px 56px; max-width: 1100px; margin: 0 auto; }
+
+/* Header */
+.testi-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; gap: 24px; }
+.eyebrow { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: #552772; display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.eyebrow::before { content: ''; width: 24px; height: 1px; background: #552772; opacity: 0.55; }
+.h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.8vw, 2.8rem); line-height: 1.1; color: #1a1410; }
+.h2 em { font-style: italic; color: #552772; }
+
+.nav-btns { display: flex; gap: 10px; flex-shrink: 0; }
+.nav-btn {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: #fff;
+  border: 1px solid rgba(26,20,16,0.12);
+  box-shadow: 0 2px 8px rgba(26,20,16,0.07);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.35s ease;
+}
+.nav-btn:hover { background: #552772; border-color: #552772; }
+.nav-btn:hover svg { stroke: #f6f1ea; }
+.nav-btn svg { stroke: #1a1410; transition: stroke 0.35s ease; }
+.nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Carousel wrapper with edge fade */
+.carousel-wrap { position: relative; overflow: hidden; margin-bottom: 24px; }
+.carousel-wrap::before,
+.carousel-wrap::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+}
+.carousel-wrap::before { left: 0; background: linear-gradient(to right, #f6f1ea, transparent); }
+.carousel-wrap::after  { right: 0; background: linear-gradient(to left,  #f6f1ea, transparent); }
+
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 12px 0 20px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Video cards */
+.vid-card {
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vid-card.side  { width: 160px; height: 284px; opacity: 0.55; transform: scale(0.91); }
+.vid-card.center { width: 210px; height: 373px; opacity: 1; transform: scale(1); }
+
+/* Video element fills the card */
+.vid-card video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* Fallback placeholder */
+.vid-placeholder {
+  position: absolute; inset: 0;
+  background: linear-gradient(170deg, #2c2420 0%, #111 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(246,241,234,0.15); font-size: 0.75rem; letter-spacing: 0.08em;
+}
+
+/* Dim overlay on side cards */
+.vid-dim { position: absolute; inset: 0; background: rgba(26,20,16,0.3); transition: opacity 0.5s ease; }
+.vid-card.center .vid-dim { opacity: 0; }
+
+/* Playing badge */
+.playing-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: #dfc7ed; border-radius: 999px;
+  padding: 4px 10px; font-size: 0.72rem; font-weight: 500; color: #552772;
+  display: flex; align-items: center; gap: 5px;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.vid-card.center .playing-badge { opacity: 1; }
+.playing-dot { width: 6px; height: 6px; border-radius: 50%; background: #552772; animation: blink 1.4s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0.35} }
+
+/* Mute toggle */
+.mute-toggle {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(26,20,16,0.65);
+  border-radius: 999px; padding: 5px 10px;
+  font-size: 0.72rem; font-weight: 500; color: rgba(246,241,234,0.85);
+  display: flex; align-items: center; gap: 5px;
+  cursor: pointer;
+  border: 1px solid rgba(246,241,234,0.15);
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.vid-card.center .mute-toggle { opacity: 1; }
+.mute-toggle:hover { background: rgba(26,20,16,0.85); }
+
+/* Name + stars overlay */
+.vid-footer {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 40px 14px 14px;
+  background: linear-gradient(to top, rgba(18,14,10,0.94) 0%, transparent 100%);
+}
+.vid-stars { color: #e4c045; font-size: 0.78rem; letter-spacing: 2px; margin-bottom: 4px; }
+.vid-name  { font-weight: 500; font-size: 0.92rem; color: #f6f1ea; line-height: 1.2; }
+.vid-role  { font-size: 0.74rem; color: rgba(246,241,234,0.5); margin-top: 2px; }
+
+/* Progress dots */
+.dots { display: flex; justify-content: center; gap: 8px; }
+.dot { height: 6px; border-radius: 999px; background: rgba(85,39,114,0.2); cursor: pointer; transition: all 0.35s ease; }
+.dot.active { width: 22px; background: #552772; }
+.dot:not(.active) { width: 6px; }
+
+@media (max-width: 860px) {
+  .section { padding: 40px 24px; }
+  .vid-card.side  { width: 110px; height: 195px; }
+  .vid-card.center { width: 160px; height: 284px; }
+  .carousel-wrap::before, .carousel-wrap::after { width: 40px; }
+}
+</style>
+</head>
+<body>
+<section class="section">
+
+  <div class="testi-header">
+    <div>
+      <div class="eyebrow">Leur expérience</div>
+      <h2 class="h2">Ce qu'<em>elles</em> en disent.</h2>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevBtn" aria-label="Témoignage précédent">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="nav-btn" id="nextBtn" aria-label="Témoignage suivant">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+</section>
+
+<script>
+/* ── Data: replace src with real video URLs from Sanity ── */
+const videos = [
+  { name: 'Claudie Larose',   role: 'Cliente', src: '' },
+  { name: 'Erwanne Frenette', role: 'Cliente', src: '' },
+  { name: 'Laurie Ciorra',    role: 'Cliente', src: '' },
+  { name: 'Cliente 4',        role: 'Cliente', src: '' },
+];
+
+let active = 0;
+const total = videos.length;
+const carousel = document.getElementById('carousel');
+const dotsEl   = document.getElementById('dots');
+
+function muteIcon() {
+  return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>`;
+}
+function soundIcon() {
+  return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </svg>`;
+}
+
+function render() {
+  carousel.innerHTML = '';
+  dotsEl.innerHTML   = '';
+
+  /* Show prev, active, next (wrap around) */
+  const indices = [
+    (active - 1 + total) % total,
+    active,
+    (active + 1) % total,
+  ];
+
+  indices.forEach((vi, pos) => {
+    const v   = videos[vi];
+    const isCenter = pos === 1;
+    const card = document.createElement('div');
+    card.className = `vid-card ${isCenter ? 'center' : 'side'}`;
+
+    card.innerHTML = `
+      ${v.src
+        ? `<video src="${v.src}" ${isCenter ? 'autoplay' : ''} muted playsinline loop></video>`
+        : `<div class="vid-placeholder">${v.name}</div>`
+      }
+      <div class="vid-dim"></div>
+      <div class="playing-badge"><div class="playing-dot"></div>En lecture</div>
+      <div class="mute-toggle" id="muteToggle">${muteIcon()} Son coupé</div>
+      <div class="vid-footer">
+        <div class="vid-stars">★★★★★</div>
+        <div class="vid-name">${v.name}</div>
+        <div class="vid-role">${v.role}</div>
+      </div>
+    `;
+
+    /* Mute toggle */
+    if (isCenter) {
+      const toggle = card.querySelector('#muteToggle');
+      const vid    = card.querySelector('video');
+      let muted = true;
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        muted = !muted;
+        if (vid) vid.muted = muted;
+        toggle.innerHTML = muted
+          ? `${muteIcon()} Son coupé`
+          : `${soundIcon()} Son activé`;
+      });
+    }
+
+    carousel.appendChild(card);
+  });
+
+  /* Dots */
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = `dot ${i === active ? 'active' : ''}`;
+    d.addEventListener('click', () => { active = i; render(); });
+    dotsEl.appendChild(d);
+  }
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  active = (active - 1 + total) % total;
+  render();
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  active = (active + 1) % total;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

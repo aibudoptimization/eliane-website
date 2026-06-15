@@ -9,191 +9,130 @@ export type BioCardItem = {
   body?: string
 }
 
-const DURATION = 9000
-const PEEL_MS = 1350
-const RING_CIRCUMFERENCE = 75.4
+const DURATION = 14000
 const MOBILE_MQ = '(max-width: 920px)'
-
-function CardTimerRing({active}: {active: boolean}) {
-  const ringRef = useRef<SVGCircleElement>(null)
-
-  useEffect(() => {
-    const ring = ringRef.current
-    if (!ring || !active) return
-
-    ring.style.transition = 'none'
-    ring.style.strokeDashoffset = String(RING_CIRCUMFERENCE)
-
-    const frame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        ring.style.transition = `stroke-dashoffset ${DURATION - 1400}ms linear`
-        ring.style.strokeDashoffset = '0'
-      })
-    })
-
-    return () => cancelAnimationFrame(frame)
-  }, [active])
-
-  return (
-    <div className="bio-card-timer" aria-hidden="true">
-      <svg viewBox="0 0 32 32">
-        <circle className="track" cx="16" cy="16" r="12" />
-        <circle ref={ringRef} className="ring" cx="16" cy="16" r="12" />
-      </svg>
-    </div>
-  )
-}
-
-type CardState = 'past' | 'active' | 'peeling' | 'revealing'
-
-function cardClass(state: CardState | undefined): string {
-  const base = 'bio-card'
-  if (state === 'active') return `${base} is-active`
-  if (state === 'past') return `${base} is-past`
-  if (state === 'peeling') return `${base} is-peeling`
-  if (state === 'revealing') return `${base} is-revealing`
-  return base
-}
 
 export function BioCardStack({cards}: {cards: BioCardItem[]}) {
   const areaRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const [current, setCurrent] = useState(0)
-  const [cardStates, setCardStates] = useState<CardState[]>(() =>
-    cards.map((_, i) => (i === 0 ? 'active' : 'past')),
-  )
-  const [ringKey, setRingKey] = useState(0)
+  const [height, setHeight] = useState<number | undefined>()
   const [isMobile, setIsMobile] = useState(false)
   const [paused, setPaused] = useState(false)
-  const currentRef = useRef(0)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const peelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [visible, setVisible] = useState(true)
+  const [animKey, setAnimKey] = useState(0)
 
+  // measure active card height → animate container
   useEffect(() => {
-    currentRef.current = current
-  }, [current])
+    const el = cardRefs.current[current]
+    if (!el || isMobile) return
+    const measure = () => setHeight(el.scrollHeight)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [current, isMobile, cards])
 
+  // mobile + reduced-motion detection
   useEffect(() => {
-    const mobileMq = window.matchMedia(MOBILE_MQ)
-    const motionMq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const update = () => setIsMobile(mobileMq.matches || motionMq.matches)
+    const mq = window.matchMedia(MOBILE_MQ)
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setIsMobile(mq.matches || motion.matches)
     update()
-    mobileMq.addEventListener('change', update)
-    motionMq.addEventListener('change', update)
+    mq.addEventListener('change', update)
+    motion.addEventListener('change', update)
     return () => {
-      mobileMq.removeEventListener('change', update)
-      motionMq.removeEventListener('change', update)
+      mq.removeEventListener('change', update)
+      motion.removeEventListener('change', update)
     }
   }, [])
 
-  const settleClasses = useCallback((idx: number) => {
-    setCardStates(
-      cards.map((_, i) => {
-        if (i === idx) return 'active'
-        return 'past'
-      }),
-    )
-    setRingKey((k) => k + 1)
-  }, [cards])
-
-  const showCard = useCallback(
-    (idx: number, animate: boolean) => {
-      const fromIdx = currentRef.current
-      setCurrent(idx)
-      currentRef.current = idx
-
-      if (!animate || fromIdx === idx || isMobile) {
-        settleClasses(idx)
-        return
-      }
-
-      setCardStates(
-        cards.map((_, i) => {
-          if (i === fromIdx) return 'peeling'
-          if (i === idx) return 'revealing'
-          return 'past'
-        }),
-      )
-
-      if (peelTimeoutRef.current) clearTimeout(peelTimeoutRef.current)
-      peelTimeoutRef.current = setTimeout(() => {
-        settleClasses(idx)
-      }, PEEL_MS)
-    },
-    [cards, isMobile, settleClasses],
-  )
-
+  // pause when section scrolls off screen
   useEffect(() => {
-    if (isMobile || cards.length <= 1) return
+    const el = areaRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), {
+      threshold: 0.2,
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
-    timerRef.current = setInterval(() => {
-      if (paused) return
-      const next = (currentRef.current + 1) % cards.length
-      showCard(next, true)
+  const goTo = useCallback((idx: number) => {
+    setCurrent(idx)
+    setAnimKey((k) => k + 1)
+  }, [])
+
+  // autoplay
+  useEffect(() => {
+    if (isMobile || cards.length <= 1 || paused || !visible) return
+    const id = setInterval(() => {
+      setCurrent((c) => {
+        const next = (c + 1) % cards.length
+        setAnimKey((k) => k + 1)
+        return next
+      })
     }, DURATION)
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-      if (peelTimeoutRef.current) clearTimeout(peelTimeoutRef.current)
-    }
-  }, [cards.length, isMobile, paused, showCard])
-
-  const jumpTo = (idx: number) => {
-    showCard(idx, true)
-    if (timerRef.current) clearInterval(timerRef.current)
-    if (!isMobile && cards.length > 1) {
-      timerRef.current = setInterval(() => {
-        if (paused) return
-        const next = (currentRef.current + 1) % cards.length
-        showCard(next, true)
-      }, DURATION)
-    }
-  }
+    return () => clearInterval(id)
+  }, [isMobile, cards.length, paused, visible])
 
   if (cards.length === 0) return null
 
-  return (
-    <div
-      ref={areaRef}
-      className="bio-card-area"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      {cards.map((card, i) => (
-        <div
-          key={card._key ?? `bio-card-${i}`}
-          className={isMobile ? 'bio-card bio-card--mobile' : cardClass(cardStates[i])}
-          data-card={i}
-        >
-          {card.label ? <div className="bio-card-label">{card.label}</div> : null}
-          {card.body ? <p>{renderBoldText(card.body)}</p> : null}
-          {!isMobile && cardStates[i] === 'active' ? (
-            <CardTimerRing key={`ring-${i}-${ringKey}`} active />
-          ) : !isMobile ? (
-            <div className="bio-card-timer" aria-hidden="true">
-              <svg viewBox="0 0 32 32">
-                <circle className="track" cx="16" cy="16" r="12" />
-                <circle className="ring" cx="16" cy="16" r="12" />
-              </svg>
-            </div>
-          ) : null}
-        </div>
-      ))}
+  const playing = !isMobile && !paused && visible && cards.length > 1
 
+  return (
+    <div className="bio-card-block">
       {!isMobile && cards.length > 1 ? (
-        <div className="bio-progress" role="tablist" aria-label="Cartes biographie">
-          {cards.map((_, i) => (
+        <div className="bio-tabs" role="tablist" aria-label="Sections du parcours">
+          {cards.map((card, i) => (
             <button
-              key={`bio-flag-${i}`}
+              key={card._key ?? `tab-${i}`}
               type="button"
-              className={`bio-progress-dot${i === current ? ' is-active' : ''}`}
-              aria-label={`Carte ${i + 1}`}
-              aria-selected={i === current}
               role="tab"
-              onClick={() => jumpTo(i)}
-            />
+              aria-selected={i === current}
+              className={`bio-tab${i === current ? ' is-active' : ''}`}
+              onClick={() => goTo(i)}
+            >
+              <span>{card.label}</span>
+              {i === current ? (
+                <span
+                  key={`progress-${animKey}`}
+                  className={`bio-tab-progress${playing ? ' is-running' : ''}`}
+                  style={{animationDuration: `${DURATION}ms`}}
+                />
+              ) : null}
+            </button>
           ))}
         </div>
       ) : null}
+
+      <div
+        ref={areaRef}
+        className="bio-card-area"
+        style={!isMobile && height ? {height} : undefined}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {cards.map((card, i) => (
+          <div
+            key={card._key ?? `bio-card-${i}`}
+            ref={(el) => {
+              cardRefs.current[i] = el
+            }}
+            role="tabpanel"
+            className={
+              isMobile
+                ? 'bio-card bio-card--mobile'
+                : `bio-card${i === current ? ' is-active' : ''}`
+            }
+          >
+            {isMobile && card.label ? (
+              <div className="bio-card-label">{card.label}</div>
+            ) : null}
+            {card.body ? <p>{renderBoldText(card.body)}</p> : null}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

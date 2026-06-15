@@ -14,12 +14,7 @@ export type TestimonialVideoItem = {
 const DEFAULT_EYEBROW = 'Leur expérience'
 const DEFAULT_TITLE = "Ce qu'elles en disent."
 
-const DEFAULT_VIDEOS: TestimonialVideoItem[] = [
-  {name: 'Claudie Larose', role: 'Cliente'},
-  {name: 'Erwanne Frenette', role: 'Cliente'},
-  {name: 'Laurie Ciorra', role: 'Cliente'},
-  {name: 'Cliente 4', role: 'Cliente'},
-]
+const DEFAULT_VIDEOS: TestimonialVideoItem[] = []
 
 function textOrDefault(value: string | null | undefined, fallback: string): string {
   const trimmed = value?.trim()
@@ -166,13 +161,17 @@ function VideoCard({
   )
 }
 
+const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/eliane.au.naturel'
+
 export type TestimonialsSectionProps = {
   eyebrow?: string | null
   title?: string | null
   videos?: TestimonialVideoItem[]
+  instagramUrl?: string | null
 }
 
-export function TestimonialsSection({eyebrow, title, videos}: TestimonialsSectionProps) {
+export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: TestimonialsSectionProps) {
+  const resolvedInstagramUrl = instagramUrl?.trim() || DEFAULT_INSTAGRAM_URL
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
   const resolvedTitle = textOrDefault(title, DEFAULT_TITLE)
 
@@ -268,7 +267,16 @@ export function TestimonialsSection({eyebrow, title, videos}: TestimonialsSectio
             </div>
           </>
         ) : (
-          <p className="testi-empty">Les témoignages vidéo seront disponibles bientôt.</p>
+          <p className="testi-empty">
+            Les témoignages vidéo arrivent bientôt.{" "}
+            <a
+              href={resolvedInstagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Retrouve les retours de clientes sur Instagram.
+            </a>
+          </p>
         )}
       </div>
     </section>

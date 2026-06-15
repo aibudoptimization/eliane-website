@@ -4,7 +4,7 @@ import {BioCardStack, type BioCardItem} from '@/app/components/BioCardStack'
 export const DEFAULT_MEET_TRAINER_CARDS: BioCardItem[] = [
   {
     label: 'Mon parcours',
-    body: "Depuis plus de 12 ans, l'entraînement fait partie de ma vie. **Au fil des années, j'ai appris que les résultats durables ne viennent pas d'une routine parfaite, d'un plan extrême ou d'une motivation constante.** Ils viennent d'une structure réaliste, d'une meilleure compréhension de son corps et d'habitudes qu'on arrive réellement à maintenir dans le quotidien.",
+    body: "Depuis plus de 10 ans, l'entraînement fait partie de ma vie. **Au fil des années, j'ai appris que les résultats durables ne viennent pas d'une routine parfaite, d'un plan extrême ou d'une motivation constante.** Ils viennent d'une structure réaliste, d'une meilleure compréhension de son corps et d'habitudes qu'on arrive réellement à maintenir dans le quotidien.",
   },
   {
     label: 'Ma philosophie',
@@ -55,7 +55,14 @@ export function MeetTrainerSection({
         <h2 className="sr-only">Rencontre ton entraîneure</h2>
         <div className="bio-grid">
           <div className="bio-sticky-photo">
-            <Image src={imageSrc} alt={imageAlt} width={900} height={1125} priority={false} />
+            <Image
+              src={imageSrc}
+              alt={imageAlt}
+              width={900}
+              height={1125}
+              sizes="(max-width: 900px) 100vw, 45vw"
+              priority={false}
+            />
           </div>
 
           <div className="bio-right">

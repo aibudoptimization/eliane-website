@@ -4,6 +4,16 @@ export const metadata: Metadata = {
   title: "Politique de confidentialité — Éliane Larre",
   description:
     "Politique de confidentialité — Éliane Larre, entraîneure personnelle privée à Montréal.",
+  alternates: { canonical: "/politique-de-confidentialite" },
+  openGraph: {
+    type: "website",
+    locale: "fr_CA",
+    title: "Politique de confidentialité — Éliane Larre",
+    description:
+      "Politique de confidentialité — Éliane Larre, entraîneure personnelle privée à Montréal.",
+    siteName: "Éliane Larre",
+  },
+  robots: { index: false },
 };
 
 export default function PolitiqueConfidentialitePage() {
