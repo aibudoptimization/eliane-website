@@ -98,30 +98,20 @@ async function main() {
   }
 
   const heroImagePath = resolve(process.cwd(), 'public/images/eliane-intro-training.png')
-  const sledImagePath = resolve(process.cwd(), 'public/images/eliane-mission-sled-push.png')
   const meetTrainerImagePath = resolve(process.cwd(), 'public/images/eliane-hero.jpg')
   const forYouImagePath = resolve(process.cwd(), 'public/images/eliane-poids-libres.png')
   const phoneMockPath =
     'C:/Users/Marsan/.cursor/projects/c-Users-Marsan-Desktop-Vibecoding-eliane/assets/c__Users_Marsan_AppData_Roaming_Cursor_User_workspaceStorage_19663086f227eb28a64faff850306d3f_images_phone-mock.jpeg-af3a1b5b-6eeb-4883-ae33-f0f6d6c93244.png'
 
-  const [heroAsset, sledAsset, meetTrainerAsset, forYouAsset, phoneMockAsset] = await Promise.all([
+  const [heroAsset, meetTrainerAsset, forYouAsset, phoneMockAsset] = await Promise.all([
     uploadImageFromPath(heroImagePath),
-    uploadImageFromPath(sledImagePath),
     uploadImageFromPath(meetTrainerImagePath),
     uploadImageFromPath(forYouImagePath),
     uploadImageFromPath(phoneMockPath),
   ])
 
-  const meetTrainerParagraphs = [
-    "Depuis plus de 12 ans, l'entraînement fait partie de ma vie. **Au fil des années, j'ai appris que les résultats durables ne viennent pas d'une routine parfaite, d'un plan extrême ou d'une motivation constante.** Ils viennent d'une structure réaliste, d'une meilleure compréhension de son corps et d'habitudes qu'on arrive réellement à maintenir dans le quotidien.",
-    "J'accompagne mes clientes comme j'aborde mon propre parcours : avec équilibre, sans extrêmes ni restrictions, et en m'adaptant aux différentes saisons de la vie. **Je ne suis pas là pour te donner un plan impossible à maintenir.** Je suis là pour t'aider à t'entraîner avec intention, à mieux comprendre ce que tu fais, à progresser de façon sécuritaire et à bâtir une routine qui s'intègre vraiment à ta vie.",
-    '**Ma spécialité :** aider les femmes à se sentir plus fortes, plus confiantes et plus en maîtrise de leur corps. Des femmes qui veulent des résultats, oui, mais surtout une méthode qui respecte leur rythme, leur réalité et leur corps.',
-    "**À travers mon accompagnement, mon but est de t'amener vers plus de clarté, de constance et d'autonomie.**",
-    '**Je veux que tu saches quoi faire, pourquoi tu le fais, et comment continuer à prendre soin de toi bien après notre travail ensemble.**',
-  ]
-
   const homepagePatch = {
-    heroKicker: 'ENTRAÎNEURE PERSONNELLE • MONTRÉAL',
+    heroKicker: 'Éliane Larre - Entraîneure personnelle à Montréal',
     heroHeadline: [
       mdToBlock(
         "Un service d'accompagnement personnalisé pour t'entraîner avec confiance, progresser durablement et arrêter de toujours recommencer",
@@ -136,21 +126,17 @@ async function main() {
     },
     heroCtaLabel: 'Je veux discuter de mes objectifs',
     heroCtaSubtext: "Appel gratuit, sans engagement pour voir si l'accompagnement est adapté à toi.",
-    marqueeOneItems: [
+    marqueeItems: [
       'Entraînements en présentiel',
       'À Montréal',
       '10+ années de pratique',
       'Approche personnalisée',
+      'Approche durable',
+      'Progression mesurable',
     ],
-    marqueeTwoItems: ['Approche durable', 'Accompagnement personnalisé', 'Progression mesurable'],
     sledHeadline: [mdToBlock('Tu veux progresser, mais tu ne veux plus avancer seule.')],
     sledSubheadline:
       "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction.",
-    sledImage: {
-      _type: 'image',
-      asset: {_type: 'reference', _ref: sledAsset._id},
-      alt: 'Éliane en effort sur le traîneau de poussée',
-    },
     sledFromTitle: "Là où tu es aujourd'hui",
     sledFromItems: [
       { _key: k(), text: [mdToBlock('Tu ne sais pas toujours **quoi faire au gym** ni si tu exécutes les mouvements correctement.')] },
@@ -168,26 +154,54 @@ async function main() {
       { _key: k(), text: [mdToBlock("Vers plus d'autonomie, avec **des bases concrètes en entraînement et en nutrition** que tu pourras continuer d'utiliser bien après l'accompagnement.")] },
     ],
     sledCtaLabel: "C'est là que je veux aller",
-    meetTrainerKicker: 'RENCONTRE TON ENTRAÎNEURE',
+    meetTrainerKicker: 'Rencontre ton entraîneure',
     meetTrainerImage: {
       _type: 'image',
       asset: {_type: 'reference', _ref: meetTrainerAsset._id},
       alt: "Portrait souriant d'Éliane Larre",
     },
-    meetTrainerBody: meetTrainerParagraphs.map((p) => mdToBlock(p)),
-    meetTrainerCtaLabel: 'Voir mon quotidien sur Instagram',
-    pullQuoteText:
-      "Tu n'as pas besoin d'un autre programme. Tu as besoin d'un cadre, d'un regard expert et d'un accompagnement qui s'adapte réellement à toi.",
-    pullQuoteEnabled: true,
-    offeringHeadline: 'Mon accompagnement personnalisé',
-    offeringImages: [
+    meetTrainerCards: [
       {
         _key: k(),
-        _type: 'image',
-        asset: {_type: 'reference', _ref: phoneMockAsset._id},
-        alt: "Montage de trois écrans de l'application d'entraînement",
+        label: 'Mon parcours',
+        body: "Depuis plus de 12 ans, l'entraînement fait partie de ma vie. **Au fil des années, j'ai appris que les résultats durables ne viennent pas d'une routine parfaite, d'un plan extrême ou d'une motivation constante.** Ils viennent d'une structure réaliste, d'une meilleure compréhension de son corps et d'habitudes qu'on arrive réellement à maintenir dans le quotidien.",
+      },
+      {
+        _key: k(),
+        label: 'Ma philosophie',
+        body: "J'accompagne mes clientes comme j'aborde mon propre parcours : avec équilibre, sans extrêmes ni restrictions, et en m'adaptant aux différentes saisons de la vie. **Je ne suis pas là pour te donner un plan impossible à maintenir.** Je suis là pour t'aider à t'entraîner avec intention, à mieux comprendre ce que tu fais, à progresser de façon sécuritaire et à bâtir une routine qui s'intègre vraiment à ta vie.",
+      },
+      {
+        _key: k(),
+        label: 'Ma spécialité',
+        body: 'Aider les femmes à se sentir plus fortes, plus confiantes et plus en maîtrise de leur corps. Des femmes qui veulent des résultats, oui, mais surtout une méthode qui respecte leur rythme, leur réalité et leur corps.',
+      },
+      {
+        _key: k(),
+        label: 'Mon engagement',
+        body: "**Mon but est de t'amener vers plus de clarté, de constance et d'autonomie.** Je veux que tu saches quoi faire, pourquoi tu le fais, et comment continuer à prendre soin de toi bien après notre travail ensemble.",
       },
     ],
+    meetTrainerQuote:
+      "Tu n'as pas besoin d'un autre programme. Tu as besoin d'un cadre, d'un regard expert et d'un accompagnement qui s'adapte réellement à toi.",
+    meetTrainerCtaLabel: 'Voir mon quotidien sur Instagram',
+    meetTrainerCtaUrl: 'https://www.instagram.com/eliane.au.naturel',
+    pullQuoteText:
+      "Tu n'as pas besoin d'un autre programme. Tu as besoin d'un cadre, d'un regard expert et d'un accompagnement qui s'adapte réellement à toi.",
+    pullQuoteEnabled: false,
+    offeringEyebrow: 'Mon accompagnement',
+    offeringTitle: 'Un accompagnement personnalisé, du début à la fin.',
+    offeringLead:
+      'Quatre piliers conçus ensemble pour te donner le cadre, la guidance et les outils dont tu as besoin pour progresser sans te perdre en route.',
+    offeringAppImage: {
+      _type: 'image',
+      asset: {_type: 'reference', _ref: phoneMockAsset._id},
+      alt: "Montage de trois écrans de l'application d'entraînement",
+    },
+    offeringAppKicker: 'Application personnalisée',
+    offeringAppTitle: 'Un outil pensé pour toi, accessible où que tu sois.',
+    offeringAppDescription:
+      'Tes entraînements, ton historique de progression et tes communications avec moi, regroupés au même endroit. Simple, lisible, fait pour t\'accompagner sans t\'alourdir.',
     offeringFeatures: [
       {
         _key: k(),
@@ -197,25 +211,56 @@ async function main() {
       },
       {
         _key: k(),
-        title: 'Des séances privées en présentiel',
+        title: 'Séances privées en présentiel',
         description: 'Tu es guidée, corrigée et accompagnée en temps réel pour progresser avec confiance.',
       },
       {
         _key: k(),
-        title: 'Un suivi entre les rencontres',
+        title: 'Suivi entre les rencontres',
         description: "Tu n'es pas laissée seule entre deux séances. L'accompagnement te garde engagée, alignée et constante.",
       },
       {
         _key: k(),
-        title: 'Des enseignements concrets et utiles',
+        title: 'Enseignements concrets et utiles',
         description:
           'Je suis là pour te partager mes connaissances en entraînement et nutrition pour te permettre de comprendre et maintenir tes résultats.',
       },
     ],
     offeringCtaLabel: "Je veux voir si l'accompagnement est adapté pour moi",
-    inPersonPunchLine:
-      "Un programme peut te dire quoi faire.\nUn accompagnement en présentiel te montre comment le faire et t'aide à progresser plus rapidement qu'en étant seule.",
-    reviewsHeadline: 'Leur expérience',
+    inPersonEyebrow: 'Pourquoi le présentiel',
+    inPersonTitle: 'Pourquoi le présentiel change tout.',
+    presentielCards: [
+      {
+        _key: k(),
+        title: 'Correction en temps réel',
+        description:
+          "J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.",
+        iconName: 'check',
+      },
+      {
+        _key: k(),
+        title: 'Progression sécuritaire',
+        description: "Je t'aide à progresser tout en respectant ton rythme.",
+        iconName: 'shield',
+      },
+      {
+        _key: k(),
+        title: 'Imputabilité',
+        description: "Le présentiel ajoute une structure qui soutient l'engagement.",
+        iconName: 'clock',
+      },
+      {
+        _key: k(),
+        title: 'Adaptation à ton état',
+        description:
+          'Un entraînement sur mesure, selon ton énergie, tes besoins et tes envies.',
+        iconName: 'eye',
+      },
+    ],
+    locationQuote:
+      "Un programme peut te dire *quoi faire*. Un accompagnement en présentiel te montre *comment le faire* et t'aide à progresser plus rapidement qu'en étant seule.",
+    reviewsEyebrow: 'Leur expérience',
+    reviewsTitle: "Ce qu'elles en disent.",
     reviewsList: [
       {
         _key: k(),
@@ -239,13 +284,14 @@ async function main() {
           "Éliane offre un service 100% personnalisé. Elle est patiente, motivante, encadrante et disponible 24/7 pour ses clientes. Elle m'a aidé à passer d'un mode de vie sédentaire à active.",
       },
     ],
-    forYouHeadline: 'Pour toi ou pas?',
+    forYouEyebrow: 'Pour toi ou pas ?',
+    forYouTitle: 'Une approche claire, pour les bonnes raisons.',
     forYouImage: {
       _type: 'image',
       asset: {_type: 'reference', _ref: forYouAsset._id},
       alt: "Éliane accotée sur la barre dans le gym",
     },
-    forYouYesTitle: "C'est pour toi si :",
+    forYouYesTitle: "C'est pour toi si",
     forYouYesItems: [
       'Tu veux être accompagnée sérieusement.',
       "Tu es prête à t'impliquer.",
@@ -253,7 +299,7 @@ async function main() {
       "Tu veux une approche personnalisée plutôt qu'un plan générique.",
       'Tu veux des résultats durables, pas une solution express.',
     ],
-    forYouNoTitle: "Ce n'est probablement pas pour toi si :",
+    forYouNoTitle: "Ce n'est probablement pas pour toi si",
     forYouNoItems: [
       'Tu cherches uniquement le prix le plus bas.',
       'Tu veux une solution miracle sans implication.',
@@ -263,17 +309,35 @@ async function main() {
     forYouFooter:
       "Cet accompagnement s'adresse aux femmes qui veulent investir sérieusement dans leur progression, leur confiance et leur santé à long terme.",
     forYouCtaLabel: "Je veux savoir si c'est pour moi",
-    afterCallHeadline: "Comment ça se passe après l'appel?",
-    afterCallIntro: "L'appel découverte sert à :",
-    afterCallItems: [
-      'Comprendre où tu en es.',
-      'Clarifier tes objectifs.',
-      "Voir si l'accompagnement est adapté.",
-      'Répondre à tes questions.',
-      'Te recommander la meilleure prochaine étape.',
-    ],
-    afterCallFooter:
+    afterCallEyebrow: 'Comment ça se passe',
+    afterCallHeadline: "Après l'appel découverte.",
+    afterCallIntro:
       "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.",
+    afterCallSteps: [
+      {
+        title: 'Comprendre où tu en es',
+        description:
+          "On prend le temps de regarder ton point de départ : ton historique d'entraînement, ton mode de vie et ce qui t'a freinée par le passé.",
+      },
+      {
+        title: 'Clarifier tes objectifs',
+        description:
+          'On met des mots précis sur ce que tu veux vraiment atteindre, et sur ce qui compte pour toi à long terme.',
+      },
+      {
+        title: "Voir si l'accompagnement est adapté",
+        description: "Je te dirai honnêtement si ce que j'offre correspond à ce que tu cherches — ou pas.",
+      },
+      {
+        title: 'Répondre à tes questions',
+        description:
+          'Tu peux poser tout ce que tu veux : logistique, fréquence, méthode, prix. Aucune question n\'est de trop.',
+      },
+      {
+        title: 'Te recommander la meilleure prochaine étape',
+        description: 'Que ce soit avec moi ou ailleurs, tu repars avec une direction claire pour avancer.',
+      },
+    ],
     afterCallCtaLabel: "Je suis prête à avoir plus d'informations",
     purpleCtaHeadline: 'Es-tu prête à investir en toi ?',
     purpleCtaButtonLabel: "Je veux passer à l'action",
@@ -418,7 +482,7 @@ async function main() {
   console.log(`- FAQs upserted: ${faqDocs.length}`)
   console.log('- FAQs not in seed list deleted')
   console.log('- Collaborator upserted: Esthétique Flora')
-  console.log('- Images uploaded and linked for hero, sled, meet-trainer, offering (montage 3 écrans), for-you')
+  console.log('- Images uploaded and linked for hero, meet-trainer, offering (montage 3 écrans), for-you')
 }
 
 main().catch((err) => {

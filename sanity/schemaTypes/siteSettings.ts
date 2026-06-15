@@ -38,6 +38,31 @@ export default defineType({
       title: 'Lien Instagram',
       type: 'url',
     }),
+    defineField({
+      name: 'metaTitle',
+      title: 'Titre SEO (balise title)',
+      description:
+        "Laisse vide pour utiliser le titre par défaut. Recommandé : moins de 60 caractères.",
+      type: 'string',
+      validation: (Rule) => Rule.max(70),
+    }),
+    defineField({
+      name: 'metaDescription',
+      title: 'Description SEO (meta description)',
+      description:
+        "Laisse vide pour utiliser la description par défaut. Recommandé : 120–160 caractères.",
+      type: 'text',
+      rows: 3,
+      validation: (Rule) => Rule.max(200),
+    }),
+    defineField({
+      name: 'ogImage',
+      title: 'Image de partage (Open Graph)',
+      description:
+        "Image affichée lors du partage du site sur les réseaux sociaux. Format recommandé : 1200×630 px. Laisse vide pour utiliser l'image par défaut.",
+      type: 'image',
+      options: { hotspot: true },
+    }),
   ],
   preview: {
     prepare: () => ({title: 'Paramètres du site'}),

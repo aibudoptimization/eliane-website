@@ -3,64 +3,6 @@
  * Returns a teardown that removes listeners / observers.
  */
 
-import { createIcons, Eye, ShieldCheck, CalendarCheck, Activity } from "lucide";
-
-/** Biner Training — 220 Bd Crémazie O; center matches Google Maps place resolution for maps.app.goo.gl/c1V1Re3Guj8ZF6mEA */
-const BINER_STATIC_MAP_CENTER = "45.5385897,-73.6430173";
-
-function initPresentielLucideIcons(): void {
-  const root = document.getElementById("presentiel");
-  if (!root) return;
-  createIcons({
-    icons: { Eye, ShieldCheck, CalendarCheck, Activity },
-    attrs: {
-      width: 34,
-      height: 34,
-      "stroke-width": 1.5,
-    },
-    root,
-  });
-}
-
-function initPresentielStaticMap(): () => void {
-  const img = document.querySelector<HTMLImageElement>("[data-presentiel-static-map]");
-  if (!img) return () => {};
-
-  const wrap = document.querySelector("[data-presentiel-map-wrap]");
-  const fallback = document.querySelector<HTMLElement>("[data-presentiel-map-fallback]");
-  const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-
-  const showFallback = () => {
-    if (img.parentNode) img.remove();
-    wrap?.classList.add("presentiel-location-card__map--fallback");
-    fallback?.removeAttribute("hidden");
-  };
-
-  if (!key) {
-    if (img.parentNode) img.remove();
-    fallback?.setAttribute("hidden", "");
-    return () => {};
-  }
-
-  const url = new URL("https://maps.googleapis.com/maps/api/staticmap");
-  url.searchParams.set("center", BINER_STATIC_MAP_CENTER);
-  url.searchParams.set("zoom", "16");
-  url.searchParams.set("size", "480x280");
-  url.searchParams.set("markers", `size:mid|color:0x552772|${BINER_STATIC_MAP_CENTER}`);
-  url.searchParams.set("key", key);
-
-  const markLoaded = () => img.classList.add("is-loaded");
-  img.addEventListener("load", markLoaded);
-  img.addEventListener("error", showFallback);
-  img.src = url.toString();
-  if (img.complete && img.naturalWidth > 0) markLoaded();
-
-  return () => {
-    img.removeEventListener("load", markLoaded);
-    img.removeEventListener("error", showFallback);
-  };
-}
-
 function initNavDesktopDropdowns(nav: HTMLElement): () => void {
   const roots = nav.querySelectorAll("[data-nav-dropdown]");
   if (!roots.length) return () => {};
@@ -247,20 +189,32 @@ function initNav(nav: HTMLElement): () => void {
   const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
   const panel = document.querySelector<HTMLElement>("[data-nav-panel]");
   const links = document.querySelectorAll<HTMLElement>("[data-nav-link]");
+  const hero = document.getElementById("accueil");
+  const sectionIds = ["approche", "accompagnement", "temoignages", "faq"];
+  const navSectionLinks = nav.querySelectorAll<HTMLAnchorElement>("[data-section]");
+  const sectionEls = sectionIds
+    .map((id) => document.getElementById(id))
+    .filter((el): el is HTMLElement => el != null);
 
   const setOpen = (open: boolean) => {
     if (!toggle || !panel) return;
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     toggle.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
+    toggle.classList.toggle("is-open", open);
     panel.classList.toggle("is-open", open);
+    document.body.style.overflow = open ? "hidden" : "";
     if (open) panel.removeAttribute("hidden");
     else panel.setAttribute("hidden", "");
   };
 
-  const onScroll = () => {
-    nav.classList.toggle("is-stuck", window.scrollY > 32);
+  const updateNavState = () => {
+    nav.classList.toggle("is-scrolled", window.scrollY > 12);
+    const pastHero = hero ? hero.getBoundingClientRect().bottom <= 0 : true;
+    nav.classList.toggle("is-past-hero", pastHero);
   };
-  window.addEventListener("scroll", onScroll);
+
+  updateNavState();
+  window.addEventListener("scroll", updateNavState, { passive: true });
 
   const onToggleClick = () => {
     const open = toggle?.getAttribute("aria-expanded") === "true";
@@ -280,13 +234,32 @@ function initNav(nav: HTMLElement): () => void {
   };
   window.addEventListener("resize", onWinResize);
 
+  let sectionObserver: IntersectionObserver | null = null;
+  if (sectionEls.length && navSectionLinks.length && "IntersectionObserver" in window) {
+    sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navSectionLinks.forEach((link) => {
+            link.classList.toggle("active", link.dataset.section === id);
+          });
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
+    );
+    sectionEls.forEach((el) => sectionObserver!.observe(el));
+  }
+
   const teardownDropdowns = initNavDesktopDropdowns(nav);
 
   return () => {
-    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("scroll", updateNavState);
     toggle?.removeEventListener("click", onToggleClick);
     linkHandlers.forEach((r) => r());
     window.removeEventListener("resize", onWinResize);
+    sectionObserver?.disconnect();
+    document.body.style.overflow = "";
     teardownDropdowns();
   };
 }
@@ -384,6 +357,73 @@ function initFaq(root: Element): () => void {
   return () => handlers.forEach((h) => h());
 }
 
+/** Hero parallax photo + count-up stats (inspiration HTML). */
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function animateCount(el: HTMLElement, end: number, duration: number): void {
+  const start = 0;
+  const t0 = performance.now();
+  const tick = (now: number) => {
+    const t = Math.min((now - t0) / duration, 1);
+    const v = Math.floor(start + (end - start) * easeOutCubic(t));
+    el.textContent = String(v);
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = String(end);
+  };
+  requestAnimationFrame(tick);
+}
+
+function initHeroParallax(): () => void {
+  const inner = document.querySelector<HTMLElement>("[data-hero-parallax]");
+  if (!inner || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    const max = window.innerHeight;
+    if (y < max) inner.style.transform = `translateY(${y * 0.18}px)`;
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+    inner.style.transform = "";
+  };
+}
+
+function initHeroCountUp(): () => void {
+  const numEls = document.querySelectorAll<HTMLElement>("[data-count]");
+  if (!numEls.length) return () => {};
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduced || !("IntersectionObserver" in window)) {
+    numEls.forEach((el) => {
+      el.textContent = el.dataset.count ?? el.textContent;
+    });
+    return () => {};
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = parseInt((entry.target as HTMLElement).dataset.count ?? "0", 10);
+        animateCount(entry.target as HTMLElement, target, 1500);
+        io.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.4 },
+  );
+
+  numEls.forEach((el) => io.observe(el));
+
+  return () => io.disconnect();
+}
+
 /** Sticky discovery CTA: show after scroll threshold; hide when footer is visible. */
 function initOfferStickyCta(): () => void {
   const el = document.querySelector<HTMLElement>("[data-offer-sticky-cta]");
@@ -430,9 +470,8 @@ export function mountSiteInteractions(): () => void {
   if (nav) cleanups.push(initNav(nav));
 
   cleanups.push(initReveal());
-
-  initPresentielLucideIcons();
-  cleanups.push(initPresentielStaticMap());
+  cleanups.push(initHeroParallax());
+  cleanups.push(initHeroCountUp());
 
   const faq = document.querySelector("[data-faq]");
   if (faq) cleanups.push(initFaq(faq));

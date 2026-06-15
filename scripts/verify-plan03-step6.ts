@@ -64,41 +64,65 @@ function assertHomePage(h: Record<string, unknown> | null): void {
   const heroAsset = (h.heroImage as {asset?: unknown} | null)?.asset
   if (heroAsset == null) throw new Error('homePage: heroImage missing')
 
+  const marquee = h.marqueeItems as string[] | undefined
   const m1 = h.marqueeOneItems as string[] | undefined
   const m2 = h.marqueeTwoItems as string[] | undefined
-  if ((m1?.length ?? 0) < 2) throw new Error('homePage: marqueeOneItems needs ≥2 phrases')
-  if ((m2?.length ?? 0) < 3) throw new Error('homePage: marqueeTwoItems needs ≥3 phrases')
+  const marqueeCount =
+    (marquee?.length ?? 0) > 0
+      ? marquee!.length
+      : [...(m1 ?? []), ...(m2 ?? [])].length
+  if (marqueeCount < 2) {
+    throw new Error('homePage: marqueeItems (or legacy marquee bands) needs ≥2 phrases')
+  }
 
   sledItemsHaveText(h.sledFromItems as Array<{text?: unknown}>, 'sledFromItems')
   sledItemsHaveText(h.sledToItems as Array<{text?: unknown}>, 'sledToItems')
 
-  if (!portableTextPlain(h.meetTrainerBody)) {
-    throw new Error('homePage: meetTrainerBody empty')
-  }
-
-  if (h.pullQuoteEnabled === true) {
-    const pq = typeof h.pullQuoteText === 'string' ? h.pullQuoteText.trim() : ''
-    if (!pq) throw new Error('homePage: pullQuoteEnabled but pullQuoteText empty')
+  const cards = h.meetTrainerCards as Array<{label?: string; body?: string}> | undefined
+  const cardCount = cards?.filter((c) => c.label?.trim() || c.body?.trim()).length ?? 0
+  if (cardCount < 1) {
+    throw new Error('homePage: meetTrainerCards empty (need ≥1 card)')
   }
 
   const features = h.offeringFeatures as unknown[] | undefined
-  const images = h.offeringImages as unknown[] | undefined
   if ((features?.length ?? 0) < 1) throw new Error('homePage: offeringFeatures empty')
-  if ((images?.length ?? 0) < 1) throw new Error('homePage: offeringImages empty')
 
-  const punch = typeof h.inPersonPunchLine === 'string' ? h.inPersonPunchLine.trim() : ''
-  if (!punch) throw new Error('homePage: inPersonPunchLine empty')
+  const appImage = h.offeringAppImage as {asset?: unknown} | undefined
+  const legacyImages = h.offeringImages as unknown[] | undefined
+  if (!appImage?.asset && (legacyImages?.length ?? 0) < 1) {
+    throw new Error('homePage: offeringAppImage (or legacy offeringImages) empty')
+  }
 
-  const reviews = h.reviewsList as unknown[] | undefined
-  if ((reviews?.length ?? 0) < 1) throw new Error('homePage: reviewsList empty')
+  const quote =
+    typeof h.locationQuote === 'string'
+      ? h.locationQuote.trim()
+      : typeof h.inPersonPunchLine === 'string'
+        ? h.inPersonPunchLine.trim()
+        : ''
+  if (!quote) throw new Error('homePage: locationQuote (or legacy inPersonPunchLine) empty')
+
+  const presentielCards = h.presentielCards as unknown[] | undefined
+  const legacyBenefits = h.inPersonBenefits as unknown[] | undefined
+  if ((presentielCards?.length ?? 0) < 1 && (legacyBenefits?.length ?? 0) < 1) {
+    throw new Error('homePage: presentielCards (or legacy inPersonBenefits) empty')
+  }
+
+  const testimonialVideos = h.testimonialVideos as unknown[] | undefined
+  const legacyReviews = h.reviewsList as unknown[] | undefined
+  if ((testimonialVideos?.length ?? 0) < 1 && (legacyReviews?.length ?? 0) < 1) {
+    throw new Error('homePage: testimonialVideos (or legacy reviewsList) empty')
+  }
 
   const yes = h.forYouYesItems as string[] | undefined
   const no = h.forYouNoItems as string[] | undefined
   if ((yes?.length ?? 0) < 1) throw new Error('homePage: forYouYesItems empty')
   if ((no?.length ?? 0) < 1) throw new Error('homePage: forYouNoItems empty')
 
-  const after = h.afterCallItems as string[] | undefined
-  if ((after?.length ?? 0) < 1) throw new Error('homePage: afterCallItems empty')
+  const afterSteps = h.afterCallSteps as Array<{title?: string}> | undefined
+  const afterLegacy = h.afterCallItems as string[] | undefined
+  if ((afterSteps?.length ?? 0) < 5 && (afterLegacy?.length ?? 0) < 1) {
+    throw new Error('homePage: afterCallSteps empty')
+  }
 
   if (!h.purpleCtaHeadline || !h.purpleCtaButtonLabel || !h.purpleCtaFooter) {
     throw new Error('homePage: purple CTA fields incomplete')
