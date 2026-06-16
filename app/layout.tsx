@@ -4,6 +4,7 @@ import "./globals.css";
 import { draftMode, headers } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { Playfair_Display, Poppins } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import CalEmbed from "./components/CalEmbed";
 import ClientScripts from "./components/ClientScripts";
 import CookieConsent from "./components/CookieConsent";
@@ -165,6 +166,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <IntroPhotoDock />
         <SanityLive />
         {isDraftMode && <VisualEditing />}
+        <SpeedInsights />
       </body>
     </html>
   );
