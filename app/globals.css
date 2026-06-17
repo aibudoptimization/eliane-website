@@ -372,6 +372,7 @@ button:focus-visible {
   .nav-shell {
     padding: 16px 22px;
     justify-content: flex-start;
+    min-height: 82px;
   }
 
   .nav-pill--links,
@@ -379,8 +380,15 @@ button:focus-visible {
     display: none;
   }
 
+  /* Hide the "Éliane Larre" wordmark pill — desktop-only element */
+  .nav-pill--wordmark {
+    display: none !important;
+  }
+
   .nav-toggle {
     display: inline-flex;
+    /* Ensure the full circle clears the viewport right edge and device safe areas */
+    right: max(18px, env(safe-area-inset-right, 0px) + 14px);
   }
 }
 
@@ -658,7 +666,9 @@ button:focus-visible {
 
 @media (max-width: 768px) {
   .hero-image-frame {
-    display: none;
+    height: 52vw;
+    min-height: 260px;
+    max-height: 420px;
   }
 }
 
@@ -2584,14 +2594,69 @@ button:focus-visible {
 
 @media (max-width: 920px) {
   .approche-transform-row {
-    grid-template-columns: 1fr;
-    gap: 0.875rem;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    /* bleed to panel edges so cards look full-width, then re-add padding for scroll start */
+    margin-left: calc(-1 * clamp(1.5rem, 4vw, 3rem));
+    margin-right: calc(-1 * clamp(1.5rem, 4vw, 3rem));
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+    padding-right: clamp(1.5rem, 4vw, 3rem);
+    scroll-padding-left: clamp(1.5rem, 4vw, 3rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .approche-transform-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .approche-card {
+    flex: 0 0 92%;
+    scroll-snap-align: start;
+    box-shadow: none;
+  }
+
+  /* Also strip the coloured card's own shadow (desktop-only decoration) */
+  .approche-card--to {
+    box-shadow: none;
   }
 
   .approche-transform-arrow {
-    transform: rotate(90deg);
-    padding: 0.25rem 0;
+    display: none;
   }
+
+  /* Swipe-hint dots — only visible on mobile */
+  .approche-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    margin-top: -8px;
+  }
+
+  .approche-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(85, 39, 114, 0.2);
+    transition:
+      width 0.3s var(--ease-out),
+      background 0.3s var(--ease-out);
+  }
+
+  .approche-dot.is-active {
+    width: 20px;
+    background: var(--plum);
+  }
+}
+
+/* Approche swipe dots — hidden on desktop/tablet, shown in the ≤920 block above */
+.approche-dots {
+  display: none;
 }
 
 /* —— Rencontre / Bio (auto-play cards) —— */
@@ -2846,6 +2911,11 @@ button:focus-visible {
     width: 100%;
   }
 
+  /* Bottom gradient promotes a GPU layer whose edge bleeds into the hero above */
+  .bio-sticky-photo::after {
+    display: none;
+  }
+
   .bio-tabs {
     display: none;
   }
@@ -2870,6 +2940,25 @@ button:focus-visible {
 
   .bio-card:last-child {
     margin-bottom: 0;
+  }
+
+  /* Alternating card colors — cream/ivory for 1 & 3, warm sand for 2 & 4 */
+  .bio-card.bio-card--mobile:nth-child(odd) {
+    background: var(--surface-card);
+  }
+
+  .bio-card.bio-card--mobile:nth-child(odd) .bio-card-label {
+    color: var(--plum);
+    opacity: 1;
+  }
+
+  .bio-card.bio-card--mobile:nth-child(even) {
+    background: var(--offer-warm-sand);
+  }
+
+  .bio-card.bio-card--mobile:nth-child(even) .bio-card-label {
+    color: var(--mid);
+    opacity: 1;
   }
 }
 

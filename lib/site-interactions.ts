@@ -463,6 +463,41 @@ function initOfferStickyCta(): () => void {
   };
 }
 
+function initApprocheCarousel(): () => void {
+  const row = document.querySelector<HTMLElement>("[data-approche-carousel]");
+  const dots = document.querySelectorAll<HTMLElement>(".approche-dot");
+  if (!row || !dots.length) return () => {};
+
+  // Only activate at mobile breakpoint (matches CSS ≤920px rule)
+  const mq = window.matchMedia("(max-width: 920px)");
+
+  const updateDots = () => {
+    if (!mq.matches) return;
+    const cards = row.querySelectorAll<HTMLElement>(".approche-card");
+    if (!cards.length) return;
+    const cardWidth = cards[0]!.offsetWidth;
+    const gap = 14;
+    const activeIndex = row.scrollLeft > (cardWidth + gap) / 2 ? 1 : 0;
+    dots.forEach((dot, i) => dot.classList.toggle("is-active", i === activeIndex));
+  };
+
+  const onResize = () => {
+    if (!mq.matches) {
+      // reset to first dot active when leaving mobile
+      dots.forEach((dot, i) => dot.classList.toggle("is-active", i === 0));
+    }
+  };
+
+  row.addEventListener("scroll", updateDots, { passive: true });
+  window.addEventListener("resize", onResize);
+  updateDots();
+
+  return () => {
+    row.removeEventListener("scroll", updateDots);
+    window.removeEventListener("resize", onResize);
+  };
+}
+
 export function mountSiteInteractions(): () => void {
   const cleanups: (() => void)[] = [];
 
@@ -477,6 +512,7 @@ export function mountSiteInteractions(): () => void {
   if (faq) cleanups.push(initFaq(faq));
 
   cleanups.push(initOfferStickyCta());
+  cleanups.push(initApprocheCarousel());
 
   return () => {
     cleanups.reverse().forEach((c) => c());

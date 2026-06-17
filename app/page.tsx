@@ -468,7 +468,7 @@ export default async function Home() {
                     </p>
                   </header>
 
-                  <div className="approche-transform-row">
+                  <div className="approche-transform-row" data-approche-carousel>
                     <div className="approche-card approche-card--from">
                       <p className="approche-card-label">
                         {homePage?.sledFromTitle ?? "Là où tu es aujourd'hui"}
@@ -516,6 +516,12 @@ export default async function Home() {
                           ))}
                       </ul>
                     </div>
+                  </div>
+
+                  {/* Mobile swipe-hint dots — hidden on desktop/tablet via CSS */}
+                  <div className="approche-dots" aria-hidden="true">
+                    <span className="approche-dot is-active" />
+                    <span className="approche-dot" />
                   </div>
 
                   <div className="approche-footer">

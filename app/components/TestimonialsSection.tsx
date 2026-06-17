@@ -227,6 +227,8 @@ export type TestimonialsSectionProps = {
   instagramUrl?: string | null
 }
 
+const SWIPE_THRESHOLD = 40
+
 export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: TestimonialsSectionProps) {
   const resolvedInstagramUrl = instagramUrl?.trim() || DEFAULT_INSTAGRAM_URL
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
@@ -249,6 +251,52 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
     },
     [total],
   )
+
+  // Keep fresh refs so the native touch listener closure never goes stale
+  const carouselWrapRef = useRef<HTMLDivElement>(null)
+  const activeRef = useRef(active)
+  const goToRef = useRef(goTo)
+  useEffect(() => { activeRef.current = active }, [active])
+  useEffect(() => { goToRef.current = goTo }, [goTo])
+
+  // Attach non-passive touchend so we can preventDefault() to suppress the
+  // subsequent click (which would trigger center-video fullscreen on mobile)
+  useEffect(() => {
+    const el = carouselWrapRef.current
+    if (!el) return
+
+    let startX = 0
+    let startY = 0
+
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0]?.clientX ?? 0
+      startY = e.touches[0]?.clientY ?? 0
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      const touch = e.changedTouches[0]
+      if (!touch) return
+      const deltaX = touch.clientX - startX
+      const deltaY = touch.clientY - startY
+      // Only treat as a horizontal swipe if it dominates the vertical movement
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return
+      // Prevent the ghost click that would fire after touchend
+      e.preventDefault()
+      if (deltaX < 0) {
+        goToRef.current(activeRef.current + 1)
+      } else {
+        goToRef.current(activeRef.current - 1)
+      }
+    }
+
+    el.addEventListener('touchstart', onTouchStart, {passive: true})
+    el.addEventListener('touchend', onTouchEnd, {passive: false})
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchend', onTouchEnd)
+    }
+  }, []) // intentionally empty — kept fresh via activeRef / goToRef
 
   const visible = useMemo(() => {
     if (total < 1) return []
@@ -273,7 +321,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
 
         {total > 0 ? (
           <>
-            <div className="testi-carousel-wrap reveal" data-reveal>
+            <div className="testi-carousel-wrap reveal" data-reveal ref={carouselWrapRef}>
               <div className="testi-carousel" aria-live="polite">
                 {visible.map(({item, position, index}, slot) => (
                   <div className="testi-carousel-slot" key={`testi-slot-${slot}-${active}`}>
