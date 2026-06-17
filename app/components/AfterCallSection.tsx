@@ -1,8 +1,7 @@
-import {
-  ProcessArrow1Graphic,
-  ProcessArrow2Graphic,
-  ProcessLine2Graphic,
-} from '@/app/components/ProcessDrawGraphics'
+'use client'
+
+import {useRef, useEffect, useCallback, useState} from 'react'
+import {ProcessSnakeGraphic, type SnakeCoords} from '@/app/components/ProcessDrawGraphics'
 
 export type AfterCallStep = {
   _key?: string
@@ -84,8 +83,69 @@ export function AfterCallSection({
   const filteredSteps = steps?.filter((step) => step?.title?.trim() || step?.description?.trim()) ?? []
   const resolvedSteps = filteredSteps.length >= 5 ? filteredSteps.slice(0, 5) : DEFAULT_STEPS
 
-  const leftSteps = [resolvedSteps[0], resolvedSteps[2], resolvedSteps[4]]
-  const rightSteps = [resolvedSteps[1], resolvedSteps[3]]
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null])
+  const [snakeCoords, setSnakeCoords] = useState<SnakeCoords | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  const measure = useCallback(() => {
+    const wrap = wrapRef.current
+    if (!wrap || cardRefs.current.some((r) => !r)) return
+    const wRect = wrap.getBoundingClientRect()
+    const cy = (el: HTMLDivElement) => {
+      const r = el.getBoundingClientRect()
+      return (r.top + r.bottom) / 2 - wRect.top
+    }
+    const re = (el: HTMLDivElement) => el.getBoundingClientRect().right - wRect.left
+    const le = (el: HTMLDivElement) => el.getBoundingClientRect().left - wRect.left
+    const [el1, el2, el3, el4, el5] = cardRefs.current as HTMLDivElement[]
+    const spineX = (re(el1) + le(el2)) / 2
+    setSnakeCoords({
+      spineX,
+      wrapWidth: wRect.width,
+      totalH: cy(el5) + el5.getBoundingClientRect().height / 2 + 16,
+      points: [
+        {y: cy(el1), cardEdgeX: re(el1), dir: 'left'},
+        {y: cy(el2), cardEdgeX: le(el2), dir: 'right'},
+        {y: cy(el3), cardEdgeX: re(el3), dir: 'left'},
+        {y: cy(el4), cardEdgeX: le(el4), dir: 'right'},
+        {y: cy(el5), cardEdgeX: re(el5), dir: 'left'},
+      ],
+    })
+  }, [])
+
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+
+    const runMeasure = () => requestAnimationFrame(() => measure())
+    runMeasure()
+
+    const ro = new ResizeObserver(runMeasure)
+    ro.observe(wrap)
+    window.addEventListener('resize', runMeasure)
+
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', runMeasure)
+    }
+  }, [measure, resolvedSteps])
+
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true)
+          obs.disconnect()
+        }
+      },
+      {threshold: 0.1},
+    )
+    obs.observe(wrap)
+    return () => obs.disconnect()
+  }, [])
 
   return (
     <section className="section section-alt" id="apres-appel">
@@ -96,97 +156,83 @@ export function AfterCallSection({
           <p className="process-sub">{textOrDefault(intro, DEFAULT_INTRO)}</p>
         </header>
 
-        <div className="process-body">
-          <div className="process-grid" data-reveal>
-          <div className="process-col process-col--left">
-            <div className="process-step process-step--first process-step--reveal" data-process-step="1">
-              <h3 className="process-step-title">
-                <span className="process-step-num" aria-hidden="true">
-                  01
+        <div
+          ref={wrapRef}
+          className={`process-snake-wrap${isVisible ? ' is-visible' : ''}`}
+          style={snakeCoords ? {height: snakeCoords.totalH} : undefined}
+        >
+          {[resolvedSteps[0], resolvedSteps[2], resolvedSteps[4]].map((step, i) => {
+            const stepNum = [1, 3, 5][i]
+            const isLast = i === 2
+            return (
+              <div
+                key={stepNum}
+                ref={(el) => {
+                  cardRefs.current[stepNum === 1 ? 0 : stepNum === 3 ? 2 : 4] = el
+                }}
+                className={`process-card process-card--left process-card--${stepNum}${isLast ? ' process-card--dest' : ''} process-card--reveal`}
+                data-process-step={stepNum}
+              >
+                <span className="process-card-num" aria-hidden="true">
+                  0{stepNum}
                 </span>
-                {leftSteps[0]?.title}
-              </h3>
-              <p className="process-step-desc">{leftSteps[0]?.description}</p>
-            </div>
+                <h3 className="process-card-title">{step?.title}</h3>
+                <p className="process-card-desc">{step?.description}</p>
+              </div>
+            )
+          })}
 
-            <div className="process-gap" aria-hidden="true" />
-
-            <div className="process-step process-step--reveal" data-process-step="3">
-              <h3 className="process-step-title">
-                <span className="process-step-num" aria-hidden="true">
-                  03
+          {[resolvedSteps[1], resolvedSteps[3]].map((step, i) => {
+            const stepNum = [2, 4][i]
+            return (
+              <div
+                key={stepNum}
+                ref={(el) => {
+                  cardRefs.current[stepNum === 2 ? 1 : 3] = el
+                }}
+                className={`process-card process-card--right process-card--${stepNum} process-card--reveal`}
+                data-process-step={stepNum}
+              >
+                <span className="process-card-num" aria-hidden="true">
+                  0{stepNum}
                 </span>
-                {leftSteps[1]?.title}
-              </h3>
-              <p className="process-step-desc">{leftSteps[1]?.description}</p>
-            </div>
+                <h3 className="process-card-title">{step?.title}</h3>
+                <p className="process-card-desc">{step?.description}</p>
+              </div>
+            )
+          })}
 
-            <div className="process-gap" aria-hidden="true" />
+          {snakeCoords && <ProcessSnakeGraphic coords={snakeCoords} isVisible={isVisible} />}
+        </div>
 
-            <div className="process-step process-step--destination process-step--reveal" data-process-step="5">
-              <h3 className="process-step-title">
-                <span className="process-step-num" aria-hidden="true">
-                  05
+        <div className="process-mobile">
+          {resolvedSteps.map((step, i) => (
+            <div
+              key={i}
+              className={`process-mobile-step${i === 4 ? ' process-mobile-step--dest' : ''}`}
+            >
+              <div className="process-mobile-dot" aria-hidden="true" />
+              <div className="process-mobile-card">
+                <span className="process-card-num" aria-hidden="true">
+                  0{i + 1}
                 </span>
-                {leftSteps[2]?.title}
-              </h3>
-              <p className="process-step-desc">{leftSteps[2]?.description}</p>
-              <div className="process-step-line" aria-hidden="true">
-                <ProcessLine2Graphic />
+                <h3 className="process-card-title">{step?.title}</h3>
+                <p className="process-card-desc">{step?.description}</p>
               </div>
             </div>
-          </div>
+          ))}
+        </div>
 
-          <div className="process-col process-col--center" aria-hidden="true">
-            <div className="process-arrow process-arrow--1">
-              <ProcessArrow1Graphic />
-            </div>
-            <div className="process-arrow process-arrow--2">
-              <ProcessArrow2Graphic />
-            </div>
-            <div className="process-arrow process-arrow--3">
-              <ProcessArrow1Graphic variant="arrow3" />
-            </div>
-          </div>
-
-          <div className="process-col process-col--right">
-            <div className="process-spacer" aria-hidden="true" />
-
-            <div className="process-step process-step--reveal" data-process-step="2">
-              <h3 className="process-step-title">
-                <span className="process-step-num" aria-hidden="true">
-                  02
-                </span>
-                {rightSteps[0]?.title}
-              </h3>
-              <p className="process-step-desc">{rightSteps[0]?.description}</p>
-            </div>
-
-            <div className="process-gap" aria-hidden="true" />
-
-            <div className="process-step process-step--reveal" data-process-step="4">
-              <h3 className="process-step-title">
-                <span className="process-step-num" aria-hidden="true">
-                  04
-                </span>
-                {rightSteps[1]?.title}
-              </h3>
-              <p className="process-step-desc">{rightSteps[1]?.description}</p>
-            </div>
-          </div>
-          </div>
-
-          <div className="process-cta reveal" data-reveal>
-            <a
-              className="btn btn-primary process-cta-btn"
-              href={ctaUrl}
-              data-cal-link={calLinkNamespace || undefined}
-              data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
-            >
-              {textOrDefault(ctaLabel, DEFAULT_CTA)}
-              <CtaArrow />
-            </a>
-          </div>
+        <div className="process-cta reveal" data-reveal>
+          <a
+            className="btn btn-primary process-cta-btn"
+            href={ctaUrl}
+            data-cal-link={calLinkNamespace || undefined}
+            data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+          >
+            {textOrDefault(ctaLabel, DEFAULT_CTA)}
+            <CtaArrow />
+          </a>
         </div>
       </div>
     </section>
