@@ -14,7 +14,7 @@ import { sanityFetch, SanityLive } from "@/sanity/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/imageUrl";
 
-export const SITE_URL = "https://elianelarre.com";
+export const SITE_URL = "https://www.elianelarre.com";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -31,9 +31,9 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const DEFAULT_META_TITLE = "Éliane — Entraîneure personnelle privée · Montréal";
+const DEFAULT_META_TITLE = "Éliane Larre — Entraîneure personnelle privée · Montréal";
 const DEFAULT_META_DESCRIPTION =
-  "Un accompagnement personnalisé en présentiel à Montréal pour t'aider à progresser avec confiance, constance et clarté.";
+  "Éliane Larre est entraîneure personnelle privée à Montréal. Accompagnement en présentiel, personnalisé et sur mesure pour progresser avec confiance et constance.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });

@@ -414,7 +414,7 @@ export default async function Home() {
                         src={heroImageSrc}
                         alt={
                           homePage?.heroImage?.alt ??
-                          'Éliane tenant un haltère dans la salle d\'entraînement'
+                          'Éliane Larre, entraîneure personnelle à Montréal, tenant un haltère dans la salle d\'entraînement'
                         }
                         width={1000}
                         height={1200}
@@ -829,6 +829,37 @@ export default async function Home() {
                   },
                   availableLanguage: 'fr-CA',
                   sameAs: [instagramUrl],
+                  aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: '5',
+                    bestRating: '5',
+                    ratingCount: '3',
+                  },
+                }),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: safeJsonLd({
+                  '@context': 'https://schema.org',
+                  '@type': 'Person',
+                  name: 'Éliane Larre',
+                  jobTitle: 'Entraîneure personnelle',
+                  url: SITE_URL,
+                  sameAs: ['https://www.instagram.com/eliane.au.naturel'],
+                  worksFor: {
+                    '@type': 'HealthAndBeautyBusiness',
+                    name: 'Éliane Larre — Entraîneure personnelle',
+                    address: {
+                      '@type': 'PostalAddress',
+                      streetAddress: '220 Boulevard Crémazie Ouest',
+                      addressLocality: 'Montréal',
+                      addressRegion: 'QC',
+                      postalCode: 'H2P 1C6',
+                      addressCountry: 'CA',
+                    },
+                  },
                 }),
               }}
             />
