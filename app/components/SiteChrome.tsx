@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CAL_EMBED_DATA_CONFIG } from "@/lib/cal-embed-init";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
 
@@ -45,7 +46,7 @@ export default function SiteChrome({
 
   const calProps = {
     "data-cal-link": calLinkNamespace || undefined,
-    "data-cal-config": calLinkNamespace ? '{"layout":"month_view"}' : undefined,
+    "data-cal-config": calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined,
   };
 
   return (

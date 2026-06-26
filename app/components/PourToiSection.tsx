@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 
 const DEFAULT_EYEBROW = 'Pour toi ou pas ?'
 const DEFAULT_TITLE = 'Une approche claire, pour les bonnes raisons.'
@@ -160,7 +161,7 @@ export function PourToiSection({
             className="btn btn-primary fit-cta"
             href={ctaUrl}
             data-cal-link={calLinkNamespace || undefined}
-            data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+            data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
           >
             {textOrDefault(ctaLabel, DEFAULT_CTA)}
             <CtaArrow />

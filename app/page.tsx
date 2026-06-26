@@ -13,6 +13,7 @@ import {urlFor} from '@/sanity/imageUrl'
 import {sanityFetch} from '@/sanity/live'
 import {COLLABORATORS_QUERY, FAQS_QUERY, HOMEPAGE_QUERY, SITE_SETTINGS_QUERY} from '@/sanity/queries'
 import {SITE_URL} from '@/app/layout'
+import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 
 /** Serializes a JSON-LD object and escapes `</` to prevent script-injection
  *  breakout when embedded in a `<script type="application/ld+json">` tag. */
@@ -399,7 +400,7 @@ export default async function Home() {
                         className="btn btn-primary"
                         href={calBookingUrl}
                         data-cal-link={calLinkNamespace || undefined}
-                        data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+                        data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
                       >
                         {heroCtaLabel}
                         <HeroCtaArrow />
@@ -529,7 +530,7 @@ export default async function Home() {
                       className="btn btn-primary approche-cta"
                       href={calBookingUrl}
                       data-cal-link={calLinkNamespace || undefined}
-                      data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+                      data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
                     >
                       {homePage?.sledCtaLabel ?? "C'est là que je veux aller"}
                       <HeroCtaArrow />
@@ -643,7 +644,7 @@ export default async function Home() {
                     className="btn btn-purple-cta"
                     href={calBookingUrl}
                     data-cal-link={calLinkNamespace || undefined}
-                    data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+                    data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
                   >
                     {homePage?.purpleCtaButtonLabel ?? "Je veux passer à l'action"}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

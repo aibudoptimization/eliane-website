@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CAL_EMBED_DATA_CONFIG } from "@/lib/cal-embed-init";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
 const DEFAULT_CONTACT_EMAIL = "info@elianelarre.com";
@@ -54,7 +55,7 @@ export default function SiteFooter({
               <a
                 href={calBookingUrl}
                 data-cal-link={calLinkNamespace || undefined}
-                data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+                data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
               >
                 Appel découverte
               </a>

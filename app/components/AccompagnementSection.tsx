@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react'
 import {AccompAppImageLightbox} from '@/app/components/AccompAppImageLightbox'
+import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 
 type Pillar = {_key?: string; title?: string; description?: string}
 
@@ -165,7 +166,7 @@ export function AccompagnementSection({
               className="btn btn-primary accomp-cta-btn"
               href={ctaUrl}
               data-cal-link={calLinkNamespace || undefined}
-              data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+              data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
             >
               {resolvedCtaLabel}
               <CtaArrow />

@@ -9,6 +9,10 @@ const CAL_NAMESPACE = "appel-decouverte";
 const CAL_LAYOUT_BREAKPOINT_PX = 768;
 const CAL_EMBED_LOAD_FALLBACK_MS = 8000;
 
+/** Passed on every CTA so theme reaches the Cal iframe via query param (required on dark-mode OS). */
+export const CAL_THEME = "light" as const;
+export const CAL_EMBED_DATA_CONFIG = `{"layout":"month_view","theme":"${CAL_THEME}"}`;
+
 let calEmbedFallbackTimer: any = null;
 let pendingCalModals: any[] = [];
 
@@ -108,16 +112,16 @@ function resolveCalModalLayout() {
 
 function buildCalUiConfig() {
   const brandColor = cssToken("--plum");
-  const cssVars = {
+  const lightVars = {
     "cal-brand": cssToken("--plum"),
     "cal-text": cssToken("--ink"),
     "cal-text-secondary": cssToken("--mid"),
     "cal-bg": cssToken("--beige"),
     "cal-border": cssToken("--lavender"),
   };
-  const shared = { ...cssVars };
   return {
-    theme: "light",
+    theme: CAL_THEME,
+    colorScheme: CAL_THEME,
     layout: resolveCalModalLayout(),
     styles: {
       branding: {
@@ -125,15 +129,21 @@ function buildCalUiConfig() {
       },
     },
     cssVarsPerTheme: {
-      light: { ...shared },
-      dark: { ...shared },
+      light: { ...lightVars },
+      dark: {
+        "cal-brand": cssToken("--lavender"),
+        "cal-text": cssToken("--beige"),
+        "cal-text-secondary": "#c4b8ae",
+        "cal-bg": cssToken("--ink"),
+        "cal-border": "#3d3530",
+      },
     },
   };
 }
 
 const DEFAULT_CAL_LINK = "elianelarre/appel-decouverte";
 const DEFAULT_CAL_NAMESPACE = "appel-decouverte";
-const DEFAULT_CAL_CONFIG = { layout: "month_view" };
+const DEFAULT_CAL_CONFIG = { layout: "month_view", theme: CAL_THEME };
 
 function parseCalConfig(raw: string | undefined) {
   if (!raw || typeof raw !== "string") return { ...DEFAULT_CAL_CONFIG };
@@ -181,6 +191,7 @@ function bindCalModalClickHandlers() {
         const config = {
           ...parseCalConfig(el.dataset.calConfig),
           layout: resolveCalModalLayout(),
+          theme: CAL_THEME,
         };
 
         const intent = { el, calLink, namespace, config };

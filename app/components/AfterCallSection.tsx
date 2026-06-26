@@ -2,6 +2,7 @@
 
 import {useRef, useEffect, useCallback, useState} from 'react'
 import {ProcessSnakeGraphic, type SnakeCoords} from '@/app/components/ProcessDrawGraphics'
+import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 
 export type AfterCallStep = {
   _key?: string
@@ -228,7 +229,7 @@ export function AfterCallSection({
             className="btn btn-primary process-cta-btn"
             href={ctaUrl}
             data-cal-link={calLinkNamespace || undefined}
-            data-cal-config={calLinkNamespace ? '{"layout":"month_view"}' : undefined}
+            data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
           >
             {textOrDefault(ctaLabel, DEFAULT_CTA)}
             <CtaArrow />
