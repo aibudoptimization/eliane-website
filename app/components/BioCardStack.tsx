@@ -1,12 +1,12 @@
 'use client'
 
 import {useCallback, useEffect, useRef, useState} from 'react'
-import {renderBoldText} from '@/lib/renderBoldText'
+import {RichText, type PortableTextValue} from '@/lib/portableTextComponents'
 
 export type BioCardItem = {
   _key?: string
   label?: string
-  body?: string
+  body?: string | PortableTextValue
 }
 
 const DURATION = 14000
@@ -22,7 +22,6 @@ export function BioCardStack({cards}: {cards: BioCardItem[]}) {
   const [visible, setVisible] = useState(true)
   const [animKey, setAnimKey] = useState(0)
 
-  // measure active card height → animate container
   useEffect(() => {
     const el = cardRefs.current[current]
     if (!el || isMobile) return
@@ -33,7 +32,6 @@ export function BioCardStack({cards}: {cards: BioCardItem[]}) {
     return () => ro.disconnect()
   }, [current, isMobile, cards])
 
-  // mobile + reduced-motion detection
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ)
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -47,7 +45,6 @@ export function BioCardStack({cards}: {cards: BioCardItem[]}) {
     }
   }, [])
 
-  // pause when section scrolls off screen
   useEffect(() => {
     const el = areaRef.current
     if (!el) return
@@ -63,7 +60,6 @@ export function BioCardStack({cards}: {cards: BioCardItem[]}) {
     setAnimKey((k) => k + 1)
   }, [])
 
-  // autoplay
   useEffect(() => {
     if (isMobile || cards.length <= 1 || paused || !visible) return
     const id = setInterval(() => {
@@ -129,7 +125,11 @@ export function BioCardStack({cards}: {cards: BioCardItem[]}) {
             {isMobile && card.label ? (
               <div className="bio-card-label">{card.label}</div>
             ) : null}
-            {card.body ? <p>{renderBoldText(card.body)}</p> : null}
+            {card.body ? (
+              <div className="bio-card-body-text">
+                <RichText value={card.body} className="bio-card-rich-text" />
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

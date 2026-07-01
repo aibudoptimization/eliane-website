@@ -1,10 +1,20 @@
 import {defineType, defineField} from 'sanity'
-import {linkMark} from './linkMark'
+import {
+  bodyRichBlock,
+  inlineRichTextField,
+  quoteRichTextField,
+  richTextField,
+  RICH_TEXT_FIELD_DESCRIPTION,
+} from './portableText'
 
 export default defineType({
   name: 'homePage',
   title: "Page d'accueil",
   type: 'document',
+  preview: {
+    select: {kicker: 'heroKicker'},
+    prepare: ({kicker}: {kicker?: string}) => ({title: kicker || "Page d'accueil"}),
+  },
   groups: [
     {name: 'hero', title: 'Section Hero'},
     {name: 'marquees', title: 'Bande défilante (sous le hero)'},
@@ -23,39 +33,17 @@ export default defineType({
   fields: [
     defineField({
       name: 'heroKicker',
-      title: 'Accroche (ligne au-dessus du titre)',
-      description: 'Ne pas inclure de point au début.',
+      title: 'Accroche',
+      description: 'Ligne au-dessus du titre principal. Ne pas inclure de point au début.',
       type: 'string',
       group: 'hero',
       initialValue: 'Éliane Larre - Entraîneure personnelle à Montréal',
     }),
-    defineField({
-      name: 'heroHeadline',
-      title: 'Titre principal',
-      description: 'Italique et gras uniquement. Pas de listes ni de liens.',
-      type: 'array',
+    inlineRichTextField('heroHeadline', 'Titre principal', {
       group: 'hero',
-      of: [
-        {
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-          lists: [],
-          marks: {
-            decorators: [
-              {title: 'Italique', value: 'em'},
-              {title: 'Gras', value: 'strong'},
-            ],
-            annotations: [],
-          },
-        },
-      ],
-      validation: (Rule) => Rule.required(),
+      required: true,
     }),
-    defineField({
-      name: 'heroSubheadline',
-      title: 'Sous-titre',
-      type: 'text',
-      rows: 4,
+    richTextField('heroSubheadline', 'Sous-titre', {
       group: 'hero',
     }),
     defineField({
@@ -124,30 +112,16 @@ export default defineType({
     }),
 
     defineField({
-      name: 'sledHeadline',
-      title: 'Titre',
-      type: 'array',
+      name: 'sledEyebrow',
+      title: 'Accroche',
+      type: 'string',
       group: 'sledComparison',
-      of: [
-        {
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-          lists: [],
-          marks: {
-            decorators: [
-              {title: 'Italique', value: 'em'},
-              {title: 'Gras', value: 'strong'},
-            ],
-            annotations: [],
-          },
-        },
-      ],
+      initialValue: 'Approche',
     }),
-    defineField({
-      name: 'sledSubheadline',
-      title: 'Sous-titre',
-      type: 'text',
-      rows: 3,
+    inlineRichTextField('sledHeadline', 'Titre', {
+      group: 'sledComparison',
+    }),
+    richTextField('sledSubheadline', 'Sous-titre', {
       group: 'sledComparison',
     }),
     defineField({
@@ -260,7 +234,7 @@ export default defineType({
     defineField({
       name: 'meetTrainerCards',
       title: 'Cartes (défilement automatique)',
-      description: 'Jusqu’à 4 cartes. Utilise **gras** dans le texte pour mettre des mots en évidence.',
+      description: 'Jusqu’à 4 cartes. Utilise Gras ou Italique (mauve) dans le texte de chaque carte.',
       type: 'array',
       group: 'meetTrainer',
       of: [
@@ -275,8 +249,9 @@ export default defineType({
             defineField({
               name: 'body',
               title: 'Texte de la carte',
-              type: 'text',
-              rows: 5,
+              type: 'array',
+              of: [bodyRichBlock(false)],
+              description: RICH_TEXT_FIELD_DESCRIPTION,
             }),
           ],
           preview: {
@@ -286,14 +261,8 @@ export default defineType({
       ],
       validation: (Rule) => Rule.max(4),
     }),
-    defineField({
-      name: 'meetTrainerQuote',
-      title: 'Citation (sous les cartes)',
-      type: 'text',
-      rows: 3,
+    quoteRichTextField('meetTrainerQuote', 'Citation (sous les cartes)', {
       group: 'meetTrainer',
-      initialValue:
-        "Tu n'as pas besoin d'un autre programme. Tu as besoin d'un cadre, d'un regard expert et d'un accompagnement qui s'adapte réellement à toi.",
     }),
     defineField({
       name: 'meetTrainerBody',
@@ -302,20 +271,7 @@ export default defineType({
       type: 'array',
       group: 'meetTrainer',
       hidden: true,
-      of: [
-        {
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-          lists: [],
-          marks: {
-            decorators: [
-              {title: 'Gras', value: 'strong'},
-              {title: 'Italique', value: 'em'},
-            ],
-            annotations: [linkMark],
-          },
-        },
-      ],
+      of: [bodyRichBlock(true)],
     }),
     defineField({
       name: 'meetTrainerCtaLabel',
@@ -354,22 +310,11 @@ export default defineType({
       group: 'offering',
       initialValue: 'Mon accompagnement',
     }),
-    defineField({
-      name: 'offeringTitle',
-      title: 'Titre principal',
-      description: 'Le mot « personnalisé » sera affiché en italique mauve.',
-      type: 'string',
+    inlineRichTextField('offeringTitle', 'Titre principal', {
       group: 'offering',
-      initialValue: 'Un accompagnement personnalisé, du début à la fin.',
     }),
-    defineField({
-      name: 'offeringLead',
-      title: 'Sous-titre (intro)',
-      type: 'text',
-      rows: 3,
+    richTextField('offeringLead', 'Sous-titre (intro)', {
       group: 'offering',
-      initialValue:
-        'Quatre piliers conçus ensemble pour te donner le cadre, la guidance et les outils dont tu as besoin pour progresser sans te perdre en route.',
     }),
     defineField({
       name: 'offeringHeadline',
@@ -410,9 +355,10 @@ export default defineType({
             defineField({
               name: 'description',
               title: 'Description',
-              type: 'text',
-              rows: 3,
-              validation: (Rule) => Rule.required(),
+              type: 'array',
+              of: [bodyRichBlock(false)],
+              description: RICH_TEXT_FIELD_DESCRIPTION,
+              validation: (Rule) => Rule.required().min(1),
             }),
           ],
         },
@@ -433,14 +379,8 @@ export default defineType({
       group: 'offering',
       initialValue: 'Un outil pensé pour toi, accessible où que tu sois.',
     }),
-    defineField({
-      name: 'offeringAppDescription',
-      title: 'App — description',
-      type: 'text',
-      rows: 4,
+    richTextField('offeringAppDescription', 'App — description', {
       group: 'offering',
-      initialValue:
-        'Tes entraînements, ton historique de progression et tes communications avec moi, regroupés au même endroit. Simple, lisible, fait pour t\'accompagner sans t\'alourdir.',
     }),
     defineField({
       name: 'offeringAppImage',
@@ -465,13 +405,8 @@ export default defineType({
       group: 'inPerson',
       initialValue: 'Pourquoi le présentiel',
     }),
-    defineField({
-      name: 'inPersonTitle',
-      title: 'Titre principal',
-      description: '« le présentiel » sera affiché en italique mauve.',
-      type: 'string',
+    inlineRichTextField('inPersonTitle', 'Titre principal', {
       group: 'inPerson',
-      initialValue: 'Pourquoi le présentiel change tout.',
     }),
     defineField({
       name: 'inPersonHeadline',
@@ -480,14 +415,8 @@ export default defineType({
       group: 'inPerson',
       hidden: true,
     }),
-    defineField({
-      name: 'inPersonIntro',
-      title: 'Introduction',
-      type: 'text',
-      rows: 3,
+    richTextField('inPersonIntro', 'Introduction', {
       group: 'inPerson',
-      initialValue:
-        "Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer.",
     }),
     defineField({
       name: 'presentielCards',
@@ -507,9 +436,10 @@ export default defineType({
             defineField({
               name: 'description',
               title: 'Description',
-              type: 'text',
-              rows: 3,
-              validation: (Rule) => Rule.required(),
+              type: 'array',
+              of: [bodyRichBlock(false)],
+              description: RICH_TEXT_FIELD_DESCRIPTION,
+              validation: (Rule) => Rule.required().min(1),
             }),
             defineField({
               name: 'iconName',
@@ -583,15 +513,36 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'locationQuote',
-      title: 'Citation de clôture',
-      description: 'Entoure un mot ou une expression avec *astérisques* pour l\'afficher en italique mauve.',
-      type: 'text',
-      rows: 3,
+    quoteRichTextField('locationQuote', 'Citation de clôture', {
       group: 'inPerson',
-      initialValue:
-        "Un programme peut te dire *quoi faire*. Un accompagnement en présentiel te montre *comment le faire* et t'aide à progresser plus rapidement qu'en étant seule.",
+    }),
+    defineField({
+      name: 'inPersonLocEyebrow',
+      title: 'Lieu — accroche',
+      type: 'string',
+      group: 'inPerson',
+      initialValue: 'Où ça se passe',
+    }),
+    defineField({
+      name: 'inPersonLocVenue',
+      title: 'Lieu — nom de la salle',
+      type: 'string',
+      group: 'inPerson',
+      initialValue: 'Biner Training',
+    }),
+    defineField({
+      name: 'inPersonLocStreet',
+      title: 'Lieu — adresse (ligne 1)',
+      type: 'string',
+      group: 'inPerson',
+      initialValue: '220 Boulevard Crémazie Ouest',
+    }),
+    defineField({
+      name: 'inPersonLocCityLine',
+      title: 'Lieu — ville et code postal (ligne 2)',
+      type: 'string',
+      group: 'inPerson',
+      initialValue: 'Montréal, QC · H2P 1C6',
     }),
     defineField({
       name: 'inPersonPunchLine',
@@ -609,13 +560,8 @@ export default defineType({
       group: 'reviews',
       initialValue: 'Leur expérience',
     }),
-    defineField({
-      name: 'reviewsTitle',
-      title: 'Titre principal',
-      description: '« elles » sera affiché en italique mauve.',
-      type: 'string',
+    inlineRichTextField('reviewsTitle', 'Titre principal', {
       group: 'reviews',
-      initialValue: "Ce qu'elles en disent.",
     }),
     defineField({
       name: 'reviewsHeadline',
@@ -708,12 +654,8 @@ export default defineType({
       group: 'forYouOrNot',
       initialValue: 'Pour toi ou pas ?',
     }),
-    defineField({
-      name: 'forYouTitle',
-      title: 'Titre principal',
-      type: 'string',
+    inlineRichTextField('forYouTitle', 'Titre principal', {
       group: 'forYouOrNot',
-      initialValue: 'Une approche claire, pour les bonnes raisons.',
     }),
     defineField({
       name: 'forYouHeadline',
@@ -758,14 +700,8 @@ export default defineType({
       group: 'forYouOrNot',
       of: [{type: 'string'}],
     }),
-    defineField({
-      name: 'forYouFooter',
-      title: 'Texte de pied de section',
-      type: 'text',
-      rows: 3,
+    quoteRichTextField('forYouFooter', 'Citation', {
       group: 'forYouOrNot',
-      initialValue:
-        'Cet accompagnement s\'adresse aux femmes qui veulent investir sérieusement dans leur progression, leur confiance et leur santé à long terme.',
     }),
     defineField({
       name: 'forYouCtaLabel',
@@ -782,21 +718,11 @@ export default defineType({
       group: 'afterCall',
       initialValue: 'Comment ça se passe',
     }),
-    defineField({
-      name: 'afterCallHeadline',
-      title: 'Titre de section',
-      type: 'string',
+    inlineRichTextField('afterCallHeadline', 'Titre principal', {
       group: 'afterCall',
-      initialValue: "Après l'appel découverte.",
     }),
-    defineField({
-      name: 'afterCallIntro',
-      title: 'Introduction',
-      type: 'text',
-      rows: 3,
+    richTextField('afterCallIntro', 'Sous-titre', {
       group: 'afterCall',
-      initialValue:
-        "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.",
     }),
     defineField({
       name: 'afterCallSteps',
@@ -816,9 +742,10 @@ export default defineType({
             defineField({
               name: 'description',
               title: 'Description',
-              type: 'text',
-              rows: 3,
-              validation: (Rule) => Rule.required(),
+              type: 'array',
+              of: [bodyRichBlock(false)],
+              description: RICH_TEXT_FIELD_DESCRIPTION,
+              validation: (Rule) => Rule.required().min(1),
             }),
           ],
         },
@@ -852,11 +779,14 @@ export default defineType({
     }),
 
     defineField({
-      name: 'purpleCtaHeadline',
-      title: 'Titre',
+      name: 'purpleCtaEyebrow',
+      title: 'Accroche',
       type: 'string',
       group: 'purpleCta',
-      initialValue: 'Es-tu prête à investir en toi ?',
+      initialValue: 'Prochaine étape',
+    }),
+    inlineRichTextField('purpleCtaHeadline', 'Titre principal', {
+      group: 'purpleCta',
     }),
     defineField({
       name: 'purpleCtaButtonLabel',
@@ -874,17 +804,22 @@ export default defineType({
     }),
 
     defineField({
-      name: 'faqHeadline',
-      title: 'Titre affiché au-dessus de la FAQ',
-      description: 'Le contenu des questions est géré dans le document FAQ.',
+      name: 'faqEyebrow',
+      title: 'Accroche',
       type: 'string',
       group: 'faqIntro',
-      initialValue: 'Questions fréquentes',
+      initialValue: 'FAQ',
+    }),
+    inlineRichTextField('faqHeadline', 'Titre principal', {
+      group: 'faqIntro',
+    }),
+    richTextField('faqSubheadline', 'Sous-titre', {
+      group: 'faqIntro',
     }),
 
     defineField({
       name: 'collaboratorsHeadline',
-      title: 'Titre de section',
+      title: 'Accroche',
       type: 'string',
       group: 'collaborators',
       initialValue: 'Mes collaborateurs',
@@ -897,7 +832,4 @@ export default defineType({
       group: 'collaborators',
     }),
   ],
-  preview: {
-    prepare: () => ({title: "Page d'accueil"}),
-  },
 })
