@@ -527,9 +527,41 @@ button:focus-visible {
   margin: 0 0 22px;
 }
 
-.hero h1 .accent {
+h2 em.accent,
+h2 .accent {
   color: var(--plum);
+  font-style: italic;
 }
+
+.hero h1 .accent,
+.hero h1 em.accent,
+.text-accent,
+em.text-accent {
+  color: var(--plum);
+  font-style: italic;
+}
+
+.hero-lead p,
+.hero-lead .rich-text-paragraph,
+.accomp-lead p,
+.presentiel-subtitle p,
+.bio-card-rich-text p,
+.bio-section-quote-text .rich-text-paragraph,
+.presentiel-quote-text .rich-text-paragraph,
+.fit-quote-text .rich-text-paragraph,
+.presentiel-card-desc p,
+.accomp-tl-desc p,
+.accomp-app-desc p,
+.process-card-desc p {
+  margin: 0;
+}
+
+.bio-section-quote em,
+.presentiel-quote em {
+  color: var(--plum);
+  font-style: italic;
+}
+
 
 .hero .hero-lead {
   font-size: 1.05rem;
@@ -2634,7 +2666,6 @@ button:focus-visible {
 
 .bio-section-quote p {
   font-family: var(--font-serif);
-  font-style: italic;
   font-size: 1.05rem;
   color: var(--ink);
   line-height: 1.6;
@@ -3855,7 +3886,6 @@ button:focus-visible {
   margin: 0;
   padding-left: 6px;
   font-family: var(--font-serif);
-  font-style: italic;
   font-size: clamp(1.05rem, 0.5vw + 0.95rem, 1.18rem);
   line-height: 1.58;
   color: var(--ink);
@@ -4097,6 +4127,10 @@ button:focus-visible {
 
 .faq-intro-body {
   max-width: 22rem;
+}
+
+.faq-intro-body .rich-text-paragraph {
+  margin: 0;
 }
 
 /* Instagram — primary CTA pill */

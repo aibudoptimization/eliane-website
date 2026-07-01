@@ -2,6 +2,11 @@
 
 import type {ReactNode} from 'react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {
+  headingPortableTextComponents,
+  RichText,
+  type PortableTextValue,
+} from '@/lib/portableTextComponents'
 
 export type TestimonialVideoItem = {
   _key?: string
@@ -21,15 +26,14 @@ function textOrDefault(value: string | null | undefined, fallback: string): stri
   return trimmed ? trimmed : fallback
 }
 
-function renderTestimonialsTitle(text: string): ReactNode {
-  const match = text.match(/^(.*?)(elles)(.*)$/i)
-  if (!match) return text
+function renderTestimonialsTitle(value: unknown, fallback: string): ReactNode {
   return (
-    <>
-      {match[1]}
-      <em>{match[2]}</em>
-      {match[3]}
-    </>
+    <RichText
+      value={value}
+      fallback={fallback}
+      components={headingPortableTextComponents}
+      as="inline"
+    />
   )
 }
 
@@ -222,7 +226,7 @@ const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/eliane.au.naturel'
 
 export type TestimonialsSectionProps = {
   eyebrow?: string | null
-  title?: string | null
+  title?: unknown
   videos?: TestimonialVideoItem[]
   instagramUrl?: string | null
 }
@@ -232,7 +236,7 @@ const SWIPE_THRESHOLD = 40
 export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: TestimonialsSectionProps) {
   const resolvedInstagramUrl = instagramUrl?.trim() || DEFAULT_INSTAGRAM_URL
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
-  const resolvedTitle = textOrDefault(title, DEFAULT_TITLE)
+  const resolvedTitle = title
 
   const items = useMemo(() => {
     const fromSanity = videos?.filter((video) => video.name?.trim()) ?? []
@@ -316,7 +320,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
       <div className="section-inner section-inner--testi">
         <div className="testi-header reveal" data-reveal>
           <p className="eyebrow testi-eyebrow">{resolvedEyebrow}</p>
-          <h2>{renderTestimonialsTitle(resolvedTitle)}</h2>
+          <h2>{renderTestimonialsTitle(resolvedTitle, DEFAULT_TITLE)}</h2>
         </div>
 
         {total > 0 ? (

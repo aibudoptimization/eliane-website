@@ -1,11 +1,17 @@
 import type {ReactNode} from 'react'
+import {
+  headingPortableTextComponents,
+  quotePortableTextComponents,
+  RichText,
+  type PortableTextValue,
+} from '@/lib/portableTextComponents'
 
 export type PresentielIconName = 'check' | 'shield' | 'clock' | 'eye'
 
 export type PresentielCard = {
   _key?: string
   title?: string
-  description?: string
+  description?: string | PortableTextValue
   iconName?: string
 }
 
@@ -14,7 +20,12 @@ const DEFAULT_TITLE = 'Pourquoi le présentiel change tout.'
 const DEFAULT_INTRO =
   "Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer."
 const DEFAULT_QUOTE =
-  "Un programme peut te dire *quoi faire*. Un accompagnement en présentiel te montre *comment le faire* et t'aide à progresser plus rapidement qu'en étant seule."
+  "Un programme peut te dire quoi faire. Un accompagnement en présentiel te montre comment le faire et t'aide à progresser plus rapidement qu'en étant seule."
+
+const DEFAULT_LOC_EYEBROW = 'Où ça se passe'
+const DEFAULT_LOC_VENUE = 'Biner Training'
+const DEFAULT_LOC_STREET = '220 Boulevard Crémazie Ouest'
+const DEFAULT_LOC_CITY = 'Montréal, QC · H2P 1C6'
 
 const MAP_EMBED_URL =
   'https://www.google.com/maps?q=Biner+Training+220+Boulevard+Cr%C3%A9mazie+Ouest+Montr%C3%A9al&t=&z=15&ie=UTF8&iwloc=&output=embed'
@@ -62,28 +73,6 @@ function normalizeIconName(value: string | undefined): PresentielIconName {
   }
   if (value && LEGACY_ICON_MAP[value]) return LEGACY_ICON_MAP[value]
   return 'check'
-}
-
-function renderEmText(text: string): ReactNode[] {
-  const parts = text.split(/(\*[^*]+\*)/g)
-  return parts.map((part, index) => {
-    if (part.startsWith('*') && part.endsWith('*')) {
-      return <em key={index}>{part.slice(1, -1)}</em>
-    }
-    return part
-  })
-}
-
-function renderPresentielTitle(text: string): ReactNode {
-  const match = text.match(/^(.*?)(le présentiel)(.*)$/i)
-  if (!match) return text
-  return (
-    <>
-      {match[1]}
-      <em>{match[2]}</em>
-      {match[3]}
-    </>
-  )
 }
 
 function PresentielCardIcon({name}: {name: PresentielIconName}) {
@@ -134,7 +123,7 @@ function resolveCards(
   cards: PresentielCard[] | undefined,
   legacyBenefits?: Array<{title?: string; text?: string; icon?: string; _key?: string}>,
 ): PresentielCard[] {
-  const fromSanity = cards?.filter((card) => card.title?.trim() || card.description?.trim()) ?? []
+  const fromSanity = cards?.filter((card) => card.title?.trim() || card.description) ?? []
   if (fromSanity.length > 0) return fromSanity
 
   const fromLegacy =
@@ -151,14 +140,29 @@ function resolveCards(
   return DEFAULT_CARDS
 }
 
+function renderSectionTitle(value: unknown, fallback: string): ReactNode {
+  return (
+    <RichText
+      value={value}
+      fallback={fallback}
+      components={headingPortableTextComponents}
+      as="inline"
+    />
+  )
+}
+
 export type PresentielSectionProps = {
   eyebrow?: string | null
-  title?: string | null
-  intro?: string | null
+  title?: unknown
+  intro?: unknown
   cards?: PresentielCard[]
   legacyBenefits?: Array<{title?: string; text?: string; icon?: string; _key?: string}>
-  quote?: string | null
-  legacyQuote?: string | null
+  quote?: unknown
+  legacyQuote?: unknown
+  locEyebrow?: string | null
+  locVenue?: string | null
+  locStreet?: string | null
+  locCityLine?: string | null
 }
 
 export function PresentielSection({
@@ -169,20 +173,28 @@ export function PresentielSection({
   legacyBenefits,
   quote,
   legacyQuote,
+  locEyebrow,
+  locVenue,
+  locStreet,
+  locCityLine,
 }: PresentielSectionProps) {
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
-  const resolvedTitle = textOrDefault(title, DEFAULT_TITLE)
-  const resolvedIntro = textOrDefault(intro, DEFAULT_INTRO)
-  const resolvedQuote = textOrDefault(quote ?? legacyQuote, DEFAULT_QUOTE).replace(/\n+/g, ' ')
+  const resolvedLocEyebrow = textOrDefault(locEyebrow, DEFAULT_LOC_EYEBROW)
+  const resolvedLocVenue = textOrDefault(locVenue, DEFAULT_LOC_VENUE)
+  const resolvedLocStreet = textOrDefault(locStreet, DEFAULT_LOC_STREET)
+  const resolvedLocCity = textOrDefault(locCityLine, DEFAULT_LOC_CITY)
   const items = resolveCards(cards, legacyBenefits)
+  const quoteValue = quote ?? legacyQuote
 
   return (
     <section className="section section-beige" id="presentiel">
       <div className="section-inner section-inner--presentiel">
         <header className="presentiel-header reveal" data-reveal>
           <p className="eyebrow presentiel-eyebrow">{resolvedEyebrow}</p>
-          <h2>{renderPresentielTitle(resolvedTitle)}</h2>
-          <p className="presentiel-subtitle">{resolvedIntro}</p>
+          <h2>{renderSectionTitle(title, DEFAULT_TITLE)}</h2>
+          <div className="presentiel-subtitle">
+            <RichText value={intro} fallback={DEFAULT_INTRO} />
+          </div>
         </header>
 
         <div className="presentiel-body">
@@ -195,7 +207,10 @@ export function PresentielSection({
                 </div>
                 {card.description ? (
                   <div className="presentiel-card-body">
-                    <p className="presentiel-card-desc">{card.description}</p>
+                    <RichText
+                      value={card.description}
+                      className="presentiel-card-desc"
+                    />
                   </div>
                 ) : null}
               </article>
@@ -203,19 +218,19 @@ export function PresentielSection({
           </div>
 
           <aside className="presentiel-loc reveal" data-reveal>
-            <p className="presentiel-loc-eyebrow">Où ça se passe</p>
+            <p className="presentiel-loc-eyebrow">{resolvedLocEyebrow}</p>
             <div className="presentiel-loc-inner">
               <div className="presentiel-loc-details">
                 <div className="presentiel-loc-row">
                   <span className="presentiel-loc-tag">Lieu</span>
-                  <span className="presentiel-loc-val">Biner Training</span>
+                  <span className="presentiel-loc-val">{resolvedLocVenue}</span>
                 </div>
                 <div className="presentiel-loc-row">
                   <span className="presentiel-loc-tag">Adresse</span>
                   <span className="presentiel-loc-val">
-                    220 Boulevard Crémazie Ouest
+                    {resolvedLocStreet}
                     <br />
-                    Montréal, QC · H2P 1C6
+                    {resolvedLocCity}
                   </span>
                 </div>
               </div>
@@ -224,7 +239,7 @@ export function PresentielSection({
                   src={MAP_EMBED_URL}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Carte vers Biner Training, Montréal"
+                  title={`Carte vers ${resolvedLocVenue}, Montréal`}
                   allowFullScreen
                 />
               </div>
@@ -233,7 +248,12 @@ export function PresentielSection({
         </div>
 
         <blockquote className="presentiel-quote reveal" data-reveal>
-          <p>{renderEmText(resolvedQuote)}</p>
+          <RichText
+            value={quoteValue}
+            fallback={DEFAULT_QUOTE}
+            components={quotePortableTextComponents}
+            className="presentiel-quote-text"
+          />
         </blockquote>
       </div>
     </section>

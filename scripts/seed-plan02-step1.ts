@@ -134,9 +134,13 @@ async function main() {
       'Approche durable',
       'Progression mesurable',
     ],
+    sledEyebrow: 'Approche',
     sledHeadline: [mdToBlock('Tu veux progresser, mais tu ne veux plus avancer seule.')],
-    sledSubheadline:
-      "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction.",
+    sledSubheadline: [
+      mdToBlock(
+        "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction.",
+      ),
+    ],
     sledFromTitle: "Là où tu es aujourd'hui",
     sledFromItems: [
       { _key: k(), text: [mdToBlock('Tu ne sais pas toujours **quoi faire au gym** ni si tu exécutes les mouvements correctement.')] },
@@ -285,7 +289,7 @@ async function main() {
       },
     ],
     forYouEyebrow: 'Pour toi ou pas ?',
-    forYouTitle: 'Une approche claire, pour les bonnes raisons.',
+    forYouTitle: [mdToBlock('Une approche claire, pour les bonnes raisons.')],
     forYouImage: {
       _type: 'image',
       asset: {_type: 'reference', _ref: forYouAsset._id},
@@ -306,13 +310,19 @@ async function main() {
       "Tu n'es pas disponible pour des séances en présentiel à Montréal.",
       'Tu préfères un programme 100 % autonome, sans accompagnement.',
     ],
-    forYouFooter:
-      "Cet accompagnement s'adresse aux femmes qui veulent investir sérieusement dans leur progression, leur confiance et leur santé à long terme.",
+    forYouFooter: [
+      mdToBlock(
+        "Cet accompagnement s'adresse aux femmes qui veulent investir sérieusement dans leur progression, leur confiance et leur santé à long terme.",
+      ),
+    ],
     forYouCtaLabel: "Je veux savoir si c'est pour moi",
     afterCallEyebrow: 'Comment ça se passe',
-    afterCallHeadline: "Après l'appel découverte.",
-    afterCallIntro:
-      "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.",
+    afterCallHeadline: [mdToBlock("Après l'appel découverte.")],
+    afterCallIntro: [
+      mdToBlock(
+        "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.",
+      ),
+    ],
     afterCallSteps: [
       {
         title: 'Comprendre où tu en es',
@@ -339,10 +349,17 @@ async function main() {
       },
     ],
     afterCallCtaLabel: "Je suis prête à avoir plus d'informations",
-    purpleCtaHeadline: 'Es-tu prête à investir en toi ?',
+    purpleCtaEyebrow: 'Prochaine étape',
+    purpleCtaHeadline: [mdToBlock('Es-tu prête à investir en toi ?')],
     purpleCtaButtonLabel: "Je veux passer à l'action",
     purpleCtaFooter: 'Gratuit et sans engagement',
-    faqHeadline: 'Questions fréquentes',
+    faqEyebrow: 'FAQ',
+    faqHeadline: [mdToBlock('Questions fréquentes.')],
+    faqSubheadline: [
+      mdToBlock(
+        "Pour toute question sur l'accompagnement, les offres ou la logistique, n'hésite pas. Je réponds personnellement.",
+      ),
+    ],
     collaboratorsHeadline: 'Mes collaborateurs',
   }
 

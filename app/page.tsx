@@ -2,10 +2,11 @@ import type {ReactNode} from 'react'
 import {PortableText, type PortableTextComponents} from '@portabletext/react'
 import type {TypedObject} from '@portabletext/types'
 import Image from 'next/image'
+import {headingPortableTextComponents, RichText, SectionTitle} from '@/lib/portableTextComponents'
 import {portableTextToPlainText} from '@/lib/portableTextPlainText'
 import {MeetTrainerSection} from '@/app/components/MeetTrainerSection'
 import {AccompagnementSection} from '@/app/components/AccompagnementSection'
-import {PresentielSection} from '@/app/components/PresentielSection'
+import {PresentielSection, type PresentielCard} from '@/app/components/PresentielSection'
 import {AfterCallSection} from '@/app/components/AfterCallSection'
 import {PourToiSection} from '@/app/components/PourToiSection'
 import {TestimonialsSection, type TestimonialVideoItem} from '@/app/components/TestimonialsSection'
@@ -21,48 +22,24 @@ function safeJsonLd(value: unknown): string {
   return JSON.stringify(value).replace(/</g, '\\u003c')
 }
 
-const HERO_HEADLINE_ACCENT_PHRASES = [
-  'progresser durablement',
-  'confiance',
-  'recommencer',
-] as const
-
 const DEFAULT_HERO_HEADLINE =
   "Un service d'accompagnement personnalisé pour t'entraîner avec confiance, progresser durablement et arrêter de toujours recommencer"
 
-const heroHeadlineAccentPattern = new RegExp(
-  `(${HERO_HEADLINE_ACCENT_PHRASES.map((phrase) =>
-    phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
-  ).join('|')})`,
-  'gi',
-)
+const DEFAULT_HERO_SUBHEADLINE =
+  "Un accompagnement sur mesure, conçu pour toi qui veux intégrer l'entraînement à ta vie, ou pour toi qui crois avoir tout essayé sans jamais réussir à maintenir tes objectifs."
 
-function highlightHeroHeadline(text: string): ReactNode[] {
-  return text.split(heroHeadlineAccentPattern).map((part, index) => {
-    if (
-      HERO_HEADLINE_ACCENT_PHRASES.some((phrase) => phrase.toLowerCase() === part.toLowerCase())
-    ) {
-      return (
-        <span key={`${part}-${index}`} className="accent">
-          {part}
-        </span>
-      )
-    }
-    return part
-  })
-}
+const heroHeadlineComponents = headingPortableTextComponents
 
-const heroHeadlineComponents: PortableTextComponents = {
-  marks: {
-    em: ({ children }) => <span className="accent">{children}</span>,
-    strong: ({ children }) => <strong>{children}</strong>,
-  },
-  block: {
-    normal: ({ children }) => <>{children}</>,
-  },
+function renderHeroHeadline(headline: PortableTextValue | undefined): ReactNode {
+  if (headline?.length) {
+    return <PortableText value={headline} components={heroHeadlineComponents} />
+  }
+  return DEFAULT_HERO_HEADLINE
 }
 
 const DEFAULT_APPROCHE_HEADLINE = 'Tu veux progresser, mais tu ne veux plus avancer seule.'
+const DEFAULT_APPROCHE_SUBHEADLINE =
+  "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction."
 
 /** Matches default Approche title so we can apply desktop line-break layouts. */
 const APPROCHE_HEADLINE_PATTERN =
@@ -91,6 +68,10 @@ function renderApprocheHeadline(headline: PortableTextValue | undefined): ReactN
   const text = headline?.length
     ? portableTextToPlainText(headline).trim()
     : DEFAULT_APPROCHE_HEADLINE
+
+  if (headline?.length && !portableTextHasMarks(headline)) {
+    return text
+  }
 
   if (!APPROCHE_HEADLINE_PATTERN.test(text)) {
     return text
@@ -158,12 +139,6 @@ type Collaborator = {
 type PortableTextValue = TypedObject[]
 type SledListItem = { _key?: string; text?: PortableTextValue }
 type ReviewItem = { _key?: string; name?: string; rating?: number; excerpt?: string }
-type PresentielCard = {
-  _key?: string
-  title?: string
-  description?: string
-  iconName?: string
-}
 
 const faqAnswerComponents: PortableTextComponents = {
   marks: {
@@ -385,23 +360,20 @@ export default async function Home() {
                   <div className="hero-content reveal" data-reveal>
                     <div className="eyebrow">{heroKicker}</div>
                     <h1>
-                      {highlightHeroHeadline(
+                      {renderHeroHeadline(
                         Array.isArray(homePage?.heroHeadline) && homePage.heroHeadline.length > 0
-                          ? portableTextToPlainText(homePage.heroHeadline)
-                          : DEFAULT_HERO_HEADLINE,
+                          ? (homePage.heroHeadline as PortableTextValue)
+                          : undefined,
                       )}
                     </h1>
-                    <p className="hero-lead">
-                      {homePage?.heroSubheadline ??
-                        "Un accompagnement sur mesure, conçu pour toi qui veux intégrer l'entraînement à ta vie, ou pour toi qui crois avoir tout essayé sans jamais réussir à maintenir tes objectifs."}
-                    </p>
+                    <div className="hero-lead">
+                      <RichText
+                        value={homePage?.heroSubheadline}
+                        fallback={DEFAULT_HERO_SUBHEADLINE}
+                      />
+                    </div>
                     <div className="hero-cta-stack">
-                      <a
-                        className="btn btn-primary"
-                        href={calBookingUrl}
-                        data-cal-link={calLinkNamespace || undefined}
-                        data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
-                      >
+                      <a className="btn btn-primary" href="/#accompagnement">
                         {heroCtaLabel}
                         <HeroCtaArrow />
                       </a>
@@ -461,12 +433,15 @@ export default async function Home() {
               <div className="section-inner section-inner--approche">
                 <div className="approche-panel">
                   <header className="approche-intro">
-                    <p className="eyebrow approche-eyebrow">Approche</p>
-                    <h2>{renderApprocheHeadline(homePage?.sledHeadline)}</h2>
-                    <p className="approche-subhead">
-                      {homePage?.sledSubheadline ??
-                        "Que tu débutes ou que tu t'entraînes déjà depuis un moment, l'objectif est le même : avoir un cadre clair, te sentir guidée et savoir que tu avances dans la bonne direction."}
+                    <p className="eyebrow approche-eyebrow">
+                      {homePage?.sledEyebrow ?? 'Approche'}
                     </p>
+                    <h2>{renderApprocheHeadline(homePage?.sledHeadline)}</h2>
+                    <RichText
+                      className="approche-subhead"
+                      value={homePage?.sledSubheadline}
+                      fallback={DEFAULT_APPROCHE_SUBHEADLINE}
+                    />
                   </header>
 
                   <div className="approche-transform-row" data-approche-carousel>
@@ -588,6 +563,10 @@ export default async function Home() {
               }
               quote={homePage?.locationQuote}
               legacyQuote={homePage?.inPersonPunchLine}
+              locEyebrow={homePage?.inPersonLocEyebrow}
+              locVenue={homePage?.inPersonLocVenue}
+              locStreet={homePage?.inPersonLocStreet}
+              locCityLine={homePage?.inPersonLocCityLine}
             />
       
             <TestimonialsSection
@@ -632,12 +611,15 @@ export default async function Home() {
 
             <section className="section section-muted">
               <div className="section-inner purple-cta-band">
-                <p className="purple-cta-band-eyebrow">Prochaine étape</p>
+                <p className="purple-cta-band-eyebrow">
+                  {homePage?.purpleCtaEyebrow ?? 'Prochaine étape'}
+                </p>
                 <div className="purple-cta-band-accent-bar" aria-hidden="true" />
                 <h2>
-                  {homePage?.purpleCtaHeadline
-                    ? homePage.purpleCtaHeadline
-                    : <>Es-tu prête à <em>investir</em> en toi&nbsp;?</>}
+                  <SectionTitle
+                    value={homePage?.purpleCtaHeadline}
+                    fallback="Es-tu prête à investir en toi ?"
+                  />
                 </h2>
                 <p className="purple-cta-button-row">
                   <a
@@ -664,14 +646,19 @@ export default async function Home() {
                 <div className="faq-layout">
                   {/* LEFT — heading + Instagram-first contact */}
                   <div className="faq-intro-col reveal" data-reveal>
-                    <p className="faq-section-eyebrow">FAQ</p>
+                    <p className="faq-section-eyebrow">{homePage?.faqEyebrow ?? 'FAQ'}</p>
                     <h2 id="faq-heading">
-                      {homePage?.faqHeadline ?? <>Questions <em className="faq-heading-accent">fréquentes.</em></>}
+                      <SectionTitle
+                        value={homePage?.faqHeadline}
+                        fallback="Questions fréquentes."
+                      />
                     </h2>
-                    <p className="faq-contact-body faq-intro-body">
-                      Pour toute question sur l&apos;accompagnement, les offres ou la logistique,
-                      n&apos;hésite pas. Je réponds personnellement.
-                    </p>
+                    <div className="faq-contact-body faq-intro-body">
+                      <RichText
+                        value={homePage?.faqSubheadline}
+                        fallback="Pour toute question sur l'accompagnement, les offres ou la logistique, n'hésite pas. Je réponds personnellement."
+                      />
+                    </div>
                     <a
                       className="faq-contact-instagram"
                       href={instagramUrl}

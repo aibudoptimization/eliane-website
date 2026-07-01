@@ -5,6 +5,8 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './sanity/schemaTypes'
 import { apiVersion, dataset, projectId } from './sanity/env'
 import { structure } from './sanity/structure'
+import { HomePageDocumentInput } from './sanity/components/HomePageInput'
+import type { InputProps } from 'sanity'
 
 export default defineConfig({
   basePath: '/studio',
@@ -12,6 +14,20 @@ export default defineConfig({
   dataset,
   title: 'Éliane Larre — Studio',
   schema: { types: schemaTypes },
+  form: {
+    components: {
+      input: (props) => {
+        if (
+          props.id === 'root' &&
+          props.schemaType?.name === 'homePage' &&
+          props.schemaType?.type?.name === 'document'
+        ) {
+          return HomePageDocumentInput(props as InputProps)
+        }
+        return props.renderDefault(props)
+      },
+    },
+  },
   plugins: [
     structureTool({ structure }),
     visionTool({ defaultApiVersion: apiVersion }),

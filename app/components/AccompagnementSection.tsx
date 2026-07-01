@@ -1,8 +1,13 @@
 import type {ReactNode} from 'react'
 import {AccompAppImageLightbox} from '@/app/components/AccompAppImageLightbox'
 import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
+import {
+  headingPortableTextComponents,
+  RichText,
+  type PortableTextValue,
+} from '@/lib/portableTextComponents'
 
-type Pillar = {_key?: string; title?: string; description?: string}
+type Pillar = {_key?: string; title?: string; description?: string | PortableTextValue}
 
 const DEFAULT_EYEBROW = 'Mon accompagnement'
 const DEFAULT_TITLE = 'Un accompagnement personnalisé, du début à la fin.'
@@ -42,15 +47,14 @@ function textOrDefault(value: string | null | undefined, fallback: string): stri
   return trimmed ? trimmed : fallback
 }
 
-function renderOfferingTitle(text: string): ReactNode {
-  const match = text.match(/^(.*?)(personnalisé)(.*)$/i)
-  if (!match) return text
+function renderOfferingTitle(value: unknown, fallback: string): ReactNode {
   return (
-    <>
-      {match[1]}
-      <em>{match[2]}</em>
-      {match[3]}
-    </>
+    <RichText
+      value={value}
+      fallback={fallback}
+      components={headingPortableTextComponents}
+      as="inline"
+    />
   )
 }
 
@@ -75,12 +79,12 @@ function CtaArrow() {
 
 export type AccompagnementSectionProps = {
   eyebrow?: string | null
-  title?: string | null
-  lead?: string | null
+  title?: unknown
+  lead?: unknown
   pillars?: Pillar[]
   appKicker?: string | null
   appTitle?: string | null
-  appDescription?: string | null
+  appDescription?: unknown
   appImageSrc: string
   appImageLightboxSrc?: string
   appImageAlt?: string
@@ -105,11 +109,9 @@ export function AccompagnementSection({
   calLinkNamespace,
 }: AccompagnementSectionProps) {
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
-  const resolvedTitle = textOrDefault(title, DEFAULT_TITLE)
-  const resolvedLead = textOrDefault(lead, DEFAULT_LEAD)
   const resolvedAppKicker = textOrDefault(appKicker, DEFAULT_APP_KICKER)
   const resolvedAppTitle = textOrDefault(appTitle, DEFAULT_APP_TITLE)
-  const resolvedAppDescription = textOrDefault(appDescription, DEFAULT_APP_DESCRIPTION)
+  const resolvedAppDescription = appDescription
   const resolvedAppImageAlt =
     textOrDefault(appImageAlt, "Montage de trois écrans de l'application d'entraînement")
   const resolvedCtaLabel = textOrDefault(
@@ -118,8 +120,8 @@ export function AccompagnementSection({
   )
 
   const items =
-    pillars?.filter((p) => p.title?.trim() || p.description?.trim()).length
-      ? pillars.filter((p) => p.title?.trim() || p.description?.trim())
+    pillars?.filter((p) => p.title?.trim() || p.description).length
+      ? pillars.filter((p) => p.title?.trim() || p.description)
       : DEFAULT_PILLARS
 
   return (
@@ -128,8 +130,10 @@ export function AccompagnementSection({
         <div className="accomp-panel">
           <header className="accomp-header reveal" data-reveal>
             <p className="eyebrow accomp-eyebrow">{resolvedEyebrow}</p>
-            <h2>{renderOfferingTitle(resolvedTitle)}</h2>
-            <p className="accomp-lead">{resolvedLead}</p>
+            <h2>{renderOfferingTitle(title, DEFAULT_TITLE)}</h2>
+            <div className="accomp-lead">
+              <RichText value={lead} fallback={DEFAULT_LEAD} />
+            </div>
           </header>
 
           <div className="accomp-body">
@@ -140,7 +144,10 @@ export function AccompagnementSection({
                   <div className="accomp-tl-body">
                     {pillar.title ? <h3 className="accomp-tl-title">{pillar.title}</h3> : null}
                     {pillar.description ? (
-                      <p className="accomp-tl-desc">{pillar.description}</p>
+                      <RichText
+                        value={pillar.description}
+                        className="accomp-tl-desc"
+                      />
                     ) : null}
                   </div>
                 </div>
@@ -156,7 +163,9 @@ export function AccompagnementSection({
               <div className="accomp-app-text">
                 <p className="accomp-app-kicker">{resolvedAppKicker}</p>
                 <h3 className="accomp-app-title">{resolvedAppTitle}</h3>
-                <p className="accomp-app-desc">{resolvedAppDescription}</p>
+                <div className="accomp-app-desc">
+                  <RichText value={resolvedAppDescription} fallback={DEFAULT_APP_DESCRIPTION} />
+                </div>
               </div>
             </aside>
           </div>

@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
+import {quotePortableTextComponents, RichText, SectionTitle} from '@/lib/portableTextComponents'
 
 const DEFAULT_EYEBROW = 'Pour toi ou pas ?'
 const DEFAULT_TITLE = 'Une approche claire, pour les bonnes raisons.'
 const DEFAULT_YES_LABEL = "C'est pour toi si"
 const DEFAULT_NO_LABEL = "Ce n'est probablement pas pour toi si"
-const DEFAULT_FOOTER =
+const DEFAULT_QUOTE =
   'Cet accompagnement s\'adresse aux femmes qui veulent investir sérieusement dans leur progression, leur confiance et leur santé à long terme.'
 const DEFAULT_CTA = "Je veux savoir si c'est pour moi"
 
@@ -73,12 +74,12 @@ function CtaArrow() {
 
 export type PourToiSectionProps = {
   eyebrow?: string | null
-  title?: string | null
+  title?: unknown
   yesLabel?: string | null
   yesItems?: string[]
   noLabel?: string | null
   noItems?: string[]
-  footer?: string | null
+  footer?: unknown
   ctaLabel?: string | null
   ctaUrl: string
   calLinkNamespace?: string
@@ -110,7 +111,9 @@ export function PourToiSection({
       <div className="section-inner section-inner--fit">
         <header className="fit-header reveal" data-reveal>
           <p className="eyebrow fit-eyebrow">{textOrDefault(eyebrow, DEFAULT_EYEBROW)}</p>
-          <h2>{textOrDefault(title, DEFAULT_TITLE)}</h2>
+          <h2>
+            <SectionTitle value={title} fallback={DEFAULT_TITLE} />
+          </h2>
         </header>
 
         <div className="fit-grid reveal" data-reveal>
@@ -155,7 +158,12 @@ export function PourToiSection({
 
         <div className="fit-footer reveal" data-reveal>
           <blockquote className="fit-quote">
-            <p>{textOrDefault(footer, DEFAULT_FOOTER)}</p>
+            <RichText
+              value={footer}
+              fallback={DEFAULT_QUOTE}
+              components={quotePortableTextComponents}
+              className="fit-quote-text"
+            />
           </blockquote>
           <a
             className="btn btn-primary fit-cta"

@@ -1,14 +1,19 @@
 import Image from 'next/image'
 import {BioCardStack, type BioCardItem} from '@/app/components/BioCardStack'
+import {
+  quotePortableTextComponents,
+  RichText,
+  type PortableTextValue,
+} from '@/lib/portableTextComponents'
 
 export const DEFAULT_MEET_TRAINER_CARDS: BioCardItem[] = [
   {
     label: 'Mon parcours',
-    body: "Depuis plus de 10 ans, l'entraînement fait partie de ma vie. **Au fil des années, j'ai appris que les résultats durables ne viennent pas d'une routine parfaite, d'un plan extrême ou d'une motivation constante.** Ils viennent d'une structure réaliste, d'une meilleure compréhension de son corps et d'habitudes qu'on arrive réellement à maintenir dans le quotidien.",
+    body: "Depuis plus de 10 ans, l'entraînement fait partie de ma vie. Au fil des années, j'ai appris que les résultats durables ne viennent pas d'une routine parfaite, d'un plan extrême ou d'une motivation constante. Ils viennent d'une structure réaliste, d'une meilleure compréhension de son corps et d'habitudes qu'on arrive réellement à maintenir dans le quotidien.",
   },
   {
     label: 'Ma philosophie',
-    body: "J'accompagne mes clientes comme j'aborde mon propre parcours : avec équilibre, sans extrêmes ni restrictions, et en m'adaptant aux différentes saisons de la vie. **Je ne suis pas là pour te donner un plan impossible à maintenir.** Je suis là pour t'aider à t'entraîner avec intention, à mieux comprendre ce que tu fais, à progresser de façon sécuritaire et à bâtir une routine qui s'intègre vraiment à ta vie.",
+    body: "J'accompagne mes clientes comme j'aborde mon propre parcours : avec équilibre, sans extrêmes ni restrictions, et en m'adaptant aux différentes saisons de la vie. Je ne suis pas là pour te donner un plan impossible à maintenir. Je suis là pour t'aider à t'entraîner avec intention, à mieux comprendre ce que tu fais, à progresser de façon sécuritaire et à bâtir une routine qui s'intègre vraiment à ta vie.",
   },
   {
     label: 'Ma spécialité',
@@ -16,7 +21,7 @@ export const DEFAULT_MEET_TRAINER_CARDS: BioCardItem[] = [
   },
   {
     label: 'Mon engagement',
-    body: "**Mon but est de t'amener vers plus de clarté, de constance et d'autonomie.** Je veux que tu saches quoi faire, pourquoi tu le fais, et comment continuer à prendre soin de toi bien après notre travail ensemble.",
+    body: "Mon but est de t'amener vers plus de clarté, de constance et d'autonomie. Je veux que tu saches quoi faire, pourquoi tu le fais, et comment continuer à prendre soin de toi bien après notre travail ensemble.",
   },
 ]
 
@@ -28,7 +33,7 @@ export type MeetTrainerSectionProps = {
   imageSrc: string
   imageAlt: string
   cards?: BioCardItem[]
-  quote?: string
+  quote?: string | PortableTextValue
   ctaLabel?: string
   ctaUrl?: string
 }
@@ -43,11 +48,9 @@ export function MeetTrainerSection({
   ctaUrl = 'https://www.instagram.com/eliane.au.naturel',
 }: MeetTrainerSectionProps) {
   const bioCards =
-    cards?.filter((c) => c.label?.trim() || c.body?.trim()).length
-      ? cards.filter((c) => c.label?.trim() || c.body?.trim())
+    cards?.filter((c) => c.label?.trim() || c.body).length
+      ? cards.filter((c) => c.label?.trim() || c.body)
       : DEFAULT_MEET_TRAINER_CARDS
-
-  const quoteText = quote?.trim() || DEFAULT_MEET_TRAINER_QUOTE
 
   return (
     <section className="section section-rencontre" id="rencontre">
@@ -71,7 +74,12 @@ export function MeetTrainerSection({
             <BioCardStack cards={bioCards} />
 
             <div className="bio-section-quote">
-              <p>{quoteText}</p>
+              <RichText
+                value={quote}
+                fallback={DEFAULT_MEET_TRAINER_QUOTE}
+                components={quotePortableTextComponents}
+                className="bio-section-quote-text"
+              />
             </div>
 
             <a className="bio-instagram" href={ctaUrl} target="_blank" rel="noopener noreferrer">

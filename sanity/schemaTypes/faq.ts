@@ -1,5 +1,5 @@
 import {defineType, defineField} from 'sanity'
-import {linkMark} from './linkMark'
+import {bodyRichBlock} from './portableText'
 
 export default defineType({
   name: 'faq',
@@ -16,23 +16,7 @@ export default defineType({
       name: 'answer',
       title: 'Réponse',
       type: 'array',
-      of: [
-        {
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-          lists: [
-            {title: 'Liste à puces', value: 'bullet'},
-            {title: 'Liste numérotée', value: 'number'},
-          ],
-          marks: {
-            decorators: [
-              {title: 'Gras', value: 'strong'},
-              {title: 'Italique', value: 'em'},
-            ],
-            annotations: [linkMark],
-          },
-        },
-      ],
+      of: [bodyRichBlock(true)],
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({

@@ -3,11 +3,12 @@
 import {useRef, useEffect, useCallback, useState} from 'react'
 import {ProcessSnakeGraphic, type SnakeCoords} from '@/app/components/ProcessDrawGraphics'
 import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
+import {RichText, SectionTitle, type PortableTextValue} from '@/lib/portableTextComponents'
 
 export type AfterCallStep = {
   _key?: string
   title?: string
-  description?: string
+  description?: string | PortableTextValue
 }
 
 const DEFAULT_EYEBROW = 'Comment ça se passe'
@@ -64,8 +65,8 @@ function CtaArrow() {
 
 export type AfterCallSectionProps = {
   eyebrow?: string | null
-  title?: string | null
-  intro?: string | null
+  title?: unknown
+  intro?: unknown
   steps?: AfterCallStep[]
   ctaLabel?: string | null
   ctaUrl: string
@@ -81,7 +82,8 @@ export function AfterCallSection({
   ctaUrl,
   calLinkNamespace,
 }: AfterCallSectionProps) {
-  const filteredSteps = steps?.filter((step) => step?.title?.trim() || step?.description?.trim()) ?? []
+  const filteredSteps =
+    steps?.filter((step) => step?.title?.trim() || step?.description) ?? []
   const resolvedSteps = filteredSteps.length >= 5 ? filteredSteps.slice(0, 5) : DEFAULT_STEPS
 
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -153,8 +155,12 @@ export function AfterCallSection({
       <div className="section-inner section-inner--process">
         <header className="process-header reveal" data-reveal>
           <p className="process-eyebrow">{textOrDefault(eyebrow, DEFAULT_EYEBROW)}</p>
-          <h2>{textOrDefault(title, DEFAULT_TITLE)}</h2>
-          <p className="process-sub">{textOrDefault(intro, DEFAULT_INTRO)}</p>
+          <h2>
+            <SectionTitle value={title} fallback={DEFAULT_TITLE} />
+          </h2>
+          <p className="process-sub">
+            <RichText value={intro} fallback={DEFAULT_INTRO} as="inline" />
+          </p>
         </header>
 
         <div
@@ -178,7 +184,7 @@ export function AfterCallSection({
                   0{stepNum}
                 </span>
                 <h3 className="process-card-title">{step?.title}</h3>
-                <p className="process-card-desc">{step?.description}</p>
+                <RichText value={step?.description} className="process-card-desc" />
               </div>
             )
           })}
@@ -198,7 +204,7 @@ export function AfterCallSection({
                   0{stepNum}
                 </span>
                 <h3 className="process-card-title">{step?.title}</h3>
-                <p className="process-card-desc">{step?.description}</p>
+                <RichText value={step?.description} className="process-card-desc" />
               </div>
             )
           })}
@@ -218,7 +224,7 @@ export function AfterCallSection({
                   0{i + 1}
                 </span>
                 <h3 className="process-card-title">{step?.title}</h3>
-                <p className="process-card-desc">{step?.description}</p>
+                <RichText value={step?.description} className="process-card-desc" />
               </div>
             </div>
           ))}
