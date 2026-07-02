@@ -13,7 +13,7 @@ import {TestimonialsSection, type TestimonialVideoItem} from '@/app/components/T
 import {urlFor} from '@/sanity/imageUrl'
 import {sanityFetch} from '@/sanity/live'
 import {COLLABORATORS_QUERY, FAQS_QUERY, HOMEPAGE_QUERY, SITE_SETTINGS_QUERY} from '@/sanity/queries'
-import {SITE_URL} from '@/app/layout'
+import {DEFAULT_OG_IMAGE_PATH, SITE_URL} from '@/app/layout'
 import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 
 /** Serializes a JSON-LD object and escapes `</` to prevent script-injection
@@ -804,7 +804,7 @@ export default async function Home() {
                   '@type': 'HealthAndBeautyBusiness',
                   name: 'Éliane Larre — Entraîneure personnelle',
                   url: SITE_URL,
-                  image: `${SITE_URL}/opengraph-image.png`,
+                  image: `${SITE_URL}${DEFAULT_OG_IMAGE_PATH}`,
                   email: contactEmail,
                   description:
                     "Entraîneure personnelle privée à Montréal. Accompagnement personnalisé en présentiel — séances privées, suivi et programmes sur mesure pour les femmes. Accessible sur Instagram 7j/7.",

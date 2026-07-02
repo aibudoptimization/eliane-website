@@ -84,12 +84,12 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 - [ ] **2.1** Fix **hero photo crop on mobile** (CSS and/or mobile hero image from 1.8)
 - [x] **2.2** Change **hero CTA** from Cal.com to `/#accompagnement` (or per-CTA field from 1.1)
-- [ ] **2.3** Replace **favicon / tab icon** with `logo-eliane-larre.png`
+- [x] **2.3** Replace **favicon / tab icon** with `logo-eliane-larre.png` (`npm run generate:icons` → `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`)
 - [x] **2.4** Purple quote readability — CSS forced italic removed; Studio rich text via **1.4b**
 - [ ] **2.5** Replace **Approche** list dashes with small icons
 - [~] **2.6** Add **italic styling for parenthetical text** in présentiel card descriptions (imputabilité) — available via Portable Text in Studio (1.3); verify after 0.2 content entry
 - [ ] **2.7** **Diagnose présentiel icons**: verify distinct `iconName` in Sanity; fix rendering or improve visual distinction
-- [ ] **2.8** Set `image-de-partage.png` as default OG in repo if Sanity field is empty (fallback)
+- [x] **2.8** Set `image-de-partage.png` as default OG in repo if Sanity field is empty (fallback: `/images/image-de-partage.png` + `app/opengraph-image.png`)
 
 ---
 

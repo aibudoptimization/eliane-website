@@ -34,6 +34,8 @@ const poppins = Poppins({
 const DEFAULT_META_TITLE = "Éliane Larre — Entraîneure personnelle privée · Montréal";
 const DEFAULT_META_DESCRIPTION =
   "Éliane Larre est entraîneure personnelle privée à Montréal. Accompagnement en présentiel, personnalisé et sur mesure pour progresser avec confiance et constance.";
+/** Repo fallback when Sanity → Image de partage is empty (public/images/image-de-partage.png). */
+export const DEFAULT_OG_IMAGE_PATH = "/images/image-de-partage.png";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
@@ -41,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     (siteSettings?.metaDescription as string | undefined)?.trim() || DEFAULT_META_DESCRIPTION;
 
-  const ogImageUrl =
+  const sanityOgImageUrl =
     (siteSettings?.ogImage as { asset?: unknown } | undefined)?.asset != null
       ? urlFor(siteSettings.ogImage as Parameters<typeof urlFor>[0])
           .width(1200)
@@ -49,9 +51,9 @@ export async function generateMetadata(): Promise<Metadata> {
           .url()
       : undefined;
 
-  const ogImages = ogImageUrl
-    ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }]
-    : undefined;
+  const ogImageUrl = sanityOgImageUrl ?? `${SITE_URL}${DEFAULT_OG_IMAGE_PATH}`;
+
+  const ogImages = [{ url: ogImageUrl, width: 1200, height: 630, alt: title }];
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -65,13 +67,13 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       siteName: "Éliane Larre",
       url: SITE_URL,
-      ...(ogImages ? { images: ogImages } : {}),
+      images: ogImages,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(ogImages ? { images: [ogImageUrl!] } : {}),
+      images: [ogImageUrl],
     },
     other: {
       "theme-color": "#552772",
