@@ -20,7 +20,9 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 **Phase 0 content applied** via `npm run apply:phase0` (2026-07-01). Verify on live site + Studio publish state.
 
-**Next:** three phone screens (1.6–1.7) → dev polish (2.1, 2.5–2.7) → QA & handoff (4.x).
+**Next:** three phone screens (1.6–1.7) → dev polish (2.5–2.7) → QA & handoff (4.x).
+
+**Studio UX polish (2026-07-01):** welcome splash, brand theme, flattened sidebar, Presentation default, Vision hidden — verify in `/studio` after deploy.
 
 ---
 
@@ -63,6 +65,7 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 - [x] **1.0** Refactor Studio desk: singleton + section shortcuts (fixed document id mismatch — migrated to `homePage` / `siteSettings`; async id resolver as fallback)
 - [x] **1.5** Expose **location block** in Studio (eyebrow « Où ça se passe », venue, address)
+- [x] **1.9** Studio UX polish: welcome splash (once/session), subtle plum/beige theme, flattened sidebar, **Aperçu du site** default, Vision hidden, **Voir sur le site** link in navbar
 
 ### Rich text (gras / italique) — Studio + site
 
@@ -82,7 +85,7 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 ## Phase 2 — Dev fixes
 
-- [ ] **2.1** Fix **hero photo crop on mobile** (CSS and/or mobile hero image from 1.8)
+- [x] **2.1** Fix **hero photo crop on mobile** (CSS: `object-fit: contain`, parallax off on mobile)
 - [x] **2.2** Change **hero CTA** from Cal.com to `/#accompagnement` (hardcoded)
 - [x] **2.3** Replace **favicon / tab icon** with `logo-eliane-larre.png` (`npm run generate:icons` → `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`)
 - [x] **2.4** Purple quote readability — CSS forced italic removed; Studio rich text via **1.4b**
@@ -119,7 +122,7 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 ✓ 1.0, 1.3, 1.4, 1.4b, 1.5, 2.2, 2.4, 2.3, 2.8  (merged + favicon/OG)
 → 0.1–0.6 ✓ (apply:phase0)
 → 1.6–1.7 (3 phone screens)
-→ 2.1, 2.5–2.7 (polish)
+→ 2.5–2.7 (polish)
 → 3.x (private pages, if scoped)
 → 4.x (QA + tutorial)
 ```
@@ -149,4 +152,4 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 ---
 
-*Last updated: 2026-07-01 (1.1–1.2 per-section CTA URLs cancelled)*
+*Last updated: 2026-07-01 (Studio UX polish 1.9, mobile hero 2.1)*

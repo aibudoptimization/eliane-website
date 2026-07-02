@@ -88,7 +88,7 @@ export const structure: StructureResolver = (S, context) => {
   const client = context.getClient({apiVersion})
 
   return S.list()
-    .title('Contenu')
+    .title("Page d'accueil")
     .items([
       S.listItem()
         .title('Paramètres du site')
@@ -104,20 +104,10 @@ export const structure: StructureResolver = (S, context) => {
             .title('Paramètres du site')
         }),
       S.divider(),
-      S.listItem()
-        .id('page-accueil')
-        .title("Page d'accueil")
-        .child(
-          S.list()
-            .id('page-accueil-sections')
-            .title("Page d'accueil")
-            .items([
-              ...HOME_PAGE_SECTION_SHORTCUTS.map(({title, sectionId}) =>
-                homePageSectionListItem(S, client, title, sectionId),
-              ),
-              collaborateursHub(S, client),
-              faqHub(S, client),
-            ]),
-        ),
+      ...HOME_PAGE_SECTION_SHORTCUTS.map(({title, sectionId}) =>
+        homePageSectionListItem(S, client, title, sectionId),
+      ),
+      collaborateursHub(S, client),
+      faqHub(S, client),
     ])
 }

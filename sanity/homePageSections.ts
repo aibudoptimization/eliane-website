@@ -26,6 +26,12 @@ const SECTION_ID_TO_GROUP = Object.fromEntries(
   HOME_PAGE_SECTIONS.filter((s) => s.group).map((s) => [s.sectionId, s.group!]),
 ) as Record<string, string>
 
+/** Map a sidebar section id to the matching homePage field group. */
+export function resolveHomePageGroupFromSectionId(sectionId: string): string | null {
+  if (sectionId === 'all') return null
+  return SECTION_ID_TO_GROUP[sectionId] ?? null
+}
+
 /** Read active section from Studio structure URL (`section-{id}` segments). */
 export function resolveHomePageGroupFromLocation(pathname?: string): string | null {
   const path = pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '')

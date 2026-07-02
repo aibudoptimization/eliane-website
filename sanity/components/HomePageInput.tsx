@@ -2,7 +2,11 @@
 
 import {useEffect, useRef, useSyncExternalStore} from 'react'
 import type {InputProps, ObjectInputProps} from 'sanity'
-import {resolveHomePageGroupFromLocation} from '../homePageSections'
+import {resolveHomePageGroupFromLocation, resolveHomePageGroupFromSectionId} from '../homePageSections'
+import {
+  getPresentationSection,
+  subscribePresentationSection,
+} from '../presentationSectionStore'
 
 function subscribeToPathname(onStoreChange: () => void) {
   if (typeof window === 'undefined') return () => undefined
@@ -46,8 +50,15 @@ function isHomePageDocumentRoot(props: InputProps) {
  */
 export function HomePageDocumentInput(props: InputProps) {
   const pathname = useSyncExternalStore(subscribeToPathname, getPathnameSnapshot, () => '')
+  const presentationSection = useSyncExternalStore(
+    subscribePresentationSection,
+    getPresentationSection,
+    () => null,
+  )
   const lastGroup = useRef<string | null>(null)
-  const group = resolveHomePageGroupFromLocation(pathname)
+  const group =
+    resolveHomePageGroupFromLocation(pathname) ??
+    (presentationSection ? resolveHomePageGroupFromSectionId(presentationSection) : null)
   const isRoot = isHomePageDocumentRoot(props)
   const onFieldGroupSelect = isRoot
     ? (props as ObjectInputProps).onFieldGroupSelect
