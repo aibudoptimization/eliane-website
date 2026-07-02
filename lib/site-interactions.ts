@@ -377,7 +377,14 @@ function animateCount(el: HTMLElement, end: number, duration: number): void {
 
 function initHeroParallax(): () => void {
   const inner = document.querySelector<HTMLElement>("[data-hero-parallax]");
-  if (!inner || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+  if (!inner) return () => {};
+  if (
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    window.matchMedia("(max-width: 900px)").matches
+  ) {
+    inner.style.transform = "";
+    return () => {};
+  }
 
   const onScroll = () => {
     const y = window.scrollY;

@@ -255,23 +255,22 @@ button:focus-visible {
   right: 22px;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  background: rgba(246, 241, 234, 0.85);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(26, 20, 16, 0.08);
-  border-radius: 50%;
-  box-shadow: var(--shadow-pill);
+  width: 42px;
+  height: 42px;
+  padding: 0;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1.5px solid rgba(26, 20, 16, 0.12);
+  box-shadow: none;
 }
 
 .nav-toggle span {
   display: block;
-  width: 18px;
-  height: 1.5px;
+  width: 16px;
+  height: 2px;
   background: var(--ink);
   position: relative;
   transition: background 0.3s var(--ease-out);
@@ -282,8 +281,8 @@ button:focus-visible {
   content: '';
   position: absolute;
   left: 0;
-  width: 18px;
-  height: 1.5px;
+  width: 16px;
+  height: 2px;
   background: var(--ink);
   transition:
     transform 0.4s var(--ease-out),
@@ -291,11 +290,11 @@ button:focus-visible {
 }
 
 .nav-toggle span::before {
-  top: -6px;
+  top: -5px;
 }
 
 .nav-toggle span::after {
-  top: 6px;
+  top: 5px;
 }
 
 .nav-toggle.is-open span {
@@ -370,9 +369,9 @@ button:focus-visible {
   }
 
   .nav-shell {
-    padding: 16px 22px;
+    padding: 10px 18px;
     justify-content: flex-start;
-    min-height: 82px;
+    min-height: 70px;
   }
 
   .nav-pill--links,
@@ -388,7 +387,7 @@ button:focus-visible {
   .nav-toggle {
     display: inline-flex;
     /* Ensure the full circle clears the viewport right edge and device safe areas */
-    right: max(18px, env(safe-area-inset-right, 0px) + 14px);
+    right: max(14px, env(safe-area-inset-right, 0px) + 12px);
   }
 }
 
@@ -672,7 +671,7 @@ em.quote-italic {
 @media (max-width: 920px) {
   .hero {
     min-height: auto;
-    padding: calc(var(--nav-h) + 16px) 0 56px;
+    padding: calc(var(--nav-h) + 8px) 0 56px;
   }
 
   .hero-inner {
@@ -704,6 +703,15 @@ em.quote-italic {
     height: 52vw;
     min-height: 260px;
     max-height: 420px;
+  }
+
+  .hero-image-inner {
+    inset: 0;
+  }
+
+  .hero-image-inner .hero-img {
+    object-fit: contain;
+    object-position: center center;
   }
 }
 
