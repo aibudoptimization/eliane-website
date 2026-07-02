@@ -13,7 +13,7 @@ import pngToIco from 'png-to-ico'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const logoSrc = join(root, 'public/images/logo-eliane-larre.png')
-const appDir = join(root, 'app')
+const publicDir = join(root, 'public')
 
 async function generateIcons() {
   const logo = sharp(logoSrc).ensureAlpha()
@@ -22,13 +22,13 @@ async function generateIcons() {
   const icon192 = await logo.clone().resize(192, 192, {fit: 'cover'}).png().toBuffer()
   const apple180 = await logo.clone().resize(180, 180, {fit: 'cover'}).png().toBuffer()
 
-  writeFileSync(join(appDir, 'icon.png'), icon192)
-  writeFileSync(join(appDir, 'apple-icon.png'), apple180)
-  writeFileSync(join(appDir, 'favicon.ico'), await pngToIco(icon32))
+  writeFileSync(join(publicDir, 'icon.png'), icon192)
+  writeFileSync(join(publicDir, 'apple-icon.png'), apple180)
+  writeFileSync(join(publicDir, 'favicon.ico'), await pngToIco(icon32))
 
-  console.log('Generated app/icon.png (192×192)')
-  console.log('Generated app/apple-icon.png (180×180)')
-  console.log('Generated app/favicon.ico (32×32)')
+  console.log('Generated public/icon.png (192×192)')
+  console.log('Generated public/apple-icon.png (180×180)')
+  console.log('Generated public/favicon.ico (32×32)')
   console.log('OG: use public/images/image-de-partage.png (Sanity or /images/ fallback in layout)')
 }
 

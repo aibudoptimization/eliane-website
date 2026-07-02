@@ -117,6 +117,14 @@ async function main() {
     filename: basename(ogImagePath),
   })
 
+  const logoPath = resolve(process.cwd(), 'public/images/logo-eliane-larre.png')
+  if (!existsSync(logoPath)) {
+    throw new Error(`Favicon source not found: ${logoPath}`)
+  }
+  const faviconAsset = await client.assets.upload('image', createReadStream(logoPath), {
+    filename: basename(logoPath),
+  })
+
   const homePatch = {
     heroSubheadline: blocks(
       "Un accompagnement sur mesure, conçu pour toi qui veux intégrer l'entraînement à ta vie, ou pour toi qui crois avoir tout essayé, mais qui n'arrives toujours pas à atteindre tes objectifs et à les maintenir.",
@@ -257,13 +265,17 @@ async function main() {
           _type: 'image',
           asset: {_type: 'reference', _ref: ogAsset._id},
         },
+        favicon: {
+          _type: 'image',
+          asset: {_type: 'reference', _ref: faviconAsset._id},
+        },
       },
     })
     .commit()
 
   console.log('Phase 0 content applied:')
   console.log(`- homePage (${homeId}): meet trainer, présentiel, accompagnement, reviews, after-call`)
-  console.log(`- siteSettings (${SITE_SETTINGS_ID}): ogImage uploaded from image-de-partage.png`)
+  console.log(`- siteSettings (${SITE_SETTINGS_ID}): ogImage + favicon uploaded`)
   console.log('Publish in Studio if documents show as drafts.')
 }
 

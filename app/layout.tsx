@@ -13,8 +13,9 @@ import SiteFooter from "./components/SiteFooter";
 import { sanityFetch, SanityLive } from "@/sanity/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/imageUrl";
+import { siteIconsMetadata } from "@/lib/site-icons";
 
-export const SITE_URL = "https://www.elianelarre.com";
+import { SITE_URL, DEFAULT_OG_IMAGE_PATH } from "@/lib/site-config";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -34,8 +35,8 @@ const poppins = Poppins({
 const DEFAULT_META_TITLE = "Éliane Larre — Entraîneure personnelle privée · Montréal";
 const DEFAULT_META_DESCRIPTION =
   "Éliane Larre est entraîneure personnelle privée à Montréal. Accompagnement en présentiel, personnalisé et sur mesure pour progresser avec confiance et constance.";
-/** Repo fallback when Sanity → Image de partage is empty (public/images/image-de-partage.png). */
-export const DEFAULT_OG_IMAGE_PATH = "/images/image-de-partage.png";
+
+export { SITE_URL, DEFAULT_OG_IMAGE_PATH };
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
@@ -60,6 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: "/" },
     title,
     description,
+    ...siteIconsMetadata(siteSettings),
     openGraph: {
       type: "website",
       locale: "fr_CA",

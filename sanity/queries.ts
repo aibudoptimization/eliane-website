@@ -139,5 +139,6 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
   instagramUrl,
   metaTitle,
   metaDescription,
+  favicon { ..., "asset": asset-> },
   ogImage { ..., "asset": asset-> }
 }`

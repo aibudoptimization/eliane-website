@@ -56,6 +56,14 @@ export default defineType({
       validation: (Rule) => Rule.max(200),
     }),
     defineField({
+      name: 'favicon',
+      title: 'Favicon (icône du site)',
+      description:
+        'Image carrée affichée dans l’onglet du navigateur. Format recommandé : PNG 512×512 px. Laisse vide pour utiliser le logo par défaut.',
+      type: 'image',
+      options: {hotspot: true},
+    }),
+    defineField({
       name: 'ogImage',
       title: 'Image de partage (Open Graph)',
       description:
