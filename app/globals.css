@@ -529,7 +529,7 @@ button:focus-visible {
 
 h2 em.accent,
 h2 .accent {
-  color: var(--plum);
+  color: var(--accent-italic, var(--plum));
   font-style: italic;
 }
 
@@ -537,7 +537,7 @@ h2 .accent {
 .hero h1 em.accent,
 .text-accent,
 em.text-accent {
-  color: var(--plum);
+  color: var(--accent-italic, var(--plum));
   font-style: italic;
 }
 
@@ -557,8 +557,11 @@ em.text-accent {
 }
 
 .bio-section-quote em,
-.presentiel-quote em {
-  color: var(--plum);
+.presentiel-quote em,
+.fit-quote em,
+.fit-quote-text em,
+em.quote-italic {
+  color: var(--quote-italic, var(--ink));
   font-style: italic;
 }
 
@@ -3894,7 +3897,7 @@ em.text-accent {
 
 .presentiel-quote em {
   font-style: italic;
-  color: var(--plum);
+  color: var(--quote-italic, var(--ink));
 }
 
 @media (max-width: 920px) {

@@ -1,3 +1,4 @@
+import { colorInput } from '@sanity/color-input'
 import { defineConfig } from 'sanity'
 import { presentationTool, defineLocations } from 'sanity/presentation'
 import { structureTool } from 'sanity/structure'
@@ -30,6 +31,7 @@ export default defineConfig({
   },
   plugins: [
     structureTool({ structure }),
+    colorInput(),
     visionTool({ defaultApiVersion: apiVersion }),
     presentationTool({
       previewUrl: {

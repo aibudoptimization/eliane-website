@@ -65,7 +65,7 @@ export const bodyPortableTextComponents = createPortableTextComponents('text-acc
 export const quotePortableTextComponents: PortableTextComponents = {
   marks: {
     strong: ({children}) => <strong>{children}</strong>,
-    em: ({children}) => <em>{children}</em>,
+    em: ({children}) => <em className="quote-italic">{children}</em>,
     link: linkMarkComponent,
   },
   block: {

@@ -14,6 +14,7 @@ import { sanityFetch, SanityLive } from "@/sanity/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/imageUrl";
 import { siteIconsMetadata } from "@/lib/site-icons";
+import { siteColorCssVars } from "@/lib/site-colors";
 
 import { SITE_URL, DEFAULT_OG_IMAGE_PATH } from "@/lib/site-config";
 
@@ -117,9 +118,14 @@ export default async function RootLayout({
   const instagramUrl =
     siteSettings?.instagramUrl ??
     "https://www.instagram.com/eliane.au.naturel";
+  const colorVars = siteColorCssVars(siteSettings);
 
   return (
-    <html lang="fr-CA" className={`${playfairDisplay.variable} ${poppins.variable}`}>
+    <html
+      lang="fr-CA"
+      className={`${playfairDisplay.variable} ${poppins.variable}`}
+      style={colorVars}
+    >
       <head>
         <link rel="preconnect" href="https://app.cal.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cal.com" crossOrigin="anonymous" />

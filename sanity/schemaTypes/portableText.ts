@@ -14,13 +14,13 @@ export const plainEmDecorator = {title: 'Italique', value: 'em'}
 export const richTextDecorators = [strongDecorator, emDecorator]
 export const quoteDecorators = [strongDecorator, plainEmDecorator]
 
-/** Titles, subtitles, and body copy where italic renders plum on the site. */
+/** Titles, subtitles, and body copy — italic color: Paramètres du site → Couleur italique accent. */
 export const RICH_TEXT_FIELD_DESCRIPTION =
-  'Gras ou Italique (mauve) sur les mots à mettre en évidence.'
+  'Gras ou Italique (mauve) sur les mots à mettre en évidence. La couleur du mauve se règle dans Paramètres du site.'
 
-/** Quote boxes: black text on lavender — italic stays black on the site. */
+/** Quote boxes — italic color: Paramètres du site → Couleur italique des citations. */
 export const QUOTE_FIELD_DESCRIPTION =
-  'Gras ou italique sur les mots à mettre en évidence.'
+  'Gras ou italique sur les mots à mettre en évidence. La couleur de l’italique se règle dans Paramètres du site.'
 
 /** Inline rich text (titles, single-line headings). */
 export const inlineRichBlock = {

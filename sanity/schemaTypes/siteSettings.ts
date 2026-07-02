@@ -1,4 +1,14 @@
 import {defineType, defineField} from 'sanity'
+import {
+  BRAND_ITALIC_COLOR_SWATCHES,
+  DEFAULT_ACCENT_ITALIC_COLOR,
+  DEFAULT_QUOTE_ITALIC_COLOR,
+} from '../../lib/site-colors'
+
+const italicColorOptions = {
+  disableAlpha: true,
+  colorList: BRAND_ITALIC_COLOR_SWATCHES,
+}
 
 export default defineType({
   name: 'siteSettings',
@@ -54,6 +64,20 @@ export default defineType({
       type: 'text',
       rows: 3,
       validation: (Rule) => Rule.max(200),
+    }),
+    defineField({
+      name: 'accentItalicColor',
+      title: 'Couleur italique accent (titres et texte)',
+      description: `Couleur des mots en italique (mauve) hors citations. Mauve par défaut : ${DEFAULT_ACCENT_ITALIC_COLOR}`,
+      type: 'color',
+      options: italicColorOptions,
+    }),
+    defineField({
+      name: 'quoteItalicColor',
+      title: 'Couleur italique des citations',
+      description: `Couleur de l'italique dans les encadrés mauve. Noir par défaut : ${DEFAULT_QUOTE_ITALIC_COLOR}`,
+      type: 'color',
+      options: italicColorOptions,
     }),
     defineField({
       name: 'favicon',
