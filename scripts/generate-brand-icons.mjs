@@ -1,6 +1,7 @@
 /**
- * Generate favicon / PWA icons from public/images/logo-eliane-larre.png
- * and sync OG fallback to app/opengraph-image.png from image-de-partage.png.
+ * Generate favicon / PWA icons from public/images/logo-eliane-larre.png.
+ * OG image is served via layout.tsx (Sanity ogImage → /images/image-de-partage.png).
+ * Do not add app/opengraph-image.png — it overrides generateMetadata for Facebook.
  *
  * Run: node scripts/generate-brand-icons.mjs
  */
@@ -12,7 +13,6 @@ import pngToIco from 'png-to-ico'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const logoSrc = join(root, 'public/images/logo-eliane-larre.png')
-const ogSrc = join(root, 'public/images/image-de-partage.png')
 const appDir = join(root, 'app')
 
 async function generateIcons() {
@@ -26,16 +26,10 @@ async function generateIcons() {
   writeFileSync(join(appDir, 'apple-icon.png'), apple180)
   writeFileSync(join(appDir, 'favicon.ico'), await pngToIco(icon32))
 
-  const og = await sharp(ogSrc)
-    .resize(1200, 630, {fit: 'cover', position: 'centre'})
-    .png()
-    .toBuffer()
-  writeFileSync(join(appDir, 'opengraph-image.png'), og)
-
   console.log('Generated app/icon.png (192×192)')
   console.log('Generated app/apple-icon.png (180×180)')
   console.log('Generated app/favicon.ico (32×32)')
-  console.log('Generated app/opengraph-image.png (1200×630)')
+  console.log('OG: use public/images/image-de-partage.png (Sanity or /images/ fallback in layout)')
 }
 
 generateIcons().catch((err) => {

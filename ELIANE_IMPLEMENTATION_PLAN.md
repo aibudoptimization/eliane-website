@@ -18,9 +18,9 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 **Phase 1 core engineering is done.** Studio has section shortcuts, FAQ/Collaborateurs hubs, Portable Text on titles/subtitles/citations, location block fields, and consistent field descriptions. Frontend renders rich text (mauve italic on body copy; black italic on lavender quote boxes).
 
-**Next blocker: Phase 0** — manual content entry in Studio using [`ELIANE_STUDIO_MANUAL_CONTENT.md`](ELIANE_STUDIO_MANUAL_CONTENT.md). Several fields may appear empty after the rich-text migration; paste copy from the guide, format, and publish.
+**Phase 0 content applied** via `npm run apply:phase0` (2026-07-01). Verify on live site + Studio publish state.
 
-**Then:** per-section CTA URLs (1.1–1.2) → three phone screens (1.6–1.7) → favicon + OG fallback (2.3, 2.8) → remaining dev polish (2.1, 2.5–2.7) → QA & handoff (4.x).
+**Next:** three phone screens (1.6–1.7) → dev polish (2.1, 2.5–2.7) → QA & handoff (4.x).
 
 ---
 
@@ -32,9 +32,9 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 | Présentiel not editable | **Fixed in code**: titre, intro, cartes, citation, location block in Studio. **Pending:** rename + copy (0.2, 0.5) and content entry. |
 | Italic / mauve text | **Done** — Portable Text in Studio; site renders italique → mauve via `portableTextComponents`. |
 | Purple punch quotes | **Done** — `quoteRichTextField` (Gras + Italique, no mauve); site uses plain `<em>` on lavender. Also: Pour toi citation, meet trainer quote, location quote. |
-| Share image | Still pending — upload `image-de-partage.png` in Studio (0.3) and/or repo fallback (2.8). |
+| Share image | Done — Studio `ogImage` + repo fallback (0.3 ✓, 2.8 ✓) |
 | Séances privées copy | Content update in Studio after fields are editable (0.4). |
-| Studio first (hour bank) | **Phase 1 engineering complete.** Hour bank now for content fill + remaining dev (CTAs, screens, polish). |
+| Studio first (hour bank) | **Phase 1 engineering complete.** Hour bank now for content fill + screens + polish. |
 
 ---
 
@@ -46,12 +46,12 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 *Copy-paste guide: `ELIANE_STUDIO_MANUAL_CONTENT.md`*
 
-- [~] **0.1** **Rencontre ton entraîneure** — Studio wired (accroche, photo, cartes, citation, lien Instagram). **Remaining:** paste/format content, publish, verify on site
-- [~] **0.2** **Pourquoi le présentiel** — Studio wired (accroche, titre, intro, cartes, citation, lieu). **Remaining:** paste/format content, publish, verify on site
-- [ ] **0.3** Set `image-de-partage.png` as OG image (Sanity **Paramètres du site → Image de partage** and/or repo default)
-- [ ] **0.4** Update pillar **« Séances privées en présentiel »** — mention session count depends on service package
-- [ ] **0.5** Rename présentiel section to **« Où ont lieu les séances ensemble »** (eyebrow + titre)
-- [ ] **0.6** Set / review `meetTrainerQuote` + `locationQuote` copy in Studio
+- [x] **0.1** **Rencontre ton entraîneure** — cartes, citation, Instagram (`npm run apply:phase0`)
+- [x] **0.2** **Pourquoi le présentiel** — accroche/titre, intro, cartes, citation, lieu (`apply:phase0`)
+- [x] **0.3** Set `image-de-partage.png` as OG image — uploaded via `apply:phase0` (Studio override still possible)
+- [x] **0.4** Update pillar **« Séances privées en présentiel »** — session count note (`apply:phase0`)
+- [x] **0.5** Rename présentiel section to **« Où ont lieu les séances ensemble »** (`apply:phase0`)
+- [x] **0.6** Set / review `meetTrainerQuote` + `locationQuote` copy (`apply:phase0`)
 
 ---
 
@@ -72,8 +72,8 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 ### CTA links & accompagnement visuals
 
-- [ ] **1.1** Add optional **per-section CTA URL** fields with fallback to global `bookingUrl`
-- [ ] **1.2** Wire frontend so each CTA uses its own URL when set (keep Cal.com embed when URL is Cal.com)
+- ~~**1.1** Add optional **per-section CTA URL** fields with fallback to global `bookingUrl`~~ *(cancelled — global `bookingUrl` in Paramètres du site stays)*
+- ~~**1.2** Wire frontend so each CTA uses its own URL when set (keep Cal.com embed when URL is Cal.com)~~ *(cancelled)*
 - [ ] **1.6** Replace single `offeringAppImage` with **3 screenshots** (image + caption): « Ton tableau de bord », « Ta progression », « Tes programmes »
 - [ ] **1.7** Update `AccompagnementSection` to display the 3 labeled phone screens
 - [ ] **1.8** *(Optional)* Add **mobile-specific hero image** field in Studio
@@ -83,7 +83,7 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 ## Phase 2 — Dev fixes
 
 - [ ] **2.1** Fix **hero photo crop on mobile** (CSS and/or mobile hero image from 1.8)
-- [x] **2.2** Change **hero CTA** from Cal.com to `/#accompagnement` (or per-CTA field from 1.1)
+- [x] **2.2** Change **hero CTA** from Cal.com to `/#accompagnement` (hardcoded)
 - [x] **2.3** Replace **favicon / tab icon** with `logo-eliane-larre.png` (`npm run generate:icons` → `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`)
 - [x] **2.4** Purple quote readability — CSS forced italic removed; Studio rich text via **1.4b**
 - [ ] **2.5** Replace **Approche** list dashes with small icons
@@ -116,10 +116,8 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 ## Suggested work order
 
 ```
-✓ 1.0, 1.3, 1.4, 1.4b, 1.5, 2.2, 2.4  (merged PR #57)
-→ 0.1–0.6 (manual Studio content)
-→ 1.1–1.2 (per-section CTA URLs)
-→ 2.3, 2.8 (favicon + OG fallback)
+✓ 1.0, 1.3, 1.4, 1.4b, 1.5, 2.2, 2.4, 2.3, 2.8  (merged + favicon/OG)
+→ 0.1–0.6 ✓ (apply:phase0)
 → 1.6–1.7 (3 phone screens)
 → 2.1, 2.5–2.7 (polish)
 → 3.x (private pages, if scoped)
@@ -134,8 +132,8 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 |-----------|---------|
 | Hero photo not cropped on mobile | 1.8, 2.1 |
 | Italic / mauve most texts | 1.3 ✓, 1.4 ✓ |
-| Hero CTA → Mon accompagnement | 1.1, 2.2 ✓ |
-| CTA links editable in Studio | 1.1, 1.2 |
+| Hero CTA → Mon accompagnement | 2.2 ✓ |
+| ~~CTA links editable per section in Studio~~ | ~~1.1, 1.2~~ *(cancelled — use global `bookingUrl`)* |
 | Approche dashes → icons | 2.5 |
 | Rencontre ton entraîneure not editable | 1.0 ✓, 1.3 ✓, 1.4 ✓, 0.1 |
 | Présentiel not editable | 1.0 ✓, 1.3 ✓, 1.4 ✓, 1.5 ✓, 0.2, 0.5 |
@@ -151,4 +149,4 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 ---
 
-*Last updated: 2026-07-01 (post PR #57 merge, branch cleanup)*
+*Last updated: 2026-07-01 (1.1–1.2 per-section CTA URLs cancelled)*
