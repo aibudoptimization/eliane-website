@@ -29,11 +29,20 @@ export default defineType({
     }),
     defineField({
       name: 'bookingUrl',
-      title: "URL de réservation (CTA principal)",
+      title: "URL de réservation (appel découverte)",
       description:
-        "Tous les CTA du site pointent vers cette URL. Utiliser le lien Cal.com principal d'Éliane.",
+        "Lien Cal.com pour l'appel découverte (nav, pied de page, section « Après l'appel »).",
       type: 'url',
       initialValue: 'https://cal.com/elianelarre/appel-decouverte',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'tallyUrl',
+      title: 'URL Tally (questionnaire initial)',
+      description:
+        'Lien du questionnaire initial pour les CTA de conversion (Approche, Mon accompagnement, Pour toi, bande mauve).',
+      type: 'url',
+      initialValue: 'https://tally.so/r/Pdg1Bd',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

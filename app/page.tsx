@@ -207,6 +207,7 @@ export default async function Home() {
     siteSettings?.bookingUrl ??
     siteSettings?.calBookingUrl ??
     'https://cal.com/elianelarre/appel-decouverte'
+  const tallyUrl = siteSettings?.tallyUrl ?? 'https://tally.so/r/Pdg1Bd'
   const calLinkNamespace = (() => {
     try {
       const url = new URL(calBookingUrl)
@@ -503,9 +504,9 @@ export default async function Home() {
                   <div className="approche-footer">
                     <a
                       className="btn btn-primary approche-cta"
-                      href={calBookingUrl}
-                      data-cal-link={calLinkNamespace || undefined}
-                      data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
+                      href={tallyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {homePage?.sledCtaLabel ?? "C'est là que je veux aller"}
                       <HeroCtaArrow />
@@ -545,8 +546,7 @@ export default async function Home() {
               appImageLightboxSrc={offeringAppImageLightboxSrc}
               appImageAlt={offeringAppImageAlt}
               ctaLabel={homePage?.offeringCtaLabel}
-              ctaUrl={calBookingUrl}
-              calLinkNamespace={calLinkNamespace || undefined}
+              ctaUrl={tallyUrl}
             />
 
             <PresentielSection
@@ -589,8 +589,7 @@ export default async function Home() {
               }
               footer={homePage?.forYouFooter}
               ctaLabel={homePage?.forYouCtaLabel}
-              ctaUrl={calBookingUrl}
-              calLinkNamespace={calLinkNamespace || undefined}
+              ctaUrl={tallyUrl}
               imageSrc={forYouImageSrc}
               imageAlt={homePage?.forYouImage?.alt}
             />
@@ -624,9 +623,9 @@ export default async function Home() {
                 <p className="purple-cta-button-row">
                   <a
                     className="btn btn-purple-cta"
-                    href={calBookingUrl}
-                    data-cal-link={calLinkNamespace || undefined}
-                    data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
+                    href={tallyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {homePage?.purpleCtaButtonLabel ?? "Je veux passer à l'action"}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

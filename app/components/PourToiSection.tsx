@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 import {quotePortableTextComponents, RichText, SectionTitle} from '@/lib/portableTextComponents'
 
 const DEFAULT_EYEBROW = 'Pour toi ou pas ?'
@@ -82,7 +81,6 @@ export type PourToiSectionProps = {
   footer?: unknown
   ctaLabel?: string | null
   ctaUrl: string
-  calLinkNamespace?: string
   imageSrc: string
   imageAlt?: string
 }
@@ -97,7 +95,6 @@ export function PourToiSection({
   footer,
   ctaLabel,
   ctaUrl,
-  calLinkNamespace,
   imageSrc,
   imageAlt = "Éliane accotée sur la barre dans le gym",
 }: PourToiSectionProps) {
@@ -168,8 +165,8 @@ export function PourToiSection({
           <a
             className="btn btn-primary fit-cta"
             href={ctaUrl}
-            data-cal-link={calLinkNamespace || undefined}
-            data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {textOrDefault(ctaLabel, DEFAULT_CTA)}
             <CtaArrow />

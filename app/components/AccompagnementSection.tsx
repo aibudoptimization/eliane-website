@@ -1,6 +1,5 @@
 import type {ReactNode} from 'react'
 import {AccompAppImageLightbox} from '@/app/components/AccompAppImageLightbox'
-import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 import {
   headingPortableTextComponents,
   RichText,
@@ -90,7 +89,6 @@ export type AccompagnementSectionProps = {
   appImageAlt?: string
   ctaLabel?: string | null
   ctaUrl: string
-  calLinkNamespace?: string
 }
 
 export function AccompagnementSection({
@@ -106,7 +104,6 @@ export function AccompagnementSection({
   appImageAlt,
   ctaLabel,
   ctaUrl,
-  calLinkNamespace,
 }: AccompagnementSectionProps) {
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
   const resolvedAppKicker = textOrDefault(appKicker, DEFAULT_APP_KICKER)
@@ -125,9 +122,9 @@ export function AccompagnementSection({
       : DEFAULT_PILLARS
 
   return (
-    <section className="section section-accompagnement" id="accompagnement">
+    <section className="section section-accompagnement">
       <div className="section-inner section-inner--accomp">
-        <div className="accomp-panel">
+        <div className="accomp-panel" id="accompagnement">
           <header className="accomp-header reveal" data-reveal>
             <p className="eyebrow accomp-eyebrow">{resolvedEyebrow}</p>
             <h2>{renderOfferingTitle(title, DEFAULT_TITLE)}</h2>
@@ -174,8 +171,8 @@ export function AccompagnementSection({
             <a
               className="btn btn-primary accomp-cta-btn"
               href={ctaUrl}
-              data-cal-link={calLinkNamespace || undefined}
-              data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {resolvedCtaLabel}
               <CtaArrow />

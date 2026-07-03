@@ -135,6 +135,7 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
   contactEmail,
   bookingUrl,
   calBookingUrl,
+  tallyUrl,
   calNamespace,
   instagramUrl,
   metaTitle,

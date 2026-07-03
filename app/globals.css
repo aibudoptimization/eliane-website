@@ -704,15 +704,6 @@ em.quote-italic {
     min-height: 260px;
     max-height: 420px;
   }
-
-  .hero-image-inner {
-    inset: 0;
-  }
-
-  .hero-image-inner .hero-img {
-    object-fit: contain;
-    object-position: center center;
-  }
 }
 
 @media (max-width: 540px) {
@@ -2815,6 +2806,7 @@ em.quote-italic {
   background: var(--beige);
   border-radius: var(--radius);
   padding: clamp(2.5rem, 5vw, 4rem) clamp(1.75rem, 4vw, 3.5rem);
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
 }
 
 .accomp-header {
