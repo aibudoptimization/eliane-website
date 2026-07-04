@@ -251,10 +251,17 @@ export function AccompAppCarousel({screens}: AccompAppCarouselProps) {
       if (event.key === 'ArrowLeft') goToRef.current(activeRef.current - 1)
       if (event.key === 'ArrowRight') goToRef.current(activeRef.current + 1)
     }
+    // iOS/Android don't reliably honor body `overflow: hidden`, so block the
+    // scroll gesture while the fullscreen lightbox is open.
+    const preventTouchScroll = (event: TouchEvent) => {
+      event.preventDefault()
+    }
     window.addEventListener('keydown', onKeyDown)
+    document.addEventListener('touchmove', preventTouchScroll, {passive: false})
     return () => {
       document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('touchmove', preventTouchScroll)
     }
   }, [closeLightbox, lightboxOpen])
 
