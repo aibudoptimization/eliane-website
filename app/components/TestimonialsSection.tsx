@@ -1,6 +1,15 @@
 'use client'
 
 import type {ReactNode} from 'react'
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useTransform,
+  type PanInfo,
+} from 'framer-motion'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {
   headingPortableTextComponents,
@@ -20,6 +29,35 @@ const DEFAULT_EYEBROW = 'Leur expérience'
 const DEFAULT_TITLE = "Ce qu'elles en disent."
 
 const DEFAULT_VIDEOS: TestimonialVideoItem[] = []
+
+// Center-mode ("coverflow") sizing. Base size = center card; sides are scaled down.
+const CENTER_W_DESKTOP = 210
+const CENTER_H_DESKTOP = 373
+const CENTER_W_MOBILE = 160
+const CENTER_H_MOBILE = 284
+const SPACING_RATIO = 0.95
+const SIDE_SCALE = 0.72
+const SIDE_OPACITY = 0.55
+const FADE_END = 2
+
+const SPRING = {type: 'spring' as const, stiffness: 420, damping: 38, mass: 0.7}
+
+function normalizeIndex(n: number, total: number): number {
+  return ((n % total) + total) % total
+}
+
+function ringOffset(index: number, pos: number, total: number, loop: boolean): number {
+  let d = index - pos
+  if (loop) {
+    d = ((d % total) + total) % total
+    if (d > total / 2) d -= total
+  }
+  return d
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value))
+}
 
 function textOrDefault(value: string | null | undefined, fallback: string): string {
   const trimmed = value?.trim()
@@ -84,28 +122,63 @@ function useMobileDetect() {
 
 function VideoCard({
   item,
+  index,
+  total,
+  loop,
   position,
+  spacing,
+  width,
+  height,
+  isCenter,
+  canPlay,
   muted,
+  isMobile,
   onToggleMute,
-  onSelect,
   onMuteChange,
+  onSelect,
+  didDragRef,
 }: {
   item: TestimonialVideoItem
-  position: 'side' | 'center'
+  index: number
+  total: number
+  loop: boolean
+  position: ReturnType<typeof useMotionValue<number>>
+  spacing: number
+  width: number
+  height: number
+  isCenter: boolean
+  canPlay: boolean
   muted: boolean
+  isMobile: boolean
   onToggleMute: () => void
-  onSelect: () => void
   onMuteChange: (muted: boolean) => void
+  onSelect: () => void
+  didDragRef: {current: boolean}
 }) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const isCenter = position === 'center'
-  const isMobile = useMobileDetect()
+
+  const x = useTransform(position, (p) => ringOffset(index, p, total, loop) * spacing)
+  const scale = useTransform(position, (p) => {
+    const o = Math.min(Math.abs(ringOffset(index, p, total, loop)), 1)
+    return 1 - (1 - SIDE_SCALE) * o
+  })
+  const opacity = useTransform(position, (p) => {
+    const o = Math.abs(ringOffset(index, p, total, loop))
+    if (o <= 1) return 1 - (1 - SIDE_OPACITY) * o
+    return clamp(SIDE_OPACITY * (1 - (o - 1) / (FADE_END - 1)), 0, 1)
+  })
+  const zIndex = useTransform(position, (p) =>
+    Math.round(100 - Math.abs(ringOffset(index, p, total, loop)) * 10),
+  )
+  const pointerEvents = useTransform(position, (p) =>
+    Math.abs(ringOffset(index, p, total, loop)) < 1.5 ? 'auto' : 'none',
+  )
 
   useEffect(() => {
     const video = videoRef.current
     if (!video || !item.videoSrc) return
 
-    if (isCenter) {
+    if (isCenter && canPlay) {
       video.muted = muted
       void video.play().catch(() => {})
       return () => {
@@ -115,7 +188,7 @@ function VideoCard({
 
     video.pause()
     video.currentTime = 0
-  }, [isCenter, item.videoSrc, muted])
+  }, [isCenter, canPlay, item.videoSrc, muted])
 
   useEffect(() => {
     const video = videoRef.current
@@ -153,17 +226,40 @@ function VideoCard({
     void video.play().catch(() => {})
   }
 
+  function handleClick() {
+    if (didDragRef.current) return
+    if (isCenter) {
+      if (isMobile) handleCenterTap()
+      return
+    }
+    onSelect()
+  }
+
   return (
-    <article
-      className={`testi-vid-card testi-vid-card--${position}`}
-      onClick={isCenter ? (isMobile ? handleCenterTap : undefined) : onSelect}
+    <motion.article
+      className={`testi-vid-card testi-vid-card--${isCenter ? 'center' : 'side'}`}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: '50%',
+        width,
+        height,
+        marginLeft: -width / 2,
+        transformOrigin: 'top center',
+        x,
+        scale,
+        opacity,
+        zIndex,
+        pointerEvents,
+      }}
+      onClick={handleClick}
       onKeyDown={
         isCenter
           ? undefined
           : (event) => {
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault()
-                onSelect()
+                if (!didDragRef.current) onSelect()
               }
             }
       }
@@ -218,7 +314,7 @@ function VideoCard({
         <p className="testi-vid-name">{item.name}</p>
         <p className="testi-vid-role">{item.role}</p>
       </div>
-    </article>
+    </motion.article>
   )
 }
 
@@ -231,8 +327,6 @@ export type TestimonialsSectionProps = {
   instagramUrl?: string | null
 }
 
-const SWIPE_THRESHOLD = 40
-
 export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: TestimonialsSectionProps) {
   const resolvedInstagramUrl = instagramUrl?.trim() || DEFAULT_INSTAGRAM_URL
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
@@ -244,76 +338,109 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
   }, [videos])
 
   const total = items.length
+  const loop = total >= 3
+  const isMobile = useMobileDetect()
+
+  const [isNarrow, setIsNarrow] = useState(false)
   const [active, setActive] = useState(0)
   const [muted, setMuted] = useState(true)
+  const [settled, setSettled] = useState(true)
+
+  const reduceMotion = useReducedMotion()
+  const position = useMotionValue(0)
+  const panStartRef = useRef(0)
+  const didDragRef = useRef(false)
+
+  const centerW = isNarrow ? CENTER_W_MOBILE : CENTER_W_DESKTOP
+  const centerH = isNarrow ? CENTER_H_MOBILE : CENTER_H_DESKTOP
+  const spacing = Math.round(centerW * SPACING_RATIO)
+  // Nav buttons sit just under the (scaled) side cards, matching the original layout.
+  const navY = Math.round(centerH * SIDE_SCALE + 14)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    setIsNarrow(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsNarrow(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  useMotionValueEvent(position, 'change', (value) => {
+    if (total < 1) return
+    const next = normalizeIndex(Math.round(value), total)
+    setActive((prev) => (prev === next ? prev : next))
+  })
+
+  const settleTo = useCallback(
+    (dest: number) => {
+      setSettled(false)
+      setMuted(true)
+      const controls = animate(position, dest, reduceMotion ? {duration: 0} : SPRING)
+      controls.finished.then(() => setSettled(true)).catch(() => {})
+    },
+    [position, reduceMotion],
+  )
 
   const goTo = useCallback(
     (index: number) => {
       if (total < 1) return
-      setActive(((index % total) + total) % total)
-      setMuted(true)
+      const from = position.get()
+      const base = Math.round(from)
+      let dest: number
+      if (loop) {
+        let delta = index - normalizeIndex(base, total)
+        delta = ((delta % total) + total) % total
+        if (delta > total / 2) delta -= total
+        dest = base + delta
+      } else {
+        dest = clamp(index, 0, total - 1)
+      }
+      settleTo(dest)
     },
-    [total],
+    [loop, position, settleTo, total],
   )
 
-  // Keep fresh refs so the native touch listener closure never goes stale
-  const carouselWrapRef = useRef<HTMLDivElement>(null)
-  const activeRef = useRef(active)
   const goToRef = useRef(goTo)
-  useEffect(() => { activeRef.current = active }, [active])
-  useEffect(() => { goToRef.current = goTo }, [goTo])
-
-  // Attach non-passive touchend so we can preventDefault() to suppress the
-  // subsequent click (which would trigger center-video fullscreen on mobile)
+  const activeRef = useRef(active)
   useEffect(() => {
-    const el = carouselWrapRef.current
-    if (!el) return
+    goToRef.current = goTo
+  }, [goTo])
+  useEffect(() => {
+    activeRef.current = active
+  }, [active])
 
-    let startX = 0
-    let startY = 0
+  const onPanStart = useCallback(() => {
+    if (total < 2) return
+    position.stop()
+    panStartRef.current = position.get()
+    didDragRef.current = false
+    setSettled(false)
+  }, [position, total])
 
-    const onTouchStart = (e: TouchEvent) => {
-      startX = e.touches[0]?.clientX ?? 0
-      startY = e.touches[0]?.clientY ?? 0
-    }
+  const onPan = useCallback(
+    (_event: PointerEvent, info: PanInfo) => {
+      if (total < 2) return
+      if (Math.abs(info.offset.x) > 5) didDragRef.current = true
+      let next = panStartRef.current - info.offset.x / spacing
+      if (!loop) next = clamp(next, 0, total - 1)
+      position.set(next)
+    },
+    [loop, position, spacing, total],
+  )
 
-    const onTouchEnd = (e: TouchEvent) => {
-      const touch = e.changedTouches[0]
-      if (!touch) return
-      const deltaX = touch.clientX - startX
-      const deltaY = touch.clientY - startY
-      // Only treat as a horizontal swipe if it dominates the vertical movement
-      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return
-      // Prevent the ghost click that would fire after touchend
-      e.preventDefault()
-      if (deltaX < 0) {
-        goToRef.current(activeRef.current + 1)
-      } else {
-        goToRef.current(activeRef.current - 1)
-      }
-    }
-
-    el.addEventListener('touchstart', onTouchStart, {passive: true})
-    el.addEventListener('touchend', onTouchEnd, {passive: false})
-
-    return () => {
-      el.removeEventListener('touchstart', onTouchStart)
-      el.removeEventListener('touchend', onTouchEnd)
-    }
-  }, []) // intentionally empty — kept fresh via activeRef / goToRef
-
-  const visible = useMemo(() => {
-    if (total < 1) return []
-    return [
-      {
-        item: items[(active - 1 + total) % total]!,
-        position: 'side' as const,
-        index: (active - 1 + total) % total,
-      },
-      {item: items[active]!, position: 'center' as const, index: active},
-      {item: items[(active + 1) % total]!, position: 'side' as const, index: (active + 1) % total},
-    ]
-  }, [active, items, total])
+  const onPanEnd = useCallback(
+    (_event: PointerEvent, info: PanInfo) => {
+      if (total < 2) return
+      const projected = position.get() - (info.velocity.x / spacing) * 0.18
+      let target = Math.round(projected)
+      if (!loop) target = clamp(target, 0, total - 1)
+      settleTo(target)
+      setTimeout(() => {
+        didDragRef.current = false
+      }, 0)
+    },
+    [loop, position, settleTo, spacing, total],
+  )
 
   return (
     <section className="section section-alt" id="temoignages">
@@ -325,41 +452,60 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
 
         {total > 0 ? (
           <>
-            <div className="testi-carousel-wrap reveal" data-reveal ref={carouselWrapRef}>
-              <div className="testi-carousel" aria-live="polite">
-                {visible.map(({item, position, index}, slot) => (
-                  <div className="testi-carousel-slot" key={`testi-slot-${slot}-${active}`}>
-                    <VideoCard
-                      item={item}
-                      position={position}
-                      muted={muted}
-                      onToggleMute={() => setMuted((value) => !value)}
-                      onSelect={() => goTo(index)}
-                      onMuteChange={setMuted}
-                    />
-                    {slot === 0 ? (
-                      <button
-                        type="button"
-                        className="testi-nav-btn testi-nav-btn--slot"
-                        onClick={() => goTo(active - 1)}
-                        aria-label="Témoignage précédent"
-                      >
-                        <NavArrow direction="prev" />
-                      </button>
-                    ) : null}
-                    {slot === 2 ? (
-                      <button
-                        type="button"
-                        className="testi-nav-btn testi-nav-btn--slot"
-                        onClick={() => goTo(active + 1)}
-                        aria-label="Témoignage suivant"
-                      >
-                        <NavArrow direction="next" />
-                      </button>
-                    ) : null}
-                  </div>
+            <div className="testi-carousel-wrap reveal" data-reveal>
+              <motion.div
+                className="testi-carousel"
+                aria-live="polite"
+                onPanStart={onPanStart}
+                onPan={onPan}
+                onPanEnd={onPanEnd}
+                style={{height: centerH, touchAction: 'pan-y'}}
+              >
+                {items.map((item, index) => (
+                  <VideoCard
+                    key={item._key ?? `${item.name}-${index}`}
+                    item={item}
+                    index={index}
+                    total={total}
+                    loop={loop}
+                    position={position}
+                    spacing={spacing}
+                    width={centerW}
+                    height={centerH}
+                    isCenter={index === active}
+                    canPlay={settled}
+                    muted={muted}
+                    isMobile={isMobile}
+                    onToggleMute={() => setMuted((value) => !value)}
+                    onMuteChange={setMuted}
+                    onSelect={() => goTo(index)}
+                    didDragRef={didDragRef}
+                  />
                 ))}
-              </div>
+
+                {total > 1 ? (
+                  <>
+                    <button
+                      type="button"
+                      className="testi-nav-btn testi-nav-btn--prev"
+                      style={{top: navY, left: `calc(50% - ${spacing}px)`}}
+                      onClick={() => goTo(active - 1)}
+                      aria-label="Témoignage précédent"
+                    >
+                      <NavArrow direction="prev" />
+                    </button>
+                    <button
+                      type="button"
+                      className="testi-nav-btn testi-nav-btn--next"
+                      style={{top: navY, left: `calc(50% + ${spacing}px)`}}
+                      onClick={() => goTo(active + 1)}
+                      aria-label="Témoignage suivant"
+                    >
+                      <NavArrow direction="next" />
+                    </button>
+                  </>
+                ) : null}
+              </motion.div>
             </div>
 
             <div className="testi-dots reveal" data-reveal role="tablist" aria-label="Choisir un témoignage">
