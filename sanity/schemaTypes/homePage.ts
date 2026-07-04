@@ -383,12 +383,46 @@ export default defineType({
       group: 'offering',
     }),
     defineField({
+      name: 'offeringAppScreens',
+      title: "App — captures d'écran",
+      description:
+        "Une image par téléphone, avec sa légende. Ajoute autant d'écrans que tu veux (le carrousel s'adapte). Chaque capture doit montrer un seul téléphone sur fond transparent.",
+      type: 'array',
+      group: 'offering',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'image',
+              title: 'Capture',
+              type: 'image',
+              options: {hotspot: true},
+              fields: [{name: 'alt', type: 'string', title: 'Texte alternatif'}],
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Légende',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {title: 'caption', media: 'image'},
+          },
+        },
+      ],
+      validation: (Rule) => Rule.min(1),
+    }),
+    defineField({
       name: 'offeringAppImage',
-      title: 'App — capture (téléphones)',
+      title: 'App — capture (ancien montage)',
       type: 'image',
       options: {hotspot: true},
       fields: [{name: 'alt', type: 'string', title: 'Texte alternatif'}],
       group: 'offering',
+      hidden: true,
     }),
     defineField({
       name: 'offeringCtaLabel',

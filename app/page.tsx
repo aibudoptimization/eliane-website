@@ -10,6 +10,7 @@ import {PresentielSection, type PresentielCard} from '@/app/components/Presentie
 import {AfterCallSection} from '@/app/components/AfterCallSection'
 import {PourToiSection} from '@/app/components/PourToiSection'
 import {TestimonialsSection, type TestimonialVideoItem} from '@/app/components/TestimonialsSection'
+import type {AppScreenItem} from '@/app/components/AccompAppCarousel'
 import {urlFor} from '@/sanity/imageUrl'
 import {sanityFetch} from '@/sanity/live'
 import {COLLABORATORS_QUERY, FAQS_QUERY, HOMEPAGE_QUERY, SITE_SETTINGS_QUERY} from '@/sanity/queries'
@@ -139,6 +140,32 @@ type Collaborator = {
 type PortableTextValue = TypedObject[]
 type SledListItem = { _key?: string; text?: PortableTextValue }
 type ReviewItem = { _key?: string; name?: string; rating?: number; excerpt?: string }
+type OfferingAppScreen = {
+  _key?: string
+  caption?: string
+  image?: {asset?: unknown; alt?: string}
+}
+
+const DEFAULT_APP_SCREENS: AppScreenItem[] = [
+  {
+    src: '/images/app-screen-tableau-de-bord.png',
+    lightboxSrc: '/images/app-screen-tableau-de-bord.png',
+    alt: "Écran tableau de bord de l'application d'entraînement",
+    caption: 'Ton tableau de bord',
+  },
+  {
+    src: '/images/app-screen-progression.png',
+    lightboxSrc: '/images/app-screen-progression.png',
+    alt: "Écran progression de l'application d'entraînement",
+    caption: 'Ta progression',
+  },
+  {
+    src: '/images/app-screen-programmes.png',
+    lightboxSrc: '/images/app-screen-programmes.png',
+    alt: "Écran programmes de l'application d'entraînement",
+    caption: 'Tes programmes',
+  },
+]
 
 const faqAnswerComponents: PortableTextComponents = {
   marks: {
@@ -230,30 +257,30 @@ export default async function Home() {
     homePage?.meetTrainerImage?.asset != null
       ? urlFor(homePage.meetTrainerImage).width(1200).url()
       : '/images/eliane-hero.jpg'
-  const offeringImages = Array.isArray(homePage?.offeringImages) ? homePage.offeringImages : []
-  const offeringAppImageSrc = (() => {
-    if (homePage?.offeringAppImage?.asset != null) {
-      return urlFor(homePage.offeringAppImage).width(1200).url()
-    }
-    const legacy = offeringImages[0]
-    if (legacy?.asset != null) {
-      return urlFor(legacy).width(1200).url()
-    }
-    return '/images/eliane-hero.jpg'
+  const offeringAppScreens = (() => {
+    const fromSanity = (Array.isArray(homePage?.offeringAppScreens)
+      ? homePage.offeringAppScreens
+      : []) as OfferingAppScreen[]
+
+    const mapped = fromSanity
+      .filter((entry) => entry.image?.asset != null && entry.caption?.trim())
+      .map((entry, index) => {
+        const alt =
+          entry.image?.alt?.trim() ||
+          `${entry.caption?.trim()} — application d'entraînement`
+        return {
+          _key: entry._key ?? `app-screen-${index}`,
+          src: urlFor(entry.image!).width(800).url(),
+          lightboxSrc: urlFor(entry.image!).width(2400).url(),
+          alt,
+          caption: entry.caption!.trim(),
+        } satisfies AppScreenItem
+      })
+
+    if (mapped.length > 0) return mapped
+
+    return DEFAULT_APP_SCREENS
   })()
-  const offeringAppImageLightboxSrc = (() => {
-    if (homePage?.offeringAppImage?.asset != null) {
-      return urlFor(homePage.offeringAppImage).width(2400).url()
-    }
-    const legacy = offeringImages[0]
-    if (legacy?.asset != null) {
-      return urlFor(legacy).width(2400).url()
-    }
-    return offeringAppImageSrc
-  })()
-  const offeringAppImageAlt =
-    homePage?.offeringAppImage?.alt ??
-    (typeof offeringImages[0]?.alt === 'string' ? offeringImages[0].alt : undefined)
   const reviewsList: ReviewItem[] = Array.isArray(homePage?.reviewsList) ? homePage.reviewsList : []
   const testimonialVideos: TestimonialVideoItem[] | undefined = (() => {
     type SanityTestimonialVideo = {
@@ -542,9 +569,7 @@ export default async function Home() {
               appKicker={homePage?.offeringAppKicker}
               appTitle={homePage?.offeringAppTitle}
               appDescription={homePage?.offeringAppDescription}
-              appImageSrc={offeringAppImageSrc}
-              appImageLightboxSrc={offeringAppImageLightboxSrc}
-              appImageAlt={offeringAppImageAlt}
+              appScreens={offeringAppScreens}
               ctaLabel={homePage?.offeringCtaLabel}
               ctaUrl={tallyUrl}
             />

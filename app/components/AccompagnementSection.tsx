@@ -1,5 +1,5 @@
 import type {ReactNode} from 'react'
-import {AccompAppImageLightbox} from '@/app/components/AccompAppImageLightbox'
+import {AccompAppCarousel, type AppScreenItem} from '@/app/components/AccompAppCarousel'
 import {
   headingPortableTextComponents,
   RichText,
@@ -84,9 +84,7 @@ export type AccompagnementSectionProps = {
   appKicker?: string | null
   appTitle?: string | null
   appDescription?: unknown
-  appImageSrc: string
-  appImageLightboxSrc?: string
-  appImageAlt?: string
+  appScreens: AppScreenItem[]
   ctaLabel?: string | null
   ctaUrl: string
 }
@@ -99,9 +97,7 @@ export function AccompagnementSection({
   appKicker,
   appTitle,
   appDescription,
-  appImageSrc,
-  appImageLightboxSrc,
-  appImageAlt,
+  appScreens,
   ctaLabel,
   ctaUrl,
 }: AccompagnementSectionProps) {
@@ -109,8 +105,6 @@ export function AccompagnementSection({
   const resolvedAppKicker = textOrDefault(appKicker, DEFAULT_APP_KICKER)
   const resolvedAppTitle = textOrDefault(appTitle, DEFAULT_APP_TITLE)
   const resolvedAppDescription = appDescription
-  const resolvedAppImageAlt =
-    textOrDefault(appImageAlt, "Montage de trois écrans de l'application d'entraînement")
   const resolvedCtaLabel = textOrDefault(
     ctaLabel,
     "Je veux voir si l'accompagnement est adapté pour moi",
@@ -152,11 +146,7 @@ export function AccompagnementSection({
             </div>
 
             <aside className="accomp-app-panel reveal" data-reveal>
-              <AccompAppImageLightbox
-                src={appImageSrc}
-                lightboxSrc={appImageLightboxSrc}
-                alt={resolvedAppImageAlt}
-              />
+              <AccompAppCarousel screens={appScreens} />
               <div className="accomp-app-text">
                 <p className="accomp-app-kicker">{resolvedAppKicker}</p>
                 <h3 className="accomp-app-title">{resolvedAppTitle}</h3>

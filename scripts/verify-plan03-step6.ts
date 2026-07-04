@@ -87,10 +87,11 @@ function assertHomePage(h: Record<string, unknown> | null): void {
   const features = h.offeringFeatures as unknown[] | undefined
   if ((features?.length ?? 0) < 1) throw new Error('homePage: offeringFeatures empty')
 
+  const appScreens = h.offeringAppScreens as unknown[] | undefined
   const appImage = h.offeringAppImage as {asset?: unknown} | undefined
   const legacyImages = h.offeringImages as unknown[] | undefined
-  if (!appImage?.asset && (legacyImages?.length ?? 0) < 1) {
-    throw new Error('homePage: offeringAppImage (or legacy offeringImages) empty')
+  if ((appScreens?.length ?? 0) < 1 && !appImage?.asset && (legacyImages?.length ?? 0) < 1) {
+    throw new Error('homePage: offeringAppScreens (or legacy offeringAppImage / offeringImages) empty')
   }
 
   const quote =

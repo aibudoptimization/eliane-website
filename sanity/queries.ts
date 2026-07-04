@@ -56,6 +56,11 @@ export const HOMEPAGE_QUERY = `*[_type == "homePage"][0]{
   offeringAppKicker,
   offeringAppTitle,
   "offeringAppDescription": ${ptArray('offeringAppDescription')},
+  offeringAppScreens[] {
+    _key,
+    caption,
+    image { ..., "asset": asset-> }
+  },
   offeringAppImage { ..., "asset": asset-> },
   offeringImages[] { ..., "asset": asset-> },
   offeringCtaLabel,
