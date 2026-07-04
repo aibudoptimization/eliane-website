@@ -135,6 +135,7 @@ function VideoCard({
   isMobile,
   onToggleMute,
   onMuteChange,
+  onFullscreenChange,
   onSelect,
   didDragRef,
 }: {
@@ -152,6 +153,7 @@ function VideoCard({
   isMobile: boolean
   onToggleMute: () => void
   onMuteChange: (muted: boolean) => void
+  onFullscreenChange: (active: boolean) => void
   onSelect: () => void
   didDragRef: {current: boolean}
 }) {
@@ -194,23 +196,35 @@ function VideoCard({
     const video = videoRef.current
     if (!video || !isCenter) return
 
+    const handleExit = () => {
+      video.controls = false
+      video.muted = true
+      onMuteChange(true)
+      onFullscreenChange(false)
+    }
+
     const handleFullscreenChange = () => {
       const isFullscreen =
         document.fullscreenElement === video ||
         (document as any).webkitFullscreenElement === video
-      if (!isFullscreen) {
-        video.muted = true
-        onMuteChange(true)
-      }
+      onFullscreenChange(isFullscreen)
+      if (!isFullscreen) handleExit()
     }
+
+    // iOS Safari fires element-level events for native video fullscreen
+    const handleBegin = () => onFullscreenChange(true)
 
     document.addEventListener('fullscreenchange', handleFullscreenChange)
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+    video.addEventListener('webkitbeginfullscreen', handleBegin)
+    video.addEventListener('webkitendfullscreen', handleExit)
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange)
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
+      video.removeEventListener('webkitbeginfullscreen', handleBegin)
+      video.removeEventListener('webkitendfullscreen', handleExit)
     }
-  }, [isCenter, onMuteChange])
+  }, [isCenter, onMuteChange, onFullscreenChange])
 
   function handleCenterTap() {
     if (!isMobile) return
@@ -218,6 +232,9 @@ function VideoCard({
     if (!video) return
     video.muted = false
     onMuteChange(false)
+    onFullscreenChange(true)
+    // Native controls so the fullscreen player has play/pause/exit UI (esp. Android)
+    video.controls = true
     if (typeof (video as any).webkitEnterFullscreen === 'function') {
       ;(video as any).webkitEnterFullscreen()
     } else if (typeof video.requestFullscreen === 'function') {
@@ -350,6 +367,11 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
   const position = useMotionValue(0)
   const panStartRef = useRef(0)
   const didDragRef = useRef(false)
+  const fullscreenRef = useRef(false)
+
+  const handleFullscreenChange = useCallback((active: boolean) => {
+    fullscreenRef.current = active
+  }, [])
 
   const centerW = isNarrow ? CENTER_W_MOBILE : CENTER_W_DESKTOP
   const centerH = isNarrow ? CENTER_H_MOBILE : CENTER_H_DESKTOP
@@ -410,7 +432,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
   }, [active])
 
   const onPanStart = useCallback(() => {
-    if (total < 2) return
+    if (total < 2 || fullscreenRef.current) return
     position.stop()
     panStartRef.current = position.get()
     didDragRef.current = false
@@ -419,7 +441,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
 
   const onPan = useCallback(
     (_event: PointerEvent, info: PanInfo) => {
-      if (total < 2) return
+      if (total < 2 || fullscreenRef.current) return
       if (Math.abs(info.offset.x) > 5) didDragRef.current = true
       let next = panStartRef.current - info.offset.x / spacing
       if (!loop) next = clamp(next, 0, total - 1)
@@ -430,7 +452,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
 
   const onPanEnd = useCallback(
     (_event: PointerEvent, info: PanInfo) => {
-      if (total < 2) return
+      if (total < 2 || fullscreenRef.current) return
       const projected = position.get() - (info.velocity.x / spacing) * 0.18
       let target = Math.round(projected)
       if (!loop) target = clamp(target, 0, total - 1)
@@ -478,6 +500,7 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
                     isMobile={isMobile}
                     onToggleMute={() => setMuted((value) => !value)}
                     onMuteChange={setMuted}
+                    onFullscreenChange={handleFullscreenChange}
                     onSelect={() => goTo(index)}
                     didDragRef={didDragRef}
                   />
