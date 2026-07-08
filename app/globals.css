@@ -263,7 +263,7 @@ button:focus-visible {
   cursor: pointer;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.82);
-  border: 1.5px solid rgba(26, 20, 16, 0.12);
+  border: 1.5px solid var(--plum);
   box-shadow: none;
 }
 
@@ -271,7 +271,7 @@ button:focus-visible {
   display: block;
   width: 16px;
   height: 2px;
-  background: var(--ink);
+  background: var(--plum);
   position: relative;
   transition: background 0.3s var(--ease-out);
 }
@@ -283,7 +283,7 @@ button:focus-visible {
   left: 0;
   width: 16px;
   height: 2px;
-  background: var(--ink);
+  background: var(--plum);
   transition:
     transform 0.4s var(--ease-out),
     top 0.4s var(--ease-out);
@@ -315,7 +315,9 @@ button:focus-visible {
   position: fixed;
   inset: 0;
   z-index: 490;
-  background: var(--beige);
+  background: rgba(246, 241, 234, 0.55);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
   display: none;
   flex-direction: column;
   align-items: center;
@@ -2319,22 +2321,23 @@ em.quote-italic {
 }
 
 .approche-card ul li {
-  position: relative;
-  padding-left: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
   font-size: 0.96rem;
   line-height: 1.6;
   color: var(--mid);
 }
 
-.approche-card ul li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.68em;
-  width: 12px;
-  height: 1.5px;
-  background: var(--ink);
-  opacity: 0.4;
+/* Inline SVG bullets — align optically with the first line of text */
+.approche-bullet {
+  flex-shrink: 0;
+  margin-top: 0.18em;
+}
+
+/* Empty ring for the "from" (current situation) column — inherits text tone */
+.approche-bullet--empty {
+  opacity: 0.45;
 }
 
 .approche-card ul li strong {
@@ -2344,11 +2347,6 @@ em.quote-italic {
 
 .approche-card--to ul li {
   color: var(--ink);
-}
-
-.approche-card--to ul li::before {
-  background: var(--plum);
-  opacity: 1;
 }
 
 .approche-card--to ul li strong {
@@ -2696,7 +2694,7 @@ em.quote-italic {
 
 @media (max-width: 920px) {
   .bio-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
   }
 
@@ -2721,6 +2719,24 @@ em.quote-italic {
     height: auto !important;
     min-height: 0;
     transition: none;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    /* Bleed to the section edges so cards fill the viewport, then re-add
+       the padding so the first card starts at the correct inset */
+    margin-left: calc(-1 * var(--pad-x));
+    margin-right: calc(-1 * var(--pad-x));
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+    scroll-padding-left: var(--pad-x);
+  }
+
+  .bio-card-area::-webkit-scrollbar {
+    display: none;
   }
 
   .bio-card,
@@ -2731,8 +2747,10 @@ em.quote-italic {
     transform: none !important;
     animation: none !important;
     pointer-events: auto;
-    margin-bottom: 14px;
+    margin-bottom: 0;
     transition: none;
+    flex: 0 0 calc(100% - 2.5rem);
+    scroll-snap-align: start;
   }
 
   .bio-card:last-child {
@@ -3371,6 +3389,58 @@ em.quote-italic {
 
   .accomp-panel {
     padding: 40px 28px;
+  }
+
+  /* Mobile accordion: tap a title to drop its description down */
+  .accomp-tl-item--mobile {
+    padding-bottom: 14px;
+  }
+
+  .accomp-tl-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .accomp-tl-chevron {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--plum);
+    border-bottom: 2px solid var(--plum);
+    transform: rotate(45deg);
+    transition: transform 0.3s var(--ease-out);
+    margin-top: -4px;
+  }
+
+  .accomp-tl-item.is-open .accomp-tl-chevron {
+    transform: rotate(225deg);
+    margin-top: 2px;
+  }
+
+  .accomp-tl-item--mobile .accomp-tl-desc-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease-out);
+  }
+
+  .accomp-tl-item--mobile.is-open .accomp-tl-desc-wrap {
+    grid-template-rows: 1fr;
+    margin-top: 8px;
+  }
+
+  .accomp-tl-item--mobile .accomp-tl-desc-wrap > .accomp-tl-desc {
+    overflow: hidden;
+    min-height: 0;
   }
 
   .accomp-carousel-wrap::before,
@@ -4019,6 +4089,55 @@ em.quote-italic {
   font-size: 0.93rem;
   line-height: 1.72;
   color: var(--mid);
+}
+
+/* Mobile accordion: tap the plum header to drop its description down */
+@media (max-width: 920px) {
+  .presentiel-card-toggle {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+  }
+
+  .presentiel-card-chevron {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-top: -4px;
+    border-right: 2px solid var(--lavender);
+    border-bottom: 2px solid var(--lavender);
+    transform: rotate(45deg);
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .presentiel-card--mobile.is-open .presentiel-card-chevron {
+    margin-top: 2px;
+    transform: rotate(225deg);
+  }
+
+  .presentiel-card--mobile .presentiel-card-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    padding: 0;
+    transition: grid-template-rows 0.35s var(--ease-out);
+  }
+
+  .presentiel-card--mobile.is-open .presentiel-card-body {
+    grid-template-rows: 1fr;
+  }
+
+  .presentiel-card--mobile .presentiel-card-body > .presentiel-card-body-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* Padding lives inside the clipped wrapper so it fully disappears when closed */
+  .presentiel-card--mobile .presentiel-card-body-inner > .presentiel-card-desc {
+    padding: 18px 20px 20px;
+  }
 }
 
 .presentiel-loc {

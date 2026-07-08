@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react'
 import {AccompAppCarousel, type AppScreenItem} from '@/app/components/AccompAppCarousel'
+import {AccompagnementPillars} from '@/app/components/AccompagnementPillars'
 import {
   headingPortableTextComponents,
   RichText,
@@ -128,22 +129,7 @@ export function AccompagnementSection({
           </header>
 
           <div className="accomp-body">
-            <div className="accomp-timeline reveal-stagger" data-reveal>
-              {items.map((pillar, index) => (
-                <div className="accomp-tl-item" key={pillar._key ?? `pillar-${index}`}>
-                  <div className="accomp-tl-dot">{index + 1}</div>
-                  <div className="accomp-tl-body">
-                    {pillar.title ? <h3 className="accomp-tl-title">{pillar.title}</h3> : null}
-                    {pillar.description ? (
-                      <RichText
-                        value={pillar.description}
-                        className="accomp-tl-desc"
-                      />
-                    ) : null}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <AccompagnementPillars items={items} />
 
             <aside className="accomp-app-panel reveal" data-reveal>
               <AccompAppCarousel screens={appScreens} />

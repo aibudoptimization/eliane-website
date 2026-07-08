@@ -123,6 +123,44 @@ function HeroCtaArrow() {
   )
 }
 
+/** Empty ring bullet for the "from" column — inherits the list text tone. */
+function ApprocheEmptyBullet() {
+  return (
+    <svg
+      className="approche-bullet approche-bullet--empty"
+      viewBox="0 0 18 18"
+      width="18"
+      height="18"
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="9" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  )
+}
+
+/** Filled plum disc with white check for the "to" column. */
+function ApprocheCheckBullet() {
+  return (
+    <svg
+      className="approche-bullet approche-bullet--check"
+      viewBox="0 0 18 18"
+      width="18"
+      height="18"
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="9" r="8" fill="var(--plum)" />
+      <path
+        d="M5.5 9.2l2.3 2.3 4.7-4.9"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 type MeetTrainerCard = {_key?: string; label?: string; body?: string}
 type OfferingPillar = {_key?: string; title?: string; description?: string}
 type FaqItem = { _id: string; question?: string; answer?: unknown }
@@ -481,9 +519,12 @@ export default async function Home() {
                         {Array.isArray(homePage?.sledFromItems) &&
                           homePage.sledFromItems.map((item: SledListItem) => (
                             <li key={item._key}>
-                              {Array.isArray(item?.text) ? (
-                                <PortableText value={item.text} components={sledItemComponents} />
-                              ) : null}
+                              <ApprocheEmptyBullet />
+                              <span className="approche-item-text">
+                                {Array.isArray(item?.text) ? (
+                                  <PortableText value={item.text} components={sledItemComponents} />
+                                ) : null}
+                              </span>
                             </li>
                           ))}
                       </ul>
@@ -513,9 +554,12 @@ export default async function Home() {
                         {Array.isArray(homePage?.sledToItems) &&
                           homePage.sledToItems.map((item: SledListItem) => (
                             <li key={item._key}>
-                              {Array.isArray(item?.text) ? (
-                                <PortableText value={item.text} components={sledItemComponents} />
-                              ) : null}
+                              <ApprocheCheckBullet />
+                              <span className="approche-item-text">
+                                {Array.isArray(item?.text) ? (
+                                  <PortableText value={item.text} components={sledItemComponents} />
+                                ) : null}
+                              </span>
                             </li>
                           ))}
                       </ul>

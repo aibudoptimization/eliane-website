@@ -5,8 +5,7 @@ import {
   RichText,
   type PortableTextValue,
 } from '@/lib/portableTextComponents'
-
-export type PresentielIconName = 'check' | 'shield' | 'clock' | 'eye'
+import {normalizeIconName, PresentielCards} from '@/app/components/PresentielCards'
 
 export type PresentielCard = {
   _key?: string
@@ -55,68 +54,9 @@ const DEFAULT_CARDS: PresentielCard[] = [
   },
 ]
 
-const LEGACY_ICON_MAP: Record<string, PresentielIconName> = {
-  eye: 'check',
-  'shield-check': 'shield',
-  'calendar-check': 'clock',
-  activity: 'eye',
-}
-
 function textOrDefault(value: string | null | undefined, fallback: string): string {
   const trimmed = value?.trim()
   return trimmed ? trimmed : fallback
-}
-
-function normalizeIconName(value: string | undefined): PresentielIconName {
-  if (value === 'check' || value === 'shield' || value === 'clock' || value === 'eye') {
-    return value
-  }
-  if (value && LEGACY_ICON_MAP[value]) return LEGACY_ICON_MAP[value]
-  return 'check'
-}
-
-function PresentielCardIcon({name}: {name: PresentielIconName}) {
-  const props = {
-    width: 22,
-    height: 22,
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.6,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    'aria-hidden': true,
-  }
-
-  switch (name) {
-    case 'shield':
-      return (
-        <svg {...props}>
-          <path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" />
-        </svg>
-      )
-    case 'clock':
-      return (
-        <svg {...props}>
-          <circle cx="12" cy="12" r="9" />
-          <polyline points="12 7 12 12 15 14" />
-        </svg>
-      )
-    case 'eye':
-      return (
-        <svg {...props}>
-          <path d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7z" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      )
-    default:
-      return (
-        <svg {...props}>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M9 12l2 2 4-4" />
-        </svg>
-      )
-  }
 }
 
 function resolveCards(
@@ -198,24 +138,7 @@ export function PresentielSection({
         </header>
 
         <div className="presentiel-body">
-          <div className="presentiel-cards reveal-stagger" data-reveal>
-            {items.map((card, index) => (
-              <article className="presentiel-card" key={card._key ?? `presentiel-card-${index}`}>
-                <div className="presentiel-card-header">
-                  <PresentielCardIcon name={normalizeIconName(card.iconName)} />
-                  {card.title ? <h3 className="presentiel-card-title">{card.title}</h3> : null}
-                </div>
-                {card.description ? (
-                  <div className="presentiel-card-body">
-                    <RichText
-                      value={card.description}
-                      className="presentiel-card-desc"
-                    />
-                  </div>
-                ) : null}
-              </article>
-            ))}
-          </div>
+          <PresentielCards items={items} />
 
           <aside className="presentiel-loc reveal" data-reveal>
             <p className="presentiel-loc-eyebrow">{resolvedLocEyebrow}</p>
