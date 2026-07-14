@@ -9,6 +9,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/guide/restaurant',
+        destination: '/guide/restaurant.html',
+      },
+    ]
+  },
 }
 
 export default nextConfig
