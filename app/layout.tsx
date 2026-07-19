@@ -114,6 +114,7 @@ export default async function RootLayout({
       return "";
     }
   })();
+  const tallyUrl = siteSettings?.tallyUrl ?? "https://tally.so/r/Pdg1Bd";
   const contactEmail = siteSettings?.contactEmail ?? "info@elianelarre.com";
   const instagramUrl =
     siteSettings?.instagramUrl ??
@@ -158,6 +159,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <SiteChrome
           calBookingUrl={calBookingUrl}
           calLinkNamespace={calLinkNamespace}
+          tallyUrl={tallyUrl}
         />
 
         {children}

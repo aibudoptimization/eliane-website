@@ -337,6 +337,14 @@ button:focus-visible {
   padding: 8px 0;
 }
 
+.nav-overlay-cta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
 .nav-overlay-cta {
   background: var(--plum);
   color: var(--beige) !important;
@@ -345,7 +353,10 @@ button:focus-visible {
   font-weight: 500;
   padding: 14px 28px !important;
   border-radius: 999px;
-  margin-top: 18px;
+}
+
+.nav-overlay-cta-row .nav-overlay-cta {
+  margin-top: 0;
 }
 
 @media (max-width: 900px) {

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { CAL_EMBED_DATA_CONFIG } from "@/lib/cal-embed-init";
 
 const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
+const DEFAULT_TALLY_URL = "https://tally.so/r/Pdg1Bd";
 
 const NAV_ITEMS = [
   { label: "Approche", href: "/#approche", section: "approche" },
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
 export type SiteChromeProps = {
   calBookingUrl?: string;
   calLinkNamespace?: string;
+  tallyUrl?: string;
 };
 
 function NavArrowIcon() {
@@ -40,6 +42,7 @@ function NavArrowIcon() {
 export default function SiteChrome({
   calBookingUrl = DEFAULT_CAL_BOOKING,
   calLinkNamespace,
+  tallyUrl = DEFAULT_TALLY_URL,
 }: SiteChromeProps) {
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
@@ -100,14 +103,25 @@ export default function SiteChrome({
             {item.label}
           </a>
         ))}
-        <a
-          className="nav-overlay-cta"
-          href={calBookingUrl}
-          {...calProps}
-          data-nav-link
-        >
-          Appel découverte
-        </a>
+        <div className="nav-overlay-cta-row">
+          <a
+            className="nav-overlay-cta"
+            href={tallyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-nav-link
+          >
+            Questionnaire initial
+          </a>
+          <a
+            className="nav-overlay-cta"
+            href={calBookingUrl}
+            {...calProps}
+            data-nav-link
+          >
+            Appel découverte
+          </a>
+        </div>
       </div>
     </>
   );
