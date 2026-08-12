@@ -27,12 +27,15 @@ Publie après chaque section modifiée.
 
 ### Lieu (même section Présentiel)
 
+> ⚠️ Aucune adresse précise ni nom de studio ne doit apparaître sur le site. On indique
+> un secteur large, et l'adresse est transmise en privé après le premier contact.
+
 | Champ | Valeur |
 |-------|--------|
 | Lieu — accroche | `Où ça se passe` |
-| Lieu — nom de la salle | `Biner Training` |
-| Lieu — adresse (ligne 1) | `220 Boulevard Crémazie Ouest` |
-| Lieu — ville (ligne 2) | `Montréal, QC · H2P 1C6` |
+| Lieu — secteur | `Montréal — Ahuntsic / Parc-Extension` |
+| Lieu — note sur l'adresse | `Studio privé. L'adresse exacte t'est communiquée après notre premier contact.` |
+| Lieu — ligne complémentaire (facultatif) | *laisser vide* |
 
 ---
 

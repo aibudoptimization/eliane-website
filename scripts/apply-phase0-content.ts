@@ -240,9 +240,11 @@ async function main() {
       "Un programme peut te dire *quoi faire*. Un accompagnement en présentiel te montre *comment le faire* et t'aide à progresser plus rapidement qu'en étant seule.",
     ),
     inPersonLocEyebrow: 'Où ça se passe',
-    inPersonLocVenue: 'Biner Training',
-    inPersonLocStreet: '220 Boulevard Crémazie Ouest',
-    inPersonLocCityLine: 'Montréal, QC · H2P 1C6',
+    // Secteur large uniquement : aucun nom de salle ni adresse précise sur le site.
+    inPersonLocVenue: 'Montréal — Ahuntsic / Parc-Extension',
+    inPersonLocStreet:
+      "Studio privé. L'adresse exacte t'est communiquée après notre premier contact.",
+    inPersonLocCityLine: '',
     reviewsTitle: blocks("Ce qu'*elles* en disent."),
     afterCallIntro: blocks(
       "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.",

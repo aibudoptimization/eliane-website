@@ -22,12 +22,15 @@ const DEFAULT_QUOTE =
   "Un programme peut te dire quoi faire. Un accompagnement en présentiel te montre comment le faire et t'aide à progresser plus rapidement qu'en étant seule."
 
 const DEFAULT_LOC_EYEBROW = 'Où ça se passe'
-const DEFAULT_LOC_VENUE = 'Biner Training'
-const DEFAULT_LOC_STREET = '220 Boulevard Crémazie Ouest'
-const DEFAULT_LOC_CITY = 'Montréal, QC · H2P 1C6'
+const DEFAULT_LOC_SECTOR = 'Montréal — Ahuntsic / Parc-Extension'
+const DEFAULT_LOC_NOTE =
+  "Studio privé. L'adresse exacte t'est communiquée après notre premier contact."
 
+// Embed Google en mode « vue » (pas « lieu ») : aucune adresse n'est interrogée, donc
+// aucune épingle n'est déposée. Dans le paramètre pb, 1d = largeur affichée en mètres,
+// 2d = longitude, 3d = latitude. On centre un secteur large, jamais une adresse.
 const MAP_EMBED_URL =
-  'https://www.google.com/maps?q=Biner+Training+220+Boulevard+Cr%C3%A9mazie+Ouest+Montr%C3%A9al&t=&z=15&ie=UTF8&iwloc=&output=embed'
+  'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000!2d-73.6485!3d45.5405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sca!4v1700000000000!5m2!1sfr!2sca'
 
 const DEFAULT_CARDS: PresentielCard[] = [
   {
@@ -100,9 +103,9 @@ export type PresentielSectionProps = {
   quote?: unknown
   legacyQuote?: unknown
   locEyebrow?: string | null
-  locVenue?: string | null
-  locStreet?: string | null
-  locCityLine?: string | null
+  locSector?: string | null
+  locNote?: string | null
+  locExtraLine?: string | null
 }
 
 export function PresentielSection({
@@ -114,15 +117,17 @@ export function PresentielSection({
   quote,
   legacyQuote,
   locEyebrow,
-  locVenue,
-  locStreet,
-  locCityLine,
+  locSector,
+  locNote,
+  locExtraLine,
 }: PresentielSectionProps) {
   const resolvedEyebrow = textOrDefault(eyebrow, DEFAULT_EYEBROW)
   const resolvedLocEyebrow = textOrDefault(locEyebrow, DEFAULT_LOC_EYEBROW)
-  const resolvedLocVenue = textOrDefault(locVenue, DEFAULT_LOC_VENUE)
-  const resolvedLocStreet = textOrDefault(locStreet, DEFAULT_LOC_STREET)
-  const resolvedLocCity = textOrDefault(locCityLine, DEFAULT_LOC_CITY)
+  const resolvedLocSector = textOrDefault(locSector, DEFAULT_LOC_SECTOR)
+  const resolvedLocNote = textOrDefault(locNote, DEFAULT_LOC_NOTE)
+  // Ligne facultative : pas de repli sur une valeur par défaut, sinon vider le
+  // champ dans le Studio ferait réapparaître du texte.
+  const resolvedLocExtra = locExtraLine?.trim() ?? ''
   const items = resolveCards(cards, legacyBenefits)
   const quoteValue = quote ?? legacyQuote
 
@@ -145,27 +150,34 @@ export function PresentielSection({
             <div className="presentiel-loc-inner">
               <div className="presentiel-loc-details">
                 <div className="presentiel-loc-row">
-                  <span className="presentiel-loc-tag">Lieu</span>
-                  <span className="presentiel-loc-val">{resolvedLocVenue}</span>
+                  <span className="presentiel-loc-tag">Secteur</span>
+                  <span className="presentiel-loc-val">{resolvedLocSector}</span>
                 </div>
                 <div className="presentiel-loc-row">
                   <span className="presentiel-loc-tag">Adresse</span>
                   <span className="presentiel-loc-val">
-                    {resolvedLocStreet}
-                    <br />
-                    {resolvedLocCity}
+                    {resolvedLocNote}
+                    {resolvedLocExtra ? (
+                      <>
+                        <br />
+                        {resolvedLocExtra}
+                      </>
+                    ) : null}
                   </span>
                 </div>
               </div>
-              <div className="presentiel-loc-map">
-                <iframe
-                  src={MAP_EMBED_URL}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`Carte vers ${resolvedLocVenue}, Montréal`}
-                  allowFullScreen
-                />
-              </div>
+              <figure className="presentiel-loc-figure">
+                <div className="presentiel-loc-map">
+                  <iframe
+                    src={MAP_EMBED_URL}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Carte du secteur de Montréal où se déroulent les séances en présentiel"
+                    allowFullScreen
+                  />
+                </div>
+                <figcaption className="presentiel-loc-note">Secteur approximatif</figcaption>
+              </figure>
             </div>
           </aside>
         </div>

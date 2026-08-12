@@ -559,24 +559,30 @@ export default defineType({
     }),
     defineField({
       name: 'inPersonLocVenue',
-      title: 'Lieu — nom de la salle',
+      title: 'Lieu — secteur',
+      description:
+        "Secteur large seulement (quartier ou arrondissement). N'inscris jamais le nom d'un studio ou d'une salle : l'adresse précise ne doit apparaître nulle part sur le site.",
       type: 'string',
       group: 'inPerson',
-      initialValue: 'Biner Training',
+      initialValue: 'Montréal — Ahuntsic / Parc-Extension',
     }),
     defineField({
       name: 'inPersonLocStreet',
-      title: 'Lieu — adresse (ligne 1)',
+      title: "Lieu — note sur l'adresse",
+      description:
+        "Explique comment l'adresse est transmise. N'inscris jamais de numéro civique, de rue ni de code postal.",
       type: 'string',
       group: 'inPerson',
-      initialValue: '220 Boulevard Crémazie Ouest',
+      initialValue:
+        "Studio privé. L'adresse exacte t'est communiquée après notre premier contact.",
     }),
     defineField({
       name: 'inPersonLocCityLine',
-      title: 'Lieu — ville et code postal (ligne 2)',
+      title: 'Lieu — ligne complémentaire (facultatif)',
+      description:
+        "Deuxième ligne facultative sous la note. Laisse vide si tu n'en as pas besoin.",
       type: 'string',
       group: 'inPerson',
-      initialValue: 'Montréal, QC · H2P 1C6',
     }),
     defineField({
       name: 'inPersonPunchLine',

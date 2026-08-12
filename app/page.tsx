@@ -633,9 +633,9 @@ export default async function Home() {
               quote={homePage?.locationQuote}
               legacyQuote={homePage?.inPersonPunchLine}
               locEyebrow={homePage?.inPersonLocEyebrow}
-              locVenue={homePage?.inPersonLocVenue}
-              locStreet={homePage?.inPersonLocStreet}
-              locCityLine={homePage?.inPersonLocCityLine}
+              locSector={homePage?.inPersonLocVenue}
+              locNote={homePage?.inPersonLocStreet}
+              locExtraLine={homePage?.inPersonLocCityLine}
             />
       
             <TestimonialsSection
@@ -909,10 +909,8 @@ export default async function Home() {
                     name: 'Éliane Larre — Entraîneure personnelle',
                     address: {
                       '@type': 'PostalAddress',
-                      streetAddress: '220 Boulevard Crémazie Ouest',
                       addressLocality: 'Montréal',
                       addressRegion: 'QC',
-                      postalCode: 'H2P 1C6',
                       addressCountry: 'CA',
                     },
                   },

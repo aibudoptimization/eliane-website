@@ -407,7 +407,11 @@ async function main() {
       _type: 'faq',
       order: 3,
       question: 'Où ont lieu les séances ?',
-      answer: [mdToBlock('Les séances se déroulent au Biner Training, au 220, boulevard Crémazie Ouest, à Montréal.')],
+      answer: [
+        mdToBlock(
+          "Les séances se déroulent dans un studio privé à Montréal, dans le secteur Ahuntsic / Parc-Extension. L'adresse exacte t'est communiquée après notre premier contact.",
+        ),
+      ],
     },
     {
       _id: 'faq-prive-ou-groupe',
@@ -416,7 +420,7 @@ async function main() {
       question: 'Les séances sont-elles privées ou en groupe ?',
       answer: [
         mdToBlock(
-          "Les séances sont entièrement privées. Tu bénéficies d'un accompagnement individuel, dans un espace dédié au Biner Training.",
+          "Les séances sont entièrement privées. Tu bénéficies d'un accompagnement individuel, dans un espace dédié.",
         ),
       ],
     },
