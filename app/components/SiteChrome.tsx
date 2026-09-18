@@ -47,8 +47,8 @@ export default function SiteChrome({
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
 
-  // On /merci the visitor has just booked, so the booking CTA would invite them to book again.
-  const showBookingCta = pathname !== "/merci";
+  // The visitor is booking on /appel-decouverte and has just booked on /merci: no booking CTA there.
+  const showBookingCta = pathname !== "/merci" && pathname !== "/appel-decouverte";
 
   const calProps = {
     "data-cal-link": calLinkNamespace || undefined,

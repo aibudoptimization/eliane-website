@@ -970,7 +970,8 @@ em.quote-italic {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .merci-inner {
+  .merci-inner,
+  .booking-header {
     animation: none;
   }
 }
@@ -984,7 +985,8 @@ em.quote-italic {
   box-shadow: var(--shadow-card);
 }
 
-.merci-title {
+.merci-title,
+.booking-title {
   font-family: var(--font-serif);
   font-size: clamp(2.2rem, 4.6vw, 3.4rem);
   font-weight: 400;
@@ -1014,23 +1016,94 @@ em.quote-italic {
   color: var(--ink);
 }
 
-.merci-help {
+.merci-help,
+.booking-help {
   margin: 1.5rem 0 0;
   font-size: 0.82rem;
   line-height: 1.5;
   color: var(--muted);
 }
 
-.merci-help a {
+.merci-help a,
+.booking-help a {
   border-bottom: 1px solid rgba(90, 80, 72, 0.35);
   transition:
     color 0.3s,
     border-color 0.3s;
 }
 
-.merci-help a:hover {
+.merci-help a:hover,
+.booking-help a:hover {
   color: var(--plum);
   border-color: var(--plum);
+}
+
+/* —— Booking page (discovery call calendar embedded in the page) —— */
+.booking-main {
+  padding: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem)) var(--pad-x) clamp(3.5rem, 8vw, 6rem);
+}
+
+.booking-inner {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+}
+
+/* The calendar brings its own top margin, so the header sits close to it. */
+.booking-header {
+  margin: 0 auto 0.5rem;
+  text-align: center;
+  animation: merci-in 0.9s var(--ease-out) both;
+}
+
+/* On small screens the calendar card starts flush with the top of its iframe. */
+@media (max-width: 900px) {
+  .booking-header {
+    margin-bottom: 1.75rem;
+  }
+}
+
+.booking-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 1rem;
+}
+
+.booking-lead {
+  max-width: 36rem;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--mid);
+}
+
+/* The embed script sets the real height; this only reserves room while it loads. */
+.booking-widget {
+  position: relative;
+  min-height: 36rem;
+}
+
+/* Sits behind the iframe: the calendar's own card covers it once it paints. */
+.booking-widget-loading {
+  position: absolute;
+  top: 6rem;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.booking-widget-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 36rem;
+  border: none;
+  overflow: hidden;
+}
+
+.booking-help {
+  text-align: center;
 }
 
 .eyebrow {
