@@ -47,6 +47,9 @@ export default function SiteChrome({
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
 
+  // On /merci the visitor has just booked, so the booking CTA would invite them to book again.
+  const showBookingCta = pathname !== "/merci";
+
   const calProps = {
     "data-cal-link": calLinkNamespace || undefined,
     "data-cal-config": calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined,
@@ -78,12 +81,14 @@ export default function SiteChrome({
           ))}
         </nav>
 
-        <div className="nav-pill nav-pill--cta" data-nav-cta>
-          <a href={calBookingUrl} {...calProps}>
-            Appel découverte
-            <NavArrowIcon />
-          </a>
-        </div>
+        {showBookingCta && (
+          <div className="nav-pill nav-pill--cta" data-nav-cta>
+            <a href={calBookingUrl} {...calProps}>
+              Appel découverte
+              <NavArrowIcon />
+            </a>
+          </div>
+        )}
 
         <button
           type="button"
@@ -113,14 +118,16 @@ export default function SiteChrome({
           >
             Questionnaire initial
           </a>
-          <a
-            className="nav-overlay-cta"
-            href={calBookingUrl}
-            {...calProps}
-            data-nav-link
-          >
-            Appel découverte
-          </a>
+          {showBookingCta && (
+            <a
+              className="nav-overlay-cta"
+              href={calBookingUrl}
+              {...calProps}
+              data-nav-link
+            >
+              Appel découverte
+            </a>
+          )}
         </div>
       </div>
     </>
