@@ -23,7 +23,7 @@ export default function PolitiqueConfidentialitePage() {
         <div className="legal-inner">
           <h1>Politique de confidentialité</h1>
           <p className="legal-updated">
-            <em>Dernière mise à jour : 21 juin 2026</em>
+            <em>Dernière mise à jour : 18 septembre 2026</em>
           </p>
 
           <p>
@@ -79,6 +79,7 @@ export default function PolitiqueConfidentialitePage() {
             <li>Répondre à tes demandes d&apos;information</li>
             <li>Communiquer avec toi concernant mes services</li>
             <li>Planifier et confirmer un appel découverte ou un rendez-vous</li>
+            <li>T&apos;envoyer des messages texte lorsque tu y as consenti (voir la section 5)</li>
             <li>Évaluer si mon accompagnement correspond à tes objectifs et à ta situation</li>
             <li>Améliorer le contenu, les services et l&apos;expérience utilisateur du site</li>
             <li>Respecter mes obligations légales lorsque nécessaire</li>
@@ -94,7 +95,39 @@ export default function PolitiqueConfidentialitePage() {
             s&apos;appliquer.
           </p>
 
-          <h2>5. Partage des renseignements personnels</h2>
+          <h2>5. Messages texte</h2>
+          <p>
+            Si tu me fournis ton numéro de téléphone et que tu coches la case de consentement prévue à cet effet, je peux
+            t&apos;envoyer des messages texte. Il y a deux types de messages, et chacun a sa propre case :
+          </p>
+          <ul>
+            <li>
+              <strong>Messages non promotionnels</strong>
+              <br />
+              Confirmations, rappels de rendez-vous et suivis liés à ton appel découverte et à ton accompagnement.
+            </li>
+            <li>
+              <strong>Messages promotionnels</strong>
+              <br />
+              Offres spéciales, nouveautés et annonces concernant mes services. Cette case est toujours facultative : tu
+              peux soumettre un formulaire sans la cocher.
+            </li>
+          </ul>
+          <p>
+            La fréquence des messages varie. Des frais de messagerie et de données peuvent s&apos;appliquer selon ton
+            forfait.
+          </p>
+          <p>
+            Tu peux te désabonner en tout temps en répondant STOP à l&apos;un de mes messages, ou obtenir de l&apos;aide
+            en répondant HELP. Tu peux aussi m&apos;écrire à{" "}
+            <a href="mailto:info@elianelarre.com">info@elianelarre.com</a>.
+          </p>
+          <p>
+            Ton numéro de téléphone et ton consentement à recevoir des messages texte ne sont ni vendus ni communiqués à
+            des tiers à des fins de marketing.
+          </p>
+
+          <h2>6. Partage des renseignements personnels</h2>
           <p>Je ne vends, ne loue ni n&apos;échange tes renseignements personnels.</p>
           <p>
             Je peux toutefois partager certains renseignements avec des fournisseurs de services technologiques lorsque
@@ -104,7 +137,7 @@ export default function PolitiqueConfidentialitePage() {
             <li>La prise de rendez-vous</li>
             <li>L&apos;hébergement du site web</li>
             <li>L&apos;analyse du trafic du site</li>
-            <li>Les communications par courriel</li>
+            <li>Les communications par courriel et par message texte</li>
           </ul>
           <p>
             Ces fournisseurs n&apos;ont accès qu&apos;aux renseignements nécessaires à l&apos;exécution de leurs services
@@ -115,7 +148,7 @@ export default function PolitiqueConfidentialitePage() {
             compétente en fait la demande.
           </p>
 
-          <h2>6. Hébergement et transferts à l&apos;extérieur du Québec</h2>
+          <h2>7. Hébergement et transferts à l&apos;extérieur du Québec</h2>
           <p>
             Certains fournisseurs technologiques utilisés pour l&apos;exploitation du site peuvent héberger ou traiter
             des renseignements personnels à l&apos;extérieur du Québec ou du Canada.
@@ -125,7 +158,7 @@ export default function PolitiqueConfidentialitePage() {
             bénéficient d&apos;un niveau de protection adéquat.
           </p>
 
-          <h2>7. Conservation des renseignements</h2>
+          <h2>8. Conservation des renseignements</h2>
           <p>
             Les renseignements personnels sont conservés uniquement pour la durée nécessaire aux fins pour lesquelles ils
             ont été recueillis ou pour respecter les obligations légales applicables.
@@ -135,7 +168,7 @@ export default function PolitiqueConfidentialitePage() {
             sécuritaire.
           </p>
 
-          <h2>8. Tes droits</h2>
+          <h2>9. Tes droits</h2>
           <p>Conformément aux lois applicables, tu peux notamment :</p>
           <ul>
             <li>Accéder aux renseignements personnels que je détiens à ton sujet</li>
@@ -149,7 +182,7 @@ export default function PolitiqueConfidentialitePage() {
             <a href="mailto:info@elianelarre.com">info@elianelarre.com</a>
           </p>
 
-          <h2>9. Témoins de connexion (cookies)</h2>
+          <h2>10. Témoins de connexion (cookies)</h2>
           <p>
             Ce site utilise des témoins de connexion (&laquo;&nbsp;cookies&nbsp;&raquo;) afin d&apos;assurer son bon
             fonctionnement et d&apos;améliorer l&apos;expérience utilisateur.
@@ -178,7 +211,7 @@ export default function PolitiqueConfidentialitePage() {
             effet sur le site.
           </p>
 
-          <h2>10. Sécurité des renseignements</h2>
+          <h2>11. Sécurité des renseignements</h2>
           <p>
             Je mets en place des mesures raisonnables de sécurité afin de protéger les renseignements personnels contre
             l&apos;accès non autorisé, la perte, le vol, la divulgation ou la modification.
@@ -188,14 +221,14 @@ export default function PolitiqueConfidentialitePage() {
             totalement sécurisé.
           </p>
 
-          <h2>11. Liens vers des sites tiers</h2>
+          <h2>12. Liens vers des sites tiers</h2>
           <p>
             Le site peut contenir des liens vers des sites web ou services exploités par des tiers. Je ne suis pas
             responsable de leurs pratiques en matière de confidentialité et t&apos;invite à consulter leurs politiques
             respectives.
           </p>
 
-          <h2>12. Modifications de la présente politique</h2>
+          <h2>13. Modifications de la présente politique</h2>
           <p>
             Je me réserve le droit de modifier la présente politique de confidentialité à tout moment afin de refléter
             l&apos;évolution de mes pratiques, de mes services ou des exigences légales.
@@ -205,7 +238,7 @@ export default function PolitiqueConfidentialitePage() {
             haut du document.
           </p>
 
-          <h2>13. Me joindre</h2>
+          <h2>14. Me joindre</h2>
           <p>
             Pour toute question concernant la présente politique de confidentialité ou le traitement de tes renseignements
             personnels :
