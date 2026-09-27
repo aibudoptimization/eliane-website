@@ -21,14 +21,14 @@ const DEFAULT_PILLARS: Pillar[] = [
       "Ton programme est intégré à ton application personnalisée pour t'offrir une structure claire et des outils concrets pour soutenir ta progression.",
   },
   {
-    title: 'Séances privées en présentiel',
+    title: 'Deux rencontres en présentiel',
     description:
-      'Tu es guidée, corrigée et accompagnée en temps réel pour progresser avec confiance.',
+      "Une au début du parcours, une à la fin, en privé, à Montréal : c'est là qu'on pose les bases et qu'on mesure le chemin parcouru.",
   },
   {
-    title: 'Suivi entre les rencontres',
+    title: 'Un appel chaque semaine',
     description:
-      "Tu n'es pas laissée seule entre deux séances. L'accompagnement te garde engagée, alignée et constante.",
+      "Chaque semaine, on fait le point ensemble sur tes entraînements et tes questions. Tu n'es jamais laissée seule entre les deux rencontres.",
   },
   {
     title: 'Enseignements concrets et utiles',

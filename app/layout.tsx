@@ -34,7 +34,7 @@ const poppins = Poppins({
 
 const DEFAULT_META_TITLE = "Éliane Larre — Entraîneure personnelle privée · Montréal";
 const DEFAULT_META_DESCRIPTION =
-  "Éliane Larre est entraîneure personnelle privée à Montréal. Accompagnement en présentiel, personnalisé et sur mesure pour progresser avec confiance et constance.";
+  "Éliane Larre, entraîneure personnelle à Montréal. Accompagnement hybride et personnalisé : deux rencontres en présentiel et un appel chaque semaine pour progresser avec confiance.";
 
 export { SITE_URL, DEFAULT_OG_IMAGE_PATH };
 

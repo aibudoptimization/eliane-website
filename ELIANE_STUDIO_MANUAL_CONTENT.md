@@ -1,41 +1,20 @@
-# Studio — contenu à saisir manuellement
+# Studio — contenu de référence
 
-Après le passage aux champs **texte enrichi** (Portable Text), certains champs peuvent apparaître vides dans Studio. Saisis le texte ci-dessous, puis applique **Gras** ou **Italique (mauve)** sur les mots indiqués.
+Ce fichier donne le texte de chaque section telle qu'elle est en ligne, pour retrouver un champ et le retoucher dans le Studio. Depuis septembre 2026, l'offre est **hybride** : deux rencontres en présentiel (une au début, une à la fin du parcours) et un appel chaque semaine. Rien sur le site ne doit décrire une offre exclusivement en présentiel.
 
-**Comment formater :** colle le texte → sélectionne un mot/expression → bouton **Italique** ou **Gras** dans la barre d’outils.
+**Comment formater :** colle le texte → sélectionne un mot ou une expression → bouton **Italique** (mauve) ou **Gras** dans la barre d'outils.
 
-**Où aller :** Studio → Page d’accueil → raccourci de section (ex. « Rencontre ton entraîneure »).
+**Où aller :** Studio → Page d'accueil → raccourci de section (ex. « Comment ça se passe »).
+
+**Attention :** vider un champ ne l'efface pas du site. Le code affiche alors un texte par défaut. Pour changer une phrase, remplace-la.
 
 Publie après chaque section modifiée.
 
 ---
 
-## Priorité — demandes d’Éliane (Phase 0)
+## Bande défilante
 
-### Pourquoi le présentiel → `Page d'accueil — Pourquoi le présentiel`
-
-| Champ | Texte à coller |
-|-------|----------------|
-| **Accroche** | `Où ont lieu les séances ensemble` |
-| **Titre principal** | Coller puis mettre en *italique mauve* si besoin : `Où ont lieu les séances ensemble` (ou variante avec mot en évidence) |
-
-### Mon accompagnement → pilier « Séances privées en présentiel »
-
-| Champ | Texte à coller |
-|-------|----------------|
-| **Description (pilier 2)** | `Tu es guidée, corrigée et accompagnée en temps réel pour progresser avec confiance. Le nombre de séances dépend de l'offre de service choisie.` |
-
-### Lieu (même section Présentiel)
-
-> ⚠️ Aucune adresse précise ni nom de studio ne doit apparaître sur le site. On indique
-> un secteur large, et l'adresse est transmise en privé après le premier contact.
-
-| Champ | Valeur |
-|-------|--------|
-| Lieu — accroche | `Où ça se passe` |
-| Lieu — secteur | `Montréal — Ahuntsic / Parc-Extension` |
-| Lieu — note sur l'adresse | `Studio privé. L'adresse exacte t'est communiquée après notre premier contact.` |
-| Lieu — ligne complémentaire (facultatif) | *laisser vide* |
+`Formule hybride` · `Deux rencontres en présentiel à Montréal` · `Un appel chaque semaine` · `Accompagnement personnalisé` · `Approche durable`
 
 ---
 
@@ -45,7 +24,7 @@ Publie après chaque section modifiée.
 |-------|--------|
 | Sous-titre | `Un accompagnement sur mesure, conçu pour toi qui veux intégrer l'entraînement à ta vie, ou pour toi qui crois avoir tout essayé, mais qui n'arrives toujours pas à atteindre tes objectifs et à les maintenir.` |
 
-*(Le titre principal Hero est déjà en texte enrichi — y appliquer italique mauve sur les mots voulus.)*
+Le bouton du hero mène à « Mon accompagnement ». Tous les autres boutons du site ouvrent le formulaire.
 
 ---
 
@@ -92,31 +71,47 @@ Mon but est de t'amener vers plus de clarté, de constance et d'autonomie. Je ve
 ### Piliers
 
 1. **Un plan clair** — `Ton programme est intégré à ton application personnalisée pour t'offrir une structure claire et des outils concrets pour soutenir ta progression.`
-2. **Séances privées en présentiel** — voir priorité Éliane ci-dessus.
-3. **Suivi entre les rencontres** — `Tu n'es pas laissée seule entre deux séances. L'accompagnement te garde engagée, alignée et constante.`
+2. **Deux rencontres en présentiel** — `Une au début du parcours, une à la fin, en privé, à Montréal : c'est là qu'on pose les bases et qu'on mesure le chemin parcouru.`
+3. **Un appel chaque semaine** — `Chaque semaine, on fait le point ensemble sur tes entraînements et tes questions. Tu n'es jamais laissée seule entre les deux rencontres.`
 4. **Enseignements concrets et utiles** — `Je suis là pour te partager mes connaissances en entraînement et nutrition pour te permettre de comprendre et maintenir tes résultats.`
 
 ---
 
-## Pourquoi le présentiel
+## Comment ça se passe (anciennement « Pourquoi le présentiel »)
+
+Même mise en page qu'avant : quatre cartes, le bloc « Où ça se passe » avec la carte, et une citation de clôture. Le contenu décrit maintenant le parcours hybride.
 
 | Champ | Texte |
 |-------|--------|
-| Introduction | `Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer.` |
+| Accroche | `Comment ça se passe` |
+| Titre principal | `Deux rencontres en présentiel, un appel chaque semaine.` |
+| Introduction | `Le meilleur des deux : on se voit en personne au début et à la fin de ton parcours, et on se parle chaque semaine entre les deux. Entre nos appels, ton programme t'attend dans ton application.` |
 
 ### Cartes
 
-1. **Correction en temps réel** — `J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.`
-2. **Progression sécuritaire** — `Je t'aide à progresser tout en respectant ton rythme.`
-3. **Imputabilité** — `Le présentiel ajoute une structure (qui soutient l'engagement au-delà de la motivation seule) qui t'aide à rester constante.` → *italique mauve* sur le texte entre parenthèses si souhaité.
-4. **Adaptation à ton état** — `Un entraînement sur mesure, selon ton énergie, tes besoins et tes envies.`
+1. **Rencontre de départ** (icône coche) — `En personne, à Montréal. On fait connaissance, on regarde ton point de départ et on lance ton parcours sur des bases solides.`
+2. **Appel hebdomadaire** (icône horloge) — `Chaque semaine, on se parle : tes entraînements, tes questions, les ajustements à faire. C'est ce qui te garde constante.`
+3. **Programme dans ton application** (icône bouclier) — `Tes entraînements, ta progression et nos échanges, au même endroit, accessibles où que tu sois.`
+4. **Rencontre de fin** (icône œil) — `En personne, à Montréal, pour mesurer le chemin parcouru et préparer la suite, avec des bases que tu gardes bien après notre travail ensemble.`
+
+### Lieu
+
+> ⚠️ Aucune adresse précise ni nom de studio ne doit apparaître sur le site. On indique
+> un secteur large, et l'adresse est transmise en privé après le premier contact.
+
+| Champ | Valeur |
+|-------|--------|
+| Lieu — accroche | `Où ça se passe` |
+| Lieu — secteur | `Montréal — Ahuntsic / Parc-Extension` |
+| Lieu — note sur l'adresse | `Studio privé. L'adresse exacte t'est communiquée après notre premier contact.` |
+| Lieu — ligne complémentaire | `Pour les deux rencontres en présentiel. Le reste se passe à distance.` |
 
 ### Citation de clôture (encadré mauve)
 
 ```
-Un programme peut te dire quoi faire. Un accompagnement en présentiel te montre comment le faire et t'aide à progresser plus rapidement qu'en étant seule.
+Un programme peut te dire quoi faire. Un accompagnement te montre comment le faire, et t'aide à progresser plus vite qu'en étant seule.
 ```
-→ *italique mauve* sur : `quoi faire` et `comment le faire`
+→ *italique* sur : `quoi faire` et `comment le faire`
 
 ---
 
@@ -128,22 +123,63 @@ Un programme peut te dire quoi faire. Un accompagnement en présentiel te montre
 
 ---
 
-## Après l'appel
+## Pour toi ou pas ?
+
+Liste « Ce n'est probablement pas pour toi si » :
+
+1. `Tu cherches uniquement le prix le plus bas.`
+2. `Tu veux une solution miracle sans implication.`
+3. `Tu ne peux pas te libérer pour deux rencontres en présentiel à Montréal.`
+4. `Tu préfères un programme 100 % autonome, sans accompagnement.`
+
+---
+
+## Après l'appel (« Parcours cliente »)
 
 | Champ | Texte |
 |-------|--------|
-| Introduction | `L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.` |
+| Accroche | `Parcours cliente` |
+| Titre | `Les 5 étapes vers ton accompagnement` |
+| Introduction | `Gratuit et sans engagement.` |
+| Bouton | `Je veux commencer` (ouvre le formulaire) |
 
-*(Les 5 étapes : recopier les titres/descriptions existants sur le site ou depuis l’ancien contenu si besoin.)*
+### Les 5 étapes
+
+1. **Remplir le formulaire** — `Quelques questions sur ta situation et tes objectifs : c'est tout ce qu'il faut pour commencer. Tu reçois ensuite par courriel le lien pour réserver ton appel découverte.`
+2. **Réserver ton appel découverte** — `Tu choisis le moment qui te convient. Quinze minutes, en appel vidéo, gratuit et sans engagement.`
+3. **L'appel découverte** — `Je prends le temps de comprendre où tu en es, on clarifie tes objectifs ensemble et je réponds à tes questions.`
+4. **Présentation de ton offre** — `Après l'appel, je te présente ton offre personnalisée lors d'un second appel vidéo.`
+5. **Confirmation** — `On regarde ensemble une date pour débuter ton accompagnement.`
+
+---
+
+## Intro FAQ
+
+`Pour toute question sur l'accompagnement, la formule ou la logistique, n'hésite pas. Je réponds personnellement.`
+
+### Deux réponses qui décrivent le parcours
+
+**Où ont lieu les rencontres en présentiel ?**
+```
+Les deux rencontres en présentiel, au début et à la fin du parcours, se déroulent dans un studio privé à Montréal, dans le secteur Ahuntsic / Parc-Extension. L'adresse exacte t'est communiquée après notre premier contact. Le reste de l'accompagnement se fait à distance : ton programme dans ton application, et un appel chaque semaine.
+```
+
+**Les rencontres et les appels sont-ils privés ou en groupe ?**
+```
+Tout est individuel : les deux rencontres en présentiel comme les appels hebdomadaires. Tu bénéficies d'un accompagnement entièrement personnalisé.
+```
 
 ---
 
 ## Paramètres du site
 
-| Champ | Action |
+| Champ | Valeur |
 |-------|--------|
-| Image de partage (Open Graph) | Uploader `image-de-partage.png` |
+| Description SEO | `Éliane Larre, entraîneure personnelle à Montréal. Accompagnement hybride et personnalisé : deux rencontres en présentiel et un appel chaque semaine pour progresser avec confiance.` |
+| Image de partage (Open Graph) | `image-de-partage.png` |
+
+Les liens du formulaire et du calendrier ne sont pas dans le Studio : le formulaire Everdesk est branché dans le code (`lib/lead-form.ts`), et la réservation se fait par le lien reçu par courriel.
 
 ---
 
-*Ce fichier remplace le script de migration automatique (`scripts/migrate-rich-text-fields.ts`).*
+*Le contenu de cette page a été écrit en ligne par `npm run apply:hybride` (septembre 2026). Les anciens scripts `apply:phase0` et de seed refusent de s'exécuter : ils remettraient l'ancien texte.*

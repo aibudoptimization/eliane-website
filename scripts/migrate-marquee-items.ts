@@ -51,12 +51,11 @@ function getWriteToken(): string {
 }
 
 const DEFAULT_MARQUEE_ITEMS = [
-  'Entraînements en présentiel',
-  'À Montréal',
-  '10+ années de pratique',
-  'Approche personnalisée',
+  'Formule hybride',
+  'Deux rencontres en présentiel à Montréal',
+  'Un appel chaque semaine',
+  'Accompagnement personnalisé',
   'Approche durable',
-  'Progression mesurable',
 ]
 
 function mergeLegacyMarquee(

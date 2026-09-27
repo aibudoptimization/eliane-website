@@ -23,7 +23,7 @@ export default function ConditionsUtilisationPage() {
         <div className="legal-inner">
           <h1>{"Conditions d'utilisation"}</h1>
           <p className="legal-updated">
-            <em>Dernière mise à jour : avril 2026</em>
+            <em>Dernière mise à jour : septembre 2026</em>
           </p>
 
           <p>
@@ -33,9 +33,10 @@ export default function ConditionsUtilisationPage() {
 
           <h2>1. Services offerts</h2>
           <p>
-            J&apos;offre des services d&apos;entraînement personnel privé en présentiel à Montréal, incluant la conception
-            de programmes personnalisés, le suivi, et des conseils en nutrition. Les détails spécifiques de chaque
-            accompagnement sont précisés dans un contrat ou une entente distincte remise lors de ton inscription.
+            J&apos;offre des services d&apos;entraînement personnel privé en formule hybride : des rencontres en présentiel
+            à Montréal et un suivi à distance (appels vidéo et application), incluant la conception de programmes
+            personnalisés, le suivi, et des conseils en nutrition. Les détails spécifiques de chaque accompagnement sont
+            précisés dans un contrat ou une entente distincte remise lors de ton inscription.
           </p>
 
           <h2>2. Accès au site</h2>
@@ -46,14 +47,14 @@ export default function ConditionsUtilisationPage() {
 
           <h2>3. Réservation et paiement</h2>
           <p>
-            La réservation des séances se fait par l&apos;entremise des moyens indiqués sur le site. Les modalités de
+            La réservation des rencontres et des appels se fait par l&apos;entremise des moyens indiqués sur le site. Les modalités de
             paiement sont précisées au moment de la réservation. Les paiements sont traités par un prestataire tiers
             sécurisé.
           </p>
 
           <h2>4. Politique d&apos;annulation</h2>
           <p>
-            Les conditions d&apos;annulation et de report des séances sont précisées dans l&apos;entente de service remise
+            Les conditions d&apos;annulation et de report des rencontres et des appels sont précisées dans l&apos;entente de service remise
             lors de ton inscription. De façon générale, j&apos;apprécie un préavis raisonnable (24 à 48 heures) pour
             toute annulation.
           </p>

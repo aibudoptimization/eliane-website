@@ -7,6 +7,14 @@ import {createReadStream, existsSync, readFileSync} from 'node:fs'
 import {basename, resolve} from 'node:path'
 import {HOME_PAGE_ID, SITE_SETTINGS_ID} from '../sanity/ids'
 
+// Obsolète depuis septembre 2026 : ce script réécrit l'ancien contenu (présentiel exclusif,
+// questionnaire, cinq étapes de l'ancien parcours) par-dessus ce qui est en ligne. Le contenu
+// courant est dans scripts/apply-hybride.ts. Pour le relancer malgré tout : LEGACY_CONTENT=1.
+if (process.env.LEGACY_CONTENT !== '1') {
+  console.error('Refusé : script de contenu obsolète (voir le commentaire en tête de fichier).')
+  process.exit(1)
+}
+
 const PRESERVE_ENV_KEYS = new Set(['SANITY_AUTH_TOKEN', 'SANITY_API_TOKEN'])
 
 function loadEnvLocal(): void {
