@@ -2,24 +2,10 @@ export {};
 
 declare global {
   interface Window {
-    __ELIANE_CAL_EMBED_INIT__?: boolean;
-    __ELIANE_CAL_EMBED_READY__?: boolean;
-    __ELIANE_CAL_MODAL_HANDLERS_BOUND__?: boolean;
     __ELIANE_COOKIE_CONSENT_INIT__?: boolean;
+    __ELIANE_GTM_LOADED__?: boolean;
     showCookiePreferences?: () => void;
-    // Cal.com queue + namespaced API (initialized by embed snippet)
-    Cal?: CalGlobal;
+    /** Google Tag Manager queue: created by whoever pushes first, read by GTM once it loads. */
+    dataLayer?: Array<Record<string, unknown>>;
   }
 }
-
-/** Minimal typing for Cal.com embed queue (see cal-embed.js). */
-interface CalGlobal {
-  loaded?: boolean;
-  ns?: Record<string, CalNamespaceApi | undefined>;
-  q?: unknown[];
-  (command: string, ...args: unknown[]): void;
-}
-
-type CalNamespaceApi = ((command: string, options?: Record<string, unknown>) => void) & {
-  q?: unknown[];
-};

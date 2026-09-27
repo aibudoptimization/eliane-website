@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CAL_EMBED_DATA_CONFIG } from "@/lib/cal-embed-init";
-
-const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
-const DEFAULT_TALLY_URL = "https://tally.so/r/Pdg1Bd";
+import { leadFormLink } from "@/lib/lead-form";
 
 const NAV_ITEMS = [
   { label: "Approche", href: "/#approche", section: "approche" },
@@ -13,12 +10,6 @@ const NAV_ITEMS = [
   { label: "Témoignages", href: "/#temoignages", section: "temoignages" },
   { label: "FAQ", href: "/#faq", section: "faq" },
 ] as const;
-
-export type SiteChromeProps = {
-  calBookingUrl?: string;
-  calLinkNamespace?: string;
-  tallyUrl?: string;
-};
 
 function NavArrowIcon() {
   return (
@@ -39,21 +30,9 @@ function NavArrowIcon() {
   );
 }
 
-export default function SiteChrome({
-  calBookingUrl = DEFAULT_CAL_BOOKING,
-  calLinkNamespace,
-  tallyUrl = DEFAULT_TALLY_URL,
-}: SiteChromeProps) {
+export default function SiteChrome() {
   const pathname = usePathname();
   if (pathname.startsWith("/studio")) return null;
-
-  // The visitor is booking on /appel-decouverte and has just booked on /merci: no booking CTA there.
-  const showBookingCta = pathname !== "/merci" && pathname !== "/appel-decouverte";
-
-  const calProps = {
-    "data-cal-link": calLinkNamespace || undefined,
-    "data-cal-config": calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined,
-  };
 
   return (
     <>
@@ -81,14 +60,12 @@ export default function SiteChrome({
           ))}
         </nav>
 
-        {showBookingCta && (
-          <div className="nav-pill nav-pill--cta" data-nav-cta>
-            <a href={calBookingUrl} {...calProps}>
-              Appel découverte
-              <NavArrowIcon />
-            </a>
-          </div>
-        )}
+        <div className="nav-pill nav-pill--cta" data-nav-cta>
+          <a {...leadFormLink("menu")}>
+            Commence ici
+            <NavArrowIcon />
+          </a>
+        </div>
 
         <button
           type="button"
@@ -109,25 +86,9 @@ export default function SiteChrome({
           </a>
         ))}
         <div className="nav-overlay-cta-row">
-          <a
-            className="nav-overlay-cta"
-            href={tallyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-nav-link
-          >
-            Questionnaire initial
+          <a className="nav-overlay-cta" {...leadFormLink("menu-mobile")} data-nav-link>
+            Commence ici
           </a>
-          {showBookingCta && (
-            <a
-              className="nav-overlay-cta"
-              href={calBookingUrl}
-              {...calProps}
-              data-nav-link
-            >
-              Appel découverte
-            </a>
-          )}
         </div>
       </div>
     </>

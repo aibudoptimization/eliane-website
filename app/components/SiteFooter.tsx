@@ -2,21 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CAL_EMBED_DATA_CONFIG } from "@/lib/cal-embed-init";
+import { leadFormLink } from "@/lib/lead-form";
 
-const DEFAULT_CAL_BOOKING = "https://cal.com/elianelarre/appel-decouverte";
 const DEFAULT_CONTACT_EMAIL = "info@elianelarre.com";
 const DEFAULT_INSTAGRAM = "https://www.instagram.com/eliane.au.naturel";
 export type SiteFooterProps = {
-  calBookingUrl?: string;
-  calLinkNamespace?: string;
   contactEmail?: string;
   instagramUrl?: string;
 };
 
 export default function SiteFooter({
-  calBookingUrl = DEFAULT_CAL_BOOKING,
-  calLinkNamespace,
   contactEmail = DEFAULT_CONTACT_EMAIL,
   instagramUrl = DEFAULT_INSTAGRAM,
 }: SiteFooterProps) {
@@ -52,13 +47,7 @@ export default function SiteFooter({
               <Link href="/#faq">FAQ</Link>
             </li>
             <li>
-              <a
-                href={calBookingUrl}
-                data-cal-link={calLinkNamespace || undefined}
-                data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
-              >
-                Appel découverte
-              </a>
+              <a {...leadFormLink("pied-de-page")}>Commence ici</a>
             </li>
           </ul>
         </nav>

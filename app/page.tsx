@@ -15,7 +15,7 @@ import {urlFor} from '@/sanity/imageUrl'
 import {sanityFetch} from '@/sanity/live'
 import {COLLABORATORS_QUERY, FAQS_QUERY, HOMEPAGE_QUERY, SITE_SETTINGS_QUERY} from '@/sanity/queries'
 import {DEFAULT_OG_IMAGE_PATH, SITE_URL} from '@/app/layout'
-import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
+import {LEAD_FORM_URL, leadFormLink} from '@/lib/lead-form'
 
 /** Serializes a JSON-LD object and escapes `</` to prevent script-injection
  *  breakout when embedded in a `<script type="application/ld+json">` tag. */
@@ -268,19 +268,6 @@ export default async function Home() {
     sanityFetch({ query: COLLABORATORS_QUERY }),
   ])
 
-  const calBookingUrl =
-    siteSettings?.bookingUrl ??
-    siteSettings?.calBookingUrl ??
-    'https://cal.com/elianelarre/appel-decouverte'
-  const tallyUrl = siteSettings?.tallyUrl ?? 'https://tally.so/r/Pdg1Bd'
-  const calLinkNamespace = (() => {
-    try {
-      const url = new URL(calBookingUrl)
-      return url.hostname === 'cal.com' ? url.pathname.replace(/^\/+/, '') : ''
-    } catch {
-      return ''
-    }
-  })()
   const contactEmail = siteSettings?.contactEmail ?? 'info@elianelarre.com'
   const heroImageSrc =
     homePage?.heroImage?.asset != null
@@ -573,12 +560,7 @@ export default async function Home() {
                   </div>
 
                   <div className="approche-footer">
-                    <a
-                      className="btn btn-primary approche-cta"
-                      href={tallyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a className="btn btn-primary approche-cta" {...leadFormLink('approche')}>
                       {homePage?.sledCtaLabel ?? "C'est là que je veux aller"}
                       <HeroCtaArrow />
                     </a>
@@ -615,7 +597,7 @@ export default async function Home() {
               appDescription={homePage?.offeringAppDescription}
               appScreens={offeringAppScreens}
               ctaLabel={homePage?.offeringCtaLabel}
-              ctaUrl={tallyUrl}
+              ctaUrl={LEAD_FORM_URL}
             />
 
             <PresentielSection
@@ -658,7 +640,7 @@ export default async function Home() {
               }
               footer={homePage?.forYouFooter}
               ctaLabel={homePage?.forYouCtaLabel}
-              ctaUrl={tallyUrl}
+              ctaUrl={LEAD_FORM_URL}
               imageSrc={forYouImageSrc}
               imageAlt={homePage?.forYouImage?.alt}
             />
@@ -673,8 +655,7 @@ export default async function Home() {
                   : undefined
               }
               ctaLabel={homePage?.afterCallCtaLabel}
-              ctaUrl={calBookingUrl}
-              calLinkNamespace={calLinkNamespace || undefined}
+              ctaUrl={LEAD_FORM_URL}
             />
 
             <section className="section section-muted">
@@ -690,12 +671,7 @@ export default async function Home() {
                   />
                 </h2>
                 <p className="purple-cta-button-row">
-                  <a
-                    className="btn btn-purple-cta"
-                    href={tallyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a className="btn btn-purple-cta" {...leadFormLink('bande-mauve')}>
                     {homePage?.purpleCtaButtonLabel ?? "Je veux passer à l'action"}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <line x1="5" y1="12" x2="19" y2="12" />

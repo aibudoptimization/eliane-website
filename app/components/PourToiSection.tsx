@@ -165,8 +165,7 @@ export function PourToiSection({
           <a
             className="btn btn-primary fit-cta"
             href={ctaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            data-lead-form="pour-toi"
           >
             {textOrDefault(ctaLabel, DEFAULT_CTA)}
             <CtaArrow />

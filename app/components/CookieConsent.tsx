@@ -5,6 +5,7 @@ import * as VanillaCookieConsent from "vanilla-cookieconsent";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 
 const COOKIE_PREFERENCES_LINK_SELECTOR = "[data-cookie-preferences-link]";
+const GTM_ID = "GTM-KDN3TRHV";
 
 function hasAnalyticsConsent(cookie: { categories?: string[] } | undefined) {
   return Array.isArray(cookie?.categories) && cookie.categories.includes("analytics");
@@ -14,6 +15,19 @@ async function loadVercelAnalyticsIfConsented(cookie: { categories?: string[] } 
   if (!hasAnalyticsConsent(cookie)) return;
   const { inject } = await import("@vercel/analytics");
   inject();
+}
+
+// Google Tag Manager only loads once the visitor has accepted analytics: it is the snippet
+// Google hands out, minus the part that ran it on every page view regardless of consent.
+function loadGtm() {
+  if (window.__ELIANE_GTM_LOADED__) return;
+  window.__ELIANE_GTM_LOADED__ = true;
+  window.dataLayer = window.dataLayer ?? [];
+  window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM_ID;
+  document.head.appendChild(script);
 }
 
 export default function CookieConsent() {
@@ -36,6 +50,16 @@ export default function CookieConsent() {
         link.addEventListener("click", onCookiePreferencesClick);
       });
     }
+
+    const applyAnalyticsConsent = (cookie: { categories?: string[] } | undefined) => {
+      if (!hasAnalyticsConsent(cookie)) return;
+      loadGtm();
+      void (async () => {
+        if (analyticsInjectedRef.current) return;
+        await loadVercelAnalyticsIfConsented(cookie);
+        analyticsInjectedRef.current = true;
+      })();
+    };
 
     void VanillaCookieConsent.run({
       cookie: {
@@ -63,6 +87,11 @@ export default function CookieConsent() {
           services: {
             vercel_analytics: {
               label: "Vercel Analytics",
+              onAccept: () => {},
+              onReject: () => {},
+            },
+            google_tag_manager: {
+              label: "Google Tag Manager",
               onAccept: () => {},
               onReject: () => {},
             },
@@ -126,20 +155,8 @@ export default function CookieConsent() {
           },
         },
       },
-      onConsent: ({ cookie }) => {
-        void (async () => {
-          if (analyticsInjectedRef.current || !hasAnalyticsConsent(cookie)) return;
-          await loadVercelAnalyticsIfConsented(cookie);
-          analyticsInjectedRef.current = true;
-        })();
-      },
-      onChange: ({ cookie }) => {
-        void (async () => {
-          if (analyticsInjectedRef.current || !hasAnalyticsConsent(cookie)) return;
-          await loadVercelAnalyticsIfConsented(cookie);
-          analyticsInjectedRef.current = true;
-        })();
-      },
+      onConsent: ({ cookie }) => applyAnalyticsConsent(cookie),
+      onChange: ({ cookie }) => applyAnalyticsConsent(cookie),
     });
 
     bindCookiePreferencesLinks();

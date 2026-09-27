@@ -602,8 +602,7 @@ em.quote-italic {
   line-height: 1.5;
 }
 
-.hero .btn-primary,
-.merci-main .btn-primary {
+.hero .btn-primary {
   border-radius: 999px;
   padding: 16px 30px;
   font-size: 0.94rem;
@@ -614,13 +613,11 @@ em.quote-italic {
   box-shadow: 0 8px 24px rgba(85, 39, 114, 0.24);
 }
 
-.hero .btn-primary svg,
-.merci-main .btn-primary svg {
+.hero .btn-primary svg {
   transition: transform 0.4s var(--ease-out);
 }
 
-.hero .btn-primary:hover svg,
-.merci-main .btn-primary:hover svg {
+.hero .btn-primary:hover svg {
   transform: translateX(4px);
 }
 
@@ -940,170 +937,6 @@ em.quote-italic {
   margin-top: 2.25rem;
   font-size: 0.8125rem;
   color: var(--muted);
-}
-
-/* —— Merci page (after the discovery call is booked) —— */
-.merci-main {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem)) var(--pad-x) clamp(3.5rem, 8vw, 6rem);
-}
-
-.merci-inner {
-  max-width: 36rem;
-  text-align: center;
-  animation: merci-in 0.9s var(--ease-out) both;
-}
-
-@keyframes merci-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .merci-inner,
-  .booking-header {
-    animation: none;
-  }
-}
-
-.merci-logo {
-  width: 5.5rem;
-  height: 5.5rem;
-  margin: 0 auto 1.75rem;
-  border-radius: 50%;
-  border: 1px solid rgba(26, 20, 16, 0.06);
-  box-shadow: var(--shadow-card);
-}
-
-.merci-title,
-.booking-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 4.6vw, 3.4rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.022em;
-  color: var(--ink);
-  margin: 0 0 1.5rem;
-}
-
-.merci-text {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--mid);
-  margin: 0 0 1.75rem;
-}
-
-.merci-signature {
-  color: var(--mid);
-  margin: 0 0 2.5rem;
-}
-
-.merci-signature em {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  line-height: 1.3;
-  color: var(--ink);
-}
-
-.merci-help,
-.booking-help {
-  margin: 1.5rem 0 0;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-.merci-help a,
-.booking-help a {
-  border-bottom: 1px solid rgba(90, 80, 72, 0.35);
-  transition:
-    color 0.3s,
-    border-color 0.3s;
-}
-
-.merci-help a:hover,
-.booking-help a:hover {
-  color: var(--plum);
-  border-color: var(--plum);
-}
-
-/* —— Booking page (discovery call calendar embedded in the page) —— */
-.booking-main {
-  padding: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem)) var(--pad-x) clamp(3.5rem, 8vw, 6rem);
-}
-
-.booking-inner {
-  max-width: var(--max-wide);
-  margin: 0 auto;
-}
-
-/* The calendar brings its own top margin, so the header sits close to it. */
-.booking-header {
-  margin: 0 auto 0.5rem;
-  text-align: center;
-  animation: merci-in 0.9s var(--ease-out) both;
-}
-
-/* On small screens the calendar card starts flush with the top of its iframe. */
-@media (max-width: 900px) {
-  .booking-header {
-    margin-bottom: 1.75rem;
-  }
-}
-
-.booking-title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 1rem;
-}
-
-.booking-lead {
-  max-width: 36rem;
-  margin: 0 auto;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--mid);
-}
-
-/* The embed script sets the real height; this only reserves room while it loads. */
-.booking-widget {
-  position: relative;
-  min-height: 36rem;
-}
-
-/* Sits behind the iframe: the calendar's own card covers it once it paints. */
-.booking-widget-loading {
-  position: absolute;
-  top: 6rem;
-  left: 0;
-  right: 0;
-  margin: 0;
-  text-align: center;
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-
-.booking-widget-frame {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-height: 36rem;
-  border: none;
-  overflow: hidden;
-}
-
-.booking-help {
-  text-align: center;
 }
 
 .eyebrow {
@@ -5036,26 +4869,6 @@ em.quote-italic {
 
 }
 
-/* —— Cal.com CTA: embed script still loading (iOS Safari race guard) —— */
-.is-cal-loading {
-  opacity: 0.65;
-  cursor: wait;
-}
-
-/* —— Cal.com embed modal —— above fixed .site-nav (z-index: 500) and nav dropdown (520) */
-cal-modal-box,
-cal-modal-box * {
-  z-index: 99999 !important;
-}
-
-/*
- * Cal may set data-cal-namespace on injected hosts. Exclude our booking <a>/<button>
- * (they use the same attribute) so we do not alter their stacking.
- */
-[data-cal-namespace="appel-decouverte"]:not(a):not(button) {
-  z-index: 99999 !important;
-}
-
 /* —— Legacy detail pages —— */
 .offer-main {
   padding-top: calc(var(--nav-h) + clamp(2.5rem, 5vw, 4rem));
@@ -5377,86 +5190,6 @@ cal-modal-box * {
   display: inline-flex;
   margin-top: 1.25rem;
 }
-
-.offer-sticky-cta {
-  position: fixed;
-  right: clamp(1.25rem, 4vw, 2rem);
-  bottom: clamp(1.25rem, 4vw, 2rem);
-  z-index: 480;
-  visibility: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  max-width: calc(100vw - 2.5rem);
-  padding: clamp(0.75rem, 2.2vw, 1.05rem) clamp(1.35rem, 3.5vw, 1.85rem);
-  font-family: var(--font-sans);
-  font-size: clamp(0.5625rem, 1.5vw, 0.625rem);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--white);
-  background: var(--plum);
-  border-radius: 999px;
-  border: none;
-  box-shadow: 0 8px 28px rgba(85, 39, 114, 0.28);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  transition:
-    opacity 300ms ease,
-    transform 300ms ease,
-    visibility 0s linear 300ms,
-    background 0.25s ease;
-}
-
-.offer-sticky-cta:hover {
-  background: var(--plum-hover);
-}
-
-.offer-sticky-cta:focus-visible {
-  outline: 2px solid var(--plum);
-  outline-offset: 3px;
-}
-
-.offer-sticky-cta.is-visible {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  transition:
-    opacity 300ms ease,
-    transform 300ms ease,
-    visibility 0s linear 0s,
-    background 0.25s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .offer-sticky-cta {
-    transition:
-      opacity 0.15s ease,
-      visibility 0s linear 0.15s,
-      background 0.25s ease;
-  }
-
-  .offer-sticky-cta.is-visible {
-    transition:
-      opacity 0.15s ease,
-      visibility 0s linear 0s,
-      background 0.25s ease;
-  }
-
-  .offer-sticky-cta:not(.is-visible) {
-    transform: none;
-  }
-
-  .offer-sticky-cta.is-visible {
-    transform: none;
-  }
-}
-
 /* —— Cookie consent (from Vite /src/cookie-consent.css) —— */
 #cc-main {
   --cc-bg: var(--beige);
@@ -5649,5 +5382,211 @@ cal-modal-box * {
   #cc-main .cm-wrapper--hidden .cm,
   #cc-main .pm-wrapper--hidden .pm {
     animation: none !important;
+  }
+}
+
+/* —— Lead form: left-edge tab + popup —— */
+.lead-tab {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  z-index: 480;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1.35rem 0.8rem 1.35rem 0.7rem;
+  border: none;
+  /* Rotated 180° below: this radius lands on the side facing the page, and the shadow falls down. */
+  border-radius: 14px 0 0 14px;
+  background: var(--plum);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  cursor: pointer;
+  box-shadow: 0 -12px 32px rgba(85, 39, 114, 0.2);
+  transform: translate(-4px, -50%) rotate(180deg);
+  transition:
+    transform 0.35s var(--ease-out),
+    background-color 0.2s ease;
+}
+
+.lead-tab:hover {
+  background: var(--plum-hover);
+  transform: translate(0, -50%) rotate(180deg);
+}
+
+.lead-tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.lead-tab-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(228, 192, 69, 0.22);
+}
+
+html.lead-form-open {
+  overflow: hidden;
+}
+
+.lead-dialog {
+  width: min(860px, calc(100% - 2rem));
+  height: min(88dvh, 1040px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--beige);
+  color: var(--ink);
+  box-shadow: 0 30px 80px rgba(26, 20, 16, 0.28), 0 8px 24px rgba(85, 39, 114, 0.14);
+  overflow: hidden;
+}
+
+.lead-dialog[open] {
+  animation: lead-dialog-in 0.45s var(--ease-out) both;
+}
+
+.lead-dialog::backdrop {
+  background: rgba(26, 20, 16, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.lead-dialog[open]::backdrop {
+  animation: lead-backdrop-in 0.3s ease both;
+}
+
+.lead-dialog-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.lead-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem 0.9rem 1.6rem;
+  border-bottom: 1px solid rgba(90, 80, 72, 0.14);
+}
+
+.lead-dialog-title {
+  margin: 0;
+  color: var(--plum);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lead-dialog-close {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(85, 39, 114, 0.22);
+  border-radius: 50%;
+  background: var(--surface-card);
+  color: var(--plum);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.3s var(--ease-out);
+}
+
+.lead-dialog-close:hover {
+  background: var(--plum);
+  color: var(--white);
+  transform: rotate(90deg);
+}
+
+.lead-dialog-close:focus-visible {
+  outline: 2px solid var(--plum);
+  outline-offset: 3px;
+}
+
+.lead-dialog-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.lead-dialog-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lead-dialog-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+}
+
+@keyframes lead-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lead-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .lead-tab {
+    padding: 1rem 0.6rem 1rem 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .lead-dialog {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .lead-dialog-header {
+    padding-top: max(0.9rem, env(safe-area-inset-top));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-tab,
+  .lead-dialog-close {
+    transition: none;
+  }
+
+  .lead-dialog[open],
+  .lead-dialog[open]::backdrop {
+    animation: none;
   }
 }

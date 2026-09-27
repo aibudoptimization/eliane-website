@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { draftMode, headers } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { Playfair_Display, Poppins } from "next/font/google";
-import CalEmbed from "./components/CalEmbed";
 import ClientScripts from "./components/ClientScripts";
 import CookieConsent from "./components/CookieConsent";
 import IntroPhotoDock from "./components/IntroPhotoDock";
+import LeadForm from "./components/LeadForm";
 import SiteChrome from "./components/SiteChrome";
 import SiteFooter from "./components/SiteFooter";
 import { sanityFetch, SanityLive } from "@/sanity/live";
@@ -102,19 +101,6 @@ export default async function RootLayout({
 
   const isDraftMode = (await draftMode()).isEnabled;
   const { data: siteSettings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
-  const calBookingUrl =
-    siteSettings?.bookingUrl ??
-    siteSettings?.calBookingUrl ??
-    "https://cal.com/elianelarre/appel-decouverte";
-  const calLinkNamespace = (() => {
-    try {
-      const url = new URL(calBookingUrl);
-      return url.hostname === "cal.com" ? url.pathname.replace(/^\/+/, "") : "";
-    } catch {
-      return "";
-    }
-  })();
-  const tallyUrl = siteSettings?.tallyUrl ?? "https://tally.so/r/Pdg1Bd";
   const contactEmail = siteSettings?.contactEmail ?? "info@elianelarre.com";
   const instagramUrl =
     siteSettings?.instagramUrl ??
@@ -128,53 +114,23 @@ export default async function RootLayout({
       style={colorVars}
     >
       <head>
-        <link rel="preconnect" href="https://app.cal.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cal.com" crossOrigin="anonymous" />
-        <link rel="preload" as="script" href="https://app.cal.com/embed/embed.js" crossOrigin="anonymous" />
-        <Script
-          id="gtm-head"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KDN3TRHV');`,
-          }}
-        />
+        <link rel="preconnect" href="https://api.everdesk.ca" crossOrigin="anonymous" />
       </head>
       <body>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KDN3TRHV"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
         <a className="skip-link" href="#contenu-principal">
           Passer au contenu
         </a>
 
-        <SiteChrome
-          calBookingUrl={calBookingUrl}
-          calLinkNamespace={calLinkNamespace}
-          tallyUrl={tallyUrl}
-        />
+        <SiteChrome />
 
         {children}
 
-        <SiteFooter
-          calBookingUrl={calBookingUrl}
-          calLinkNamespace={calLinkNamespace}
-          contactEmail={contactEmail}
-          instagramUrl={instagramUrl}
-        />
+        <SiteFooter contactEmail={contactEmail} instagramUrl={instagramUrl} />
 
         <ClientScripts />
-        <CalEmbed />
         <CookieConsent />
         <IntroPhotoDock />
+        <LeadForm />
         <SanityLive />
         {isDraftMode && <VisualEditing />}
       </body>

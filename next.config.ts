@@ -17,6 +17,14 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  async redirects() {
+    // Both pages belonged to the funnel that booked the call on the site. Booking now happens
+    // through the link the lead receives by email, so anything still pointing here lands home.
+    return [
+      {source: '/merci', destination: '/', permanent: true},
+      {source: '/appel-decouverte', destination: '/', permanent: true},
+    ]
+  },
 }
 
 export default nextConfig
