@@ -22,7 +22,7 @@ export default defineType({
     {name: 'meetTrainer', title: 'Rencontre ton entraîneure'},
     {name: 'pullQuote', title: 'Citation entre sections'},
     {name: 'offering', title: 'Mon accompagnement'},
-    {name: 'inPerson', title: 'Comment ça se passe'},
+    {name: 'inPerson', title: 'Pourquoi le présentiel'},
     {name: 'reviews', title: 'Leur expérience'},
     {name: 'forYouOrNot', title: 'Pour toi ou pas?'},
     {name: 'afterCall', title: "Comment ça se passe après l'appel"},
@@ -429,7 +429,6 @@ export default defineType({
     defineField({
       name: 'presentielCards',
       title: 'Cartes (4 items)',
-      description: 'Les quatre moments du parcours : rencontre de départ, appel hebdomadaire, programme dans l’application, rencontre de fin.',
       type: 'array',
       group: 'inPerson',
       of: [

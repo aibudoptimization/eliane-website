@@ -13,7 +13,7 @@ export const HOME_PAGE_SECTIONS: HomePageSection[] = [
   {title: 'Approche', sectionId: 'approche', group: 'sledComparison'},
   {title: 'Rencontre ton entraîneure', sectionId: 'rencontre', group: 'meetTrainer'},
   {title: 'Mon accompagnement', sectionId: 'accompagnement', group: 'offering'},
-  {title: 'Comment ça se passe', sectionId: 'presentiel', group: 'inPerson'},
+  {title: 'Pourquoi le présentiel', sectionId: 'presentiel', group: 'inPerson'},
   {title: 'Leur expérience', sectionId: 'temoignages', group: 'reviews'},
   {title: 'Pour toi ou pas ?', sectionId: 'pour-toi', group: 'forYouOrNot'},
   {title: "Après l'appel", sectionId: 'apres-appel', group: 'afterCall'},
