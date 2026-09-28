@@ -22,37 +22,6 @@ export default defineType({
       validation: (Rule) => Rule.required().email(),
     }),
     defineField({
-      name: 'calBookingUrl',
-      title: 'Lien Cal.com (appel découverte)',
-      type: 'url',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'bookingUrl',
-      title: "URL de réservation (appel découverte)",
-      description:
-        "Lien Cal.com pour l'appel découverte (nav, pied de page, section « Après l'appel »).",
-      type: 'url',
-      initialValue: 'https://cal.com/elianelarre/appel-decouverte',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'tallyUrl',
-      title: 'URL Tally (questionnaire initial)',
-      description:
-        'Lien du questionnaire initial pour les CTA de conversion (Approche, Mon accompagnement, Pour toi, bande mauve).',
-      type: 'url',
-      initialValue: 'https://tally.so/r/Pdg1Bd',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'calNamespace',
-      title: 'Cal.com — Namespace',
-      description: 'La partie après /cal.com/ dans le lien, ex: "elianelarre/appel-decouverte"',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'instagramUrl',
       title: 'Lien Instagram',
       type: 'url',

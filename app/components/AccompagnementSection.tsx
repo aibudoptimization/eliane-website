@@ -147,8 +147,7 @@ export function AccompagnementSection({
             <a
               className="btn btn-primary accomp-cta-btn"
               href={ctaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              data-lead-form="accompagnement"
             >
               {resolvedCtaLabel}
               <CtaArrow />

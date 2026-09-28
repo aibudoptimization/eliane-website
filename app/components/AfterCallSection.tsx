@@ -2,7 +2,6 @@
 
 import {useRef, useEffect, useCallback, useState} from 'react'
 import {ProcessSnakeGraphic, type SnakeCoords} from '@/app/components/ProcessDrawGraphics'
-import {CAL_EMBED_DATA_CONFIG} from '@/lib/cal-embed-init'
 import {RichText, SectionTitle, type PortableTextValue} from '@/lib/portableTextComponents'
 
 export type AfterCallStep = {
@@ -70,7 +69,6 @@ export type AfterCallSectionProps = {
   steps?: AfterCallStep[]
   ctaLabel?: string | null
   ctaUrl: string
-  calLinkNamespace?: string
 }
 
 export function AfterCallSection({
@@ -80,7 +78,6 @@ export function AfterCallSection({
   steps,
   ctaLabel,
   ctaUrl,
-  calLinkNamespace,
 }: AfterCallSectionProps) {
   const filteredSteps =
     steps?.filter((step) => step?.title?.trim() || step?.description) ?? []
@@ -234,8 +231,7 @@ export function AfterCallSection({
           <a
             className="btn btn-primary process-cta-btn"
             href={ctaUrl}
-            data-cal-link={calLinkNamespace || undefined}
-            data-cal-config={calLinkNamespace ? CAL_EMBED_DATA_CONFIG : undefined}
+            data-lead-form="apres-appel"
           >
             {textOrDefault(ctaLabel, DEFAULT_CTA)}
             <CtaArrow />
