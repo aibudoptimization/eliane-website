@@ -83,32 +83,13 @@ export default defineType({
       group: 'marquees',
       of: [{type: 'string'}],
       initialValue: [
-        'Entraînements en présentiel',
-        'À Montréal',
-        '10+ années de pratique',
-        'Approche personnalisée',
+        'Formule hybride',
+        'Deux rencontres en présentiel à Montréal',
+        'Un appel chaque semaine',
+        'Accompagnement personnalisé',
         'Approche durable',
-        'Progression mesurable',
       ],
       validation: (Rule) => Rule.min(2),
-    }),
-    defineField({
-      name: 'marqueeOneItems',
-      title: 'Bande 1 — phrases (ancien)',
-      description: 'Champ remplacé par « Phrases de la bande défilante ». Conservé pour la migration.',
-      type: 'array',
-      group: 'marquees',
-      of: [{type: 'string'}],
-      hidden: true,
-    }),
-    defineField({
-      name: 'marqueeTwoItems',
-      title: 'Bande 2 — phrases (ancien)',
-      description: 'Champ remplacé par « Phrases de la bande défilante ». Conservé pour la migration.',
-      type: 'array',
-      group: 'marquees',
-      of: [{type: 'string'}],
-      hidden: true,
     }),
 
     defineField({
@@ -437,17 +418,10 @@ export default defineType({
       title: 'Accroche',
       type: 'string',
       group: 'inPerson',
-      initialValue: 'Pourquoi le présentiel',
+      initialValue: 'Comment ça se passe',
     }),
     inlineRichTextField('inPersonTitle', 'Titre principal', {
       group: 'inPerson',
-    }),
-    defineField({
-      name: 'inPersonHeadline',
-      title: 'Titre de section (ancien)',
-      type: 'string',
-      group: 'inPerson',
-      hidden: true,
     }),
     richTextField('inPersonIntro', 'Introduction', {
       group: 'inPerson',
@@ -498,55 +472,6 @@ export default defineType({
       ],
       validation: (Rule) => Rule.min(1).max(4),
     }),
-    defineField({
-      name: 'inPersonBenefits',
-      title: 'Cartes bénéfices (ancien)',
-      description: 'Remplacé par « Cartes (4 items) ».',
-      type: 'array',
-      group: 'inPerson',
-      hidden: true,
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'icon',
-              title: 'Icône',
-              type: 'string',
-              options: {
-                list: [
-                  {title: 'Oeil (eye)', value: 'eye'},
-                  {title: 'Bouclier (shield-check)', value: 'shield-check'},
-                  {title: 'Calendrier (calendar-check)', value: 'calendar-check'},
-                  {title: 'Activite (activity)', value: 'activity'},
-                ],
-                layout: 'dropdown',
-              },
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'title',
-              title: 'Titre',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'text',
-              title: 'Texte',
-              type: 'text',
-              rows: 3,
-              validation: (Rule) => Rule.required(),
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'title',
-              subtitle: 'icon',
-            },
-          },
-        },
-      ],
-    }),
     quoteRichTextField('locationQuote', 'Citation de clôture', {
       group: 'inPerson',
     }),
@@ -583,14 +508,6 @@ export default defineType({
         "Deuxième ligne facultative sous la note. Laisse vide si tu n'en as pas besoin.",
       type: 'string',
       group: 'inPerson',
-    }),
-    defineField({
-      name: 'inPersonPunchLine',
-      title: 'Phrase de clôture (ancien)',
-      type: 'text',
-      rows: 3,
-      group: 'inPerson',
-      hidden: true,
     }),
 
     defineField({
@@ -799,16 +716,6 @@ export default defineType({
       group: 'afterCall',
       hidden: true,
       of: [{type: 'string'}],
-    }),
-    defineField({
-      name: 'afterCallFooter',
-      title: 'Texte de clôture (ancien)',
-      type: 'text',
-      rows: 3,
-      group: 'afterCall',
-      hidden: true,
-      initialValue:
-        "L'appel est gratuit, sans engagement, et sert d'abord à voir si l'accompagnement est réellement pertinent pour toi.",
     }),
     defineField({
       name: 'afterCallCtaLabel',

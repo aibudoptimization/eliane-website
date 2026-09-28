@@ -21,6 +21,12 @@ const HOME_PAGE_SECTION_SHORTCUTS = HOME_PAGE_SECTIONS.filter(
 
 const SECTION_PREVIEW_HASH: Partial<Record<string, string>> = {
   approche: '/#approche',
+  rencontre: '/#rencontre',
+  accompagnement: '/#accompagnement',
+  presentiel: '/#presentiel',
+  temoignages: '/#temoignages',
+  'pour-toi': '/#pour-toi',
+  'apres-appel': '/#apres-appel',
   faq: '/#faq',
   collaborateurs: '/#collaborateurs',
 }

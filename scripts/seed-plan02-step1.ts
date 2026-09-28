@@ -2,6 +2,14 @@ import {createClient} from 'next-sanity'
 import {createReadStream, existsSync} from 'node:fs'
 import {basename, resolve} from 'node:path'
 
+// Obsolète depuis septembre 2026 : ce script réécrit l'ancien contenu (présentiel exclusif,
+// questionnaire, cinq étapes de l'ancien parcours) par-dessus ce qui est en ligne. Le contenu
+// courant est dans scripts/apply-hybride.ts. Pour le relancer malgré tout : LEGACY_CONTENT=1.
+if (process.env.LEGACY_CONTENT !== '1') {
+  console.error('Refusé : script de contenu obsolète (voir le commentaire en tête de fichier).')
+  process.exit(1)
+}
+
 type Span = {
   _type: 'span'
   _key: string

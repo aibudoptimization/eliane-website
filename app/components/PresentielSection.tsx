@@ -5,7 +5,7 @@ import {
   RichText,
   type PortableTextValue,
 } from '@/lib/portableTextComponents'
-import {normalizeIconName, PresentielCards} from '@/app/components/PresentielCards'
+import {PresentielCards} from '@/app/components/PresentielCards'
 
 export type PresentielCard = {
   _key?: string
@@ -14,12 +14,12 @@ export type PresentielCard = {
   iconName?: string
 }
 
-const DEFAULT_EYEBROW = 'Pourquoi le présentiel'
-const DEFAULT_TITLE = 'Pourquoi le présentiel change tout.'
+const DEFAULT_EYEBROW = 'Comment ça se passe'
+const DEFAULT_TITLE = 'Deux rencontres en présentiel, un appel chaque semaine.'
 const DEFAULT_INTRO =
-  "Parce que la façon dont on s'entraîne change tout. Voici ce que le présentiel t'offre que rien d'autre ne peut remplacer."
+  "Le meilleur des deux : on se voit en personne au début et à la fin de ton parcours, et on se parle chaque semaine entre les deux. Entre nos appels, ton programme t'attend dans ton application."
 const DEFAULT_QUOTE =
-  "Un programme peut te dire quoi faire. Un accompagnement en présentiel te montre comment le faire et t'aide à progresser plus rapidement qu'en étant seule."
+  "Un programme peut te dire quoi faire. Un accompagnement te montre comment le faire, et t'aide à progresser plus vite qu'en étant seule."
 
 const DEFAULT_LOC_EYEBROW = 'Où ça se passe'
 const DEFAULT_LOC_SECTOR = 'Montréal — Ahuntsic / Parc-Extension'
@@ -35,25 +35,27 @@ const MAP_EMBED_URL =
 const DEFAULT_CARDS: PresentielCard[] = [
   {
     iconName: 'check',
-    title: 'Correction en temps réel',
+    title: 'Rencontre de départ',
     description:
-      "J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.",
-  },
-  {
-    iconName: 'shield',
-    title: 'Progression sécuritaire',
-    description: "Je t'aide à progresser tout en respectant ton rythme.",
+      'En personne, à Montréal. On fait connaissance, on regarde ton point de départ et on lance ton parcours sur des bases solides.',
   },
   {
     iconName: 'clock',
-    title: 'Imputabilité',
-    description: "Le présentiel ajoute une structure qui soutient l'engagement.",
+    title: 'Appel hebdomadaire',
+    description:
+      "Chaque semaine, on se parle : tes entraînements, tes questions, les ajustements à faire. C'est ce qui te garde constante.",
+  },
+  {
+    iconName: 'shield',
+    title: 'Programme dans ton application',
+    description:
+      'Tes entraînements, ta progression et nos échanges, au même endroit, accessibles où que tu sois.',
   },
   {
     iconName: 'eye',
-    title: 'Adaptation à ton état',
+    title: 'Rencontre de fin',
     description:
-      'Un entraînement sur mesure, selon ton énergie, tes besoins et tes envies.',
+      'En personne, à Montréal, pour mesurer le chemin parcouru et préparer la suite, avec des bases que tu gardes bien après notre travail ensemble.',
   },
 ]
 
@@ -62,25 +64,9 @@ function textOrDefault(value: string | null | undefined, fallback: string): stri
   return trimmed ? trimmed : fallback
 }
 
-function resolveCards(
-  cards: PresentielCard[] | undefined,
-  legacyBenefits?: Array<{title?: string; text?: string; icon?: string; _key?: string}>,
-): PresentielCard[] {
+function resolveCards(cards: PresentielCard[] | undefined): PresentielCard[] {
   const fromSanity = cards?.filter((card) => card.title?.trim() || card.description) ?? []
-  if (fromSanity.length > 0) return fromSanity
-
-  const fromLegacy =
-    legacyBenefits?.filter((benefit) => benefit.title?.trim() || benefit.text?.trim()) ?? []
-  if (fromLegacy.length > 0) {
-    return fromLegacy.map((benefit) => ({
-      _key: benefit._key,
-      title: benefit.title,
-      description: benefit.text,
-      iconName: normalizeIconName(benefit.icon),
-    }))
-  }
-
-  return DEFAULT_CARDS
+  return fromSanity.length > 0 ? fromSanity : DEFAULT_CARDS
 }
 
 function renderSectionTitle(value: unknown, fallback: string): ReactNode {
@@ -99,9 +85,7 @@ export type PresentielSectionProps = {
   title?: unknown
   intro?: unknown
   cards?: PresentielCard[]
-  legacyBenefits?: Array<{title?: string; text?: string; icon?: string; _key?: string}>
   quote?: unknown
-  legacyQuote?: unknown
   locEyebrow?: string | null
   locSector?: string | null
   locNote?: string | null
@@ -113,9 +97,7 @@ export function PresentielSection({
   title,
   intro,
   cards,
-  legacyBenefits,
   quote,
-  legacyQuote,
   locEyebrow,
   locSector,
   locNote,
@@ -128,8 +110,7 @@ export function PresentielSection({
   // Ligne facultative : pas de repli sur une valeur par défaut, sinon vider le
   // champ dans le Studio ferait réapparaître du texte.
   const resolvedLocExtra = locExtraLine?.trim() ?? ''
-  const items = resolveCards(cards, legacyBenefits)
-  const quoteValue = quote ?? legacyQuote
+  const items = resolveCards(cards)
 
   return (
     <section className="section section-beige" id="presentiel">
@@ -172,7 +153,7 @@ export function PresentielSection({
                     src={MAP_EMBED_URL}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Carte du secteur de Montréal où se déroulent les séances en présentiel"
+                    title="Carte du secteur de Montréal où ont lieu les rencontres en présentiel"
                     allowFullScreen
                   />
                 </div>
@@ -184,7 +165,7 @@ export function PresentielSection({
 
         <blockquote className="presentiel-quote reveal" data-reveal>
           <RichText
-            value={quoteValue}
+            value={quote}
             fallback={DEFAULT_QUOTE}
             components={quotePortableTextComponents}
             className="presentiel-quote-text"

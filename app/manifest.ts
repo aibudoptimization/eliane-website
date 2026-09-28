@@ -11,7 +11,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     name: "Éliane Larre — Entraîneure personnelle",
     short_name: "Éliane Larre",
     description:
-      "Entraîneure personnelle privée à Montréal — accompagnement personnalisé en présentiel.",
+      "Entraîneure personnelle privée à Montréal — accompagnement hybride et personnalisé.",
     start_url: "/",
     display: "standalone",
     background_color: "#f6f1ea",

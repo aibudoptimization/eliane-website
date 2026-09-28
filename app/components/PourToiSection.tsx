@@ -20,7 +20,7 @@ const DEFAULT_YES_ITEMS = [
 const DEFAULT_NO_ITEMS = [
   'Tu cherches uniquement le prix le plus bas.',
   'Tu veux une solution miracle sans implication.',
-  'Tu n\'es pas disponible pour des séances en présentiel à Montréal.',
+  'Tu ne peux pas te libérer pour deux rencontres en présentiel à Montréal.',
   'Tu préfères un programme 100 % autonome, sans accompagnement.',
 ]
 

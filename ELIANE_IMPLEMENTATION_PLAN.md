@@ -12,6 +12,14 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 ---
 
+## Current status (2026-09-27)
+
+**Funnel (branch `funnel-formulaire`, PR #58):** the site has one door, the Everdesk lead form, opened in a popup from the « Commence ici » tab and from every call to action. Tally, Cal.com, `/merci` and `/appel-decouverte` are gone; the four link fields of Paramètres du site with them. Google Tag Manager waits for analytics consent.
+
+**Offer (branch `offre-hybride`):** the exclusively in-person offer is gone. One hybrid program — two in-person meetings (start and end) plus a weekly call. **Éliane rewrites the site copy herself in the Studio** (`ELIANE_STUDIO_MANUAL_CONTENT.md` lists every sentence that still describes the old offer). The code side is done: format-neutral defaults, SEO description, structured data, manifest, terms of use; legacy fallback fields removed. `npm run apply:hybride` (dry run by default, `--apply` to write) only sets the SEO description and cleans up hidden legacy fields and orphaned offer documents; the old `apply:phase0` and seed scripts refuse to run.
+
+---
+
 ## Current status (2026-07-01)
 
 **Branch:** `main` — Studio enhancement work merged via **PR #57** (`studio-enhancement`).

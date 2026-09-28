@@ -362,36 +362,19 @@ export default async function Home() {
     homePage?.meetTrainerCtaUrl ??
     instagramUrl
   const defaultMarqueeItems = [
-    'Entraînements en présentiel',
-    'À Montréal',
-    '10+ années de pratique',
-    'Approche personnalisée',
+    'Formule hybride',
+    'Deux rencontres en présentiel à Montréal',
+    'Un appel chaque semaine',
+    'Accompagnement personnalisé',
     'Approche durable',
-    'Progression mesurable',
   ]
   const isStringArray = (value: unknown): value is string[] =>
     Array.isArray(value) && value.every((entry) => typeof entry === 'string')
 
-  const mergeLegacyMarqueeItems = (): string[] => {
-    const legacy = [
-      ...(isStringArray(homePage?.marqueeOneItems) ? homePage.marqueeOneItems : []),
-      ...(isStringArray(homePage?.marqueeTwoItems) ? homePage.marqueeTwoItems : []),
-    ]
-    const seen = new Set<string>()
-    return legacy.filter((item) => {
-      if (seen.has(item)) return false
-      seen.add(item)
-      return true
-    })
-  }
-
-  const marqueeItems: string[] = (() => {
-    if (isStringArray(homePage?.marqueeItems) && homePage.marqueeItems.length >= 2) {
-      return homePage.marqueeItems
-    }
-    const legacy = mergeLegacyMarqueeItems()
-    return legacy.length >= 2 ? legacy : defaultMarqueeItems
-  })()
+  const marqueeItems: string[] =
+    isStringArray(homePage?.marqueeItems) && homePage.marqueeItems.length >= 2
+      ? homePage.marqueeItems
+      : defaultMarqueeItems
 
   const renderMarqueeStrip = (items: string[], stripKey: string) =>
     items.flatMap((item, index) => [
@@ -601,7 +584,7 @@ export default async function Home() {
             />
 
             <PresentielSection
-              eyebrow={homePage?.inPersonEyebrow ?? homePage?.inPersonHeadline}
+              eyebrow={homePage?.inPersonEyebrow}
               title={homePage?.inPersonTitle}
               intro={homePage?.inPersonIntro}
               cards={
@@ -609,11 +592,7 @@ export default async function Home() {
                   ? (homePage.presentielCards as PresentielCard[])
                   : undefined
               }
-              legacyBenefits={
-                Array.isArray(homePage?.inPersonBenefits) ? homePage.inPersonBenefits : undefined
-              }
               quote={homePage?.locationQuote}
-              legacyQuote={homePage?.inPersonPunchLine}
               locEyebrow={homePage?.inPersonLocEyebrow}
               locSector={homePage?.inPersonLocVenue}
               locNote={homePage?.inPersonLocStreet}
@@ -648,7 +627,7 @@ export default async function Home() {
             <AfterCallSection
               eyebrow={homePage?.afterCallEyebrow}
               title={homePage?.afterCallHeadline}
-              intro={homePage?.afterCallIntro ?? homePage?.afterCallFooter}
+              intro={homePage?.afterCallIntro}
               steps={
                 Array.isArray(homePage?.afterCallSteps)
                   ? (homePage.afterCallSteps as Array<{title?: string; description?: string}>)
@@ -851,7 +830,7 @@ export default async function Home() {
                   image: `${SITE_URL}${DEFAULT_OG_IMAGE_PATH}`,
                   email: contactEmail,
                   description:
-                    "Entraîneure personnelle privée à Montréal. Accompagnement personnalisé en présentiel — séances privées, suivi et programmes sur mesure pour les femmes. Accessible sur Instagram 7j/7.",
+                    'Entraîneure personnelle privée à Montréal. Accompagnement hybride et personnalisé pour les femmes : deux rencontres en présentiel, un appel chaque semaine et un programme sur mesure dans une application.',
                   areaServed: 'Montréal, QC',
                   address: {
                     '@type': 'PostalAddress',
