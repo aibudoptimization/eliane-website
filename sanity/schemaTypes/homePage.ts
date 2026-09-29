@@ -22,7 +22,7 @@ export default defineType({
     {name: 'meetTrainer', title: 'Rencontre ton entraîneure'},
     {name: 'pullQuote', title: 'Citation entre sections'},
     {name: 'offering', title: 'Mon accompagnement'},
-    {name: 'inPerson', title: 'Pourquoi le présentiel'},
+    {name: 'inPerson', title: 'Comment ça se passe'},
     {name: 'reviews', title: 'Leur expérience'},
     {name: 'forYouOrNot', title: 'Pour toi ou pas?'},
     {name: 'afterCall', title: "Comment ça se passe après l'appel"},
@@ -416,6 +416,7 @@ export default defineType({
     defineField({
       name: 'inPersonEyebrow',
       title: 'Accroche',
+      description: 'Petite ligne au-dessus du titre de la section.',
       type: 'string',
       group: 'inPerson',
       initialValue: 'Comment ça se passe',
@@ -429,6 +430,8 @@ export default defineType({
     defineField({
       name: 'presentielCards',
       title: 'Cartes (4 items)',
+      description:
+        "Dans l'ordre d'affichage : un titre court, une ou deux phrases et une icône par carte.",
       type: 'array',
       group: 'inPerson',
       of: [

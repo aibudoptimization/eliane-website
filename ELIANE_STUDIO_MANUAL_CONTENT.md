@@ -6,7 +6,7 @@ Le site décrit encore l'ancienne offre à plusieurs endroits. **Ces textes se r
 
 **Comment formater :** colle le texte → sélectionne un mot ou une expression → bouton **Italique** (mauve) ou **Gras** dans la barre d'outils.
 
-**Où aller :** Studio → Page d'accueil → raccourci de section (ex. « Pourquoi le présentiel »).
+**Où aller :** Studio → Page d'accueil → raccourci de section (ex. « Comment ça se passe »).
 
 **Attention :** vider un champ ne l'efface pas du site. Le code affiche alors un texte par défaut. Pour changer une phrase, remplace-la.
 
@@ -23,13 +23,6 @@ Les faits à dire, dans les mots d'Éliane : une seule formule ; deux rencontres
 | Bande défilante | Phrases | `Entraînements en présentiel à Montréal` · `Nouvelle offre virtuelle` (les deux autres, `Accompagnement personnalisé` et `Approche durable`, sont bonnes) |
 | Mon accompagnement | Pilier 2, titre + description | `Séances privées en présentiel` — `Tu es guidée, corrigée et accompagnée en temps réel pour progresser avec confiance.` |
 | Mon accompagnement | Pilier 3, description | `Tu n'es pas laissée seule entre deux séances. L'accès rapide à moi te garde engagée, alignée et constante.` (« entre deux séances » suppose des séances fréquentes) |
-| Pourquoi le présentiel | Accroche | `Pourquoi le présentiel` |
-| Pourquoi le présentiel | Titre principal | `Ce que le virtuel ne remplacera jamais` |
-| Pourquoi le présentiel | Introduction | `Parce que la bonne technique change tout. Voici ce que le présentiel t'offre et que rien d'autre ne peut remplacer.` |
-| Pourquoi le présentiel | Carte 1 | `Correction en temps réel` — `J'ajuste ta technique pour maximiser ta progression et diminuer les risques de blessure.` (vrai seulement aux deux rencontres) |
-| Pourquoi le présentiel | Carte 3 | `Imputabilité` — `Le présentiel ajoute une structure qui soutient l'engagement et qui t'aide à rester constante.` |
-| Pourquoi le présentiel | Citation de clôture | `Un accompagnement en présentiel t'enseigne la bonne technique et t'aide à progresser plus rapidement qu'en étant seule.` |
-| Pourquoi le présentiel | Lieu — ligne complémentaire | vide ; une ligne comme « Pour les deux rencontres en présentiel. » y a sa place |
 | Pour toi ou pas ? | Liste « non », 3e ligne | `Tu n'es pas disponible pour des séances en présentiel à Montréal.` |
 | Après l'appel (« Parcours cliente ») | Étape 1 | `Compléter le formulaire initial` — `Le formulaire initial me permet de mieux comprendre ta situation actuelle et où tu souhaites te rendre.` |
 | Après l'appel | Étape 2 | `Appel découverte` — `L'appel découverte sert à revoir tes réponses du formulaire initial et s'assurer que mon service réponde à tes besoins.` (il n'y a plus de réponses à revoir ; l'étape qui manque, c'est « réserver l'appel avec le lien reçu par courriel ») |
@@ -39,7 +32,26 @@ Les faits à dire, dans les mots d'Éliane : une seule formule ; deux rencontres
 | FAQ | « Où ont lieu les séances ? » | `Les séances se déroulent dans un studio privé à Montréal, dans le secteur Ahuntsic / Parc-Extension. L'adresse exacte t'est communiquée après notre premier contact.` |
 | FAQ | « Les séances sont-elles privées ou en groupe ? » | `Les séances sont entièrement privées. Tu bénéficies d'un accompagnement individuel, dans un espace dédié.` |
 
-Ce qui est bon tel quel : le hero, l'Approche, Rencontre ton entraîneure, le pilier 1 et le pilier 4, l'application, le bloc « Où ça se passe » (secteur et note sur l'adresse), les témoignages, la bande mauve, les six autres FAQ.
+Ce qui est bon tel quel : le hero, l'Approche, Rencontre ton entraîneure, le pilier 1 et le pilier 4, l'application, la section « Comment ça se passe » (texte approuvé par Éliane, en ligne depuis le 28 septembre 2026), les témoignages, la bande mauve, les six autres FAQ.
+
+---
+
+## Comment ça se passe
+
+Ex-« Pourquoi le présentiel », même mise en page. Texte approuvé par Éliane, écrit dans le Studio le 28 septembre 2026 (`npm run apply:comment`). Raccourci Studio : « Comment ça se passe ». Les quatre cartes se modifient une par une (titre, description, icône).
+
+| Champ | Texte en ligne |
+|-------|--------|
+| Accroche | `Comment ça se passe` |
+| Titre principal | `Deux rencontres en présentiel, un appel chaque semaine.` |
+| Introduction | `Le meilleur des deux : on se voit en personne au début et à la fin de ton parcours, et on se parle chaque semaine entre les deux. Entre nos appels, ton programme t'attend dans ton application.` |
+| Carte 1 (icône Coche) | `Rencontre de départ` — `En personne, à Montréal. On fait connaissance, on regarde ton point de départ et on lance ton parcours sur des bases solides.` |
+| Carte 2 (icône Horloge) | `Appel hebdomadaire` — `Chaque semaine, on se parle : tes entraînements, tes questions, les ajustements à faire. C'est ce qui te garde constante.` |
+| Carte 3 (icône Bouclier) | `Programme dans ton application` — `Tes entraînements, ta progression et nos échanges, au même endroit, accessibles où que tu sois.` |
+| Carte 4 (icône Oeil) | `Rencontre de fin` — `En personne, à Montréal, pour mesurer le chemin parcouru et préparer la suite, avec des bases que tu gardes bien après notre travail ensemble.` |
+| Citation de clôture | `Un programme peut te dire quoi faire. Un accompagnement te montre comment le faire, et t'aide à progresser plus vite qu'en étant seule.` |
+
+Le bloc « Où ça se passe » fait partie de la même section : voir « Lieu » ci-dessous.
 
 ---
 
@@ -53,6 +65,7 @@ Ce qui est bon tel quel : le hero, l'Approche, Rencontre ton entraîneure, le pi
 | Lieu — accroche | `Où ça se passe` |
 | Lieu — secteur | `Montréal — Ahuntsic / Parc-Extension` |
 | Lieu — note sur l'adresse | `Studio privé. L'adresse exacte t'est communiquée après notre premier contact.` |
+| Lieu — ligne complémentaire | `Pour les deux rencontres en présentiel. Le reste se passe à distance.` |
 
 ---
 
@@ -142,4 +155,4 @@ Les liens du formulaire et du calendrier ne sont pas dans le Studio : le formula
 
 ---
 
-*`npm run apply:hybride` n'écrit que la description SEO et fait le ménage des champs cachés hérités et des anciens documents d'offres. Les anciens scripts `apply:phase0` et de seed refusent de s'exécuter : ils remettraient l'ancien texte.*
+*`npm run apply:hybride` n'écrit que la description SEO et fait le ménage des champs cachés hérités et des anciens documents d'offres. Les anciens scripts `apply:phase0` et de seed refusent de s'exécuter : ils remettraient l'ancien texte. `npm run apply:comment` (essai à blanc par défaut, `--apply` pour écrire) a écrit la section « Comment ça se passe » avec le texte approuvé par Éliane.*
