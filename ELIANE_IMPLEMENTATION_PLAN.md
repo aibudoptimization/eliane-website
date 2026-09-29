@@ -12,6 +12,12 @@ When steps are finished, tell the agent which numbers are done (e.g. `0.2, 2.2, 
 
 ---
 
+## Current status (2026-09-28)
+
+**« Comment ça se passe » (branch `section-comment-ca-se-passe`):** the section formerly titled « Pourquoi le présentiel » now carries the text Éliane approved — title, intro, four cards, closing quote, and an extra line under the address note; the « Où ça se passe » block is otherwise unchanged. Written to Sanity by `npm run apply:comment -- --apply` (dry run by default; it also patches the Studio draft when one exists). The Studio group and sidebar shortcut are renamed « Comment ça se passe ». The other sections listed in `ELIANE_STUDIO_MANUAL_CONTENT.md` are still hers to rewrite.
+
+---
+
 ## Current status (2026-09-27)
 
 **Funnel (branch `funnel-formulaire`, PR #58):** the site has one door, the Everdesk lead form, opened in a popup from the « Commence ici » tab and from every call to action. Tally, Cal.com, `/merci` and `/appel-decouverte` are gone; the four link fields of Paramètres du site with them. Google Tag Manager waits for analytics consent.
