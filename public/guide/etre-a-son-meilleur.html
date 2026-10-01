@@ -388,9 +388,17 @@ function pdfModel(){
 async function exportPdf(){
  const msg=t=>{const m=document.getElementById('pmsg');if(m)m.textContent=t};
  const viaPrint=()=>{try{window.print();msg('Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF » comme destination.')}catch(_){msg('Impossible de créer le PDF dans ce navigateur. Ouvre cette page dans Safari ou Chrome, puis réessaie.')}};
- if(!window.jspdf){return viaPrint()}
- try{const m=pdfModel(),doc=buildPdf(window.jspdf.jsPDF,m);doc.save(m.file);msg('Ton PDF est prêt.')}
- catch(e){viaPrint()}}
+ if(!window.jspdf)return viaPrint();
+ let m,blob;try{m=pdfModel();blob=buildPdf(window.jspdf.jsPDF,m).output('blob')}catch(_){return viaPrint()}
+ const ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),inApp=/; wv\)|FBAN|FBAV|Instagram|Messenger|Line\//i.test(ua);
+ const file=new File([blob],m.file,{type:'application/pdf'}),url=URL.createObjectURL(blob),later=()=>setTimeout(()=>URL.revokeObjectURL(url),60000);
+ const open=()=>{const w=window.open(url,'_blank');if(w){later();msg('Ton PDF s’ouvre dans un nouvel onglet. Utilise le bouton Partager pour l’enregistrer dans Fichiers.')}else{location.href=url}};
+ if((ios||inApp)&&navigator.canShare&&navigator.canShare({files:[file]})){
+  try{await navigator.share({files:[file],title:m.title});msg('Ton PDF est prêt.');return}
+  catch(e){if(e&&e.name==='AbortError'){msg('Partage annulé. Tu peux réessayer quand tu veux.');return}return open()}}
+ if(!ios&&!inApp&&'download'in HTMLAnchorElement.prototype){
+  const a=document.createElement('a');a.href=url;a.download=m.file;document.body.appendChild(a);a.click();a.remove();later();msg('Ton PDF est prêt.');return}
+ open()}
 render();
 </script>
 </body>
