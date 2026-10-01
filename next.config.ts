@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         source: '/guide/restaurant',
         destination: '/guide/restaurant.html',
       },
+      {
+        source: '/guide/etre-a-son-meilleur',
+        destination: '/guide/etre-a-son-meilleur.html',
+      },
     ]
   },
   async redirects() {
