@@ -388,11 +388,9 @@ function pdfModel(){
 async function exportPdf(){
  const msg=t=>{const m=document.getElementById('pmsg');if(m)m.textContent=t};
  const viaPrint=()=>{try{window.print();msg('Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF » comme destination.')}catch(_){msg('Impossible de créer le PDF dans ce navigateur. Ouvre cette page dans Safari ou Chrome, puis réessaie.')}};
- let dl=null;try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(_){}
- if(!dl||!window.jspdf){return viaPrint()}
- try{const m=pdfModel(),doc=buildPdf(window.jspdf.jsPDF,m);
-  await dl.save({filename:m.file,data:doc.output('blob')});msg('Ton PDF est prêt.')}
- catch(e){if(e&&e.code==='declined')msg('Téléchargement annulé.');else viaPrint()}}
+ if(!window.jspdf){return viaPrint()}
+ try{const m=pdfModel(),doc=buildPdf(window.jspdf.jsPDF,m);doc.save(m.file);msg('Ton PDF est prêt.')}
+ catch(e){viaPrint()}}
 render();
 </script>
 </body>
