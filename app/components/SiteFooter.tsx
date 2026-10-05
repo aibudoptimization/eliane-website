@@ -110,8 +110,13 @@ export default function SiteFooter({
       <div className="footer-bottom">
         <p className="footer-bottom-copy">© 2026 Éliane Larre. Tous droits réservés.</p>
         <p className="footer-bottom-credit">
-          <a href="https://wfwonder.com/" target="_blank" rel="noopener noreferrer">
-            WorkflowWonder ✦
+          <a
+            href="https://everdesk.ca/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Site conçu par Everdesk (nouvel onglet)"
+          >
+            Site conçu par Everdesk
           </a>
         </p>
       </div>

@@ -61,6 +61,9 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: "/" },
     title,
     description,
+    // Agency signature: visible in the page source (view-source), not on the page.
+    generator: "Everdesk",
+    authors: [{ name: "Everdesk", url: "https://everdesk.ca/" }],
     ...siteIconsMetadata(siteSettings),
     openGraph: {
       type: "website",
@@ -79,6 +82,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     other: {
       "theme-color": "#552772",
+      designer: "Everdesk — https://everdesk.ca/",
     },
   };
 }

@@ -114,6 +114,14 @@ export default function ConditionsUtilisationPage() {
           </p>
 
           {/* Note to dev: This placeholder content was generated as a starting template. The client should have a legal professional review before this goes live on production. */}
+
+          <p className="legal-credit">
+            Site conçu par{" "}
+            <a href="https://everdesk.ca/" target="_blank" rel="noopener noreferrer">
+              Everdesk
+            </a>
+            .
+          </p>
         </div>
       </section>
     </main>
