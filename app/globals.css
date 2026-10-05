@@ -939,6 +939,24 @@ em.quote-italic {
   color: var(--muted);
 }
 
+.legal-credit {
+  margin: 3rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.legal-credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.legal-credit a:hover {
+  color: var(--ink);
+}
+
 .eyebrow {
   display: block;
   font-size: 0.6875rem;

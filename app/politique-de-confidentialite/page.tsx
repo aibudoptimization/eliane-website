@@ -248,6 +248,14 @@ export default function PolitiqueConfidentialitePage() {
             <br />
             Courriel : <a href="mailto:info@elianelarre.com">info@elianelarre.com</a>
           </p>
+
+          <p className="legal-credit">
+            Site conçu par{" "}
+            <a href="https://everdesk.ca/" target="_blank" rel="noopener noreferrer">
+              Everdesk
+            </a>
+            .
+          </p>
         </div>
       </section>
     </main>
