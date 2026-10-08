@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LES 7Y · Mon bilan trimestriel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--mauve:#6E5285;--deep:#3E2C4E;--lav:#D9CDE4;--lavl:#EFE8F5;--beige:#EBE0D2;--cream:#F7F2EA;--paper:#FCFAF6;--yellow:#E8C765;--ink:#2B2233;--mute:#6F6478;--line:#E1D6C6;
+--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--cream);color:var(--ink);font:17px/1.65 var(--sans);-webkit-text-size-adjust:100%;transition:background .3s}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px 72px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:1.2}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(247,242,234,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+.top .in{max-width:720px;margin:0 auto;padding:6px 22px;min-height:54px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.link{background:none;border:0;padding:10px 0;color:var(--mauve);font-size:15px;min-height:44px}
+.link:hover{text-decoration:underline}
+.saved{font-size:13px;color:var(--mute);transition:opacity .4s;opacity:0}
+.saved.on{opacity:1}
+/* accueil */
+.hero{text-align:center;padding:56px 0 8px}
+.hero h1{font-size:clamp(40px,11vw,60px);letter-spacing:.08em;color:var(--deep)}
+.hero .sub{font-family:var(--serif);font-style:italic;color:var(--mauve);font-size:clamp(19px,4.5vw,24px);margin-top:10px}
+.rule{width:44px;height:2px;background:var(--yellow);margin:26px auto;border:0}
+.intro{max-width:560px;margin:0 auto;text-align:center;color:#4a3f55}
+.intro p{margin:0 0 12px}
+.how{max-width:560px;margin:22px auto 0;display:grid;gap:10px}
+.how div{display:flex;gap:16px;align-items:center;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.how b.n{font:400 30px var(--serif);color:var(--mauve);line-height:1}
+.privacy{max-width:560px;margin:26px auto 0;background:var(--lavl);border-radius:18px;padding:24px 26px;text-align:center;color:#4a3f55}
+.privacy p{margin:0}
+.note{max-width:560px;margin:18px auto 0;text-align:center;font:italic 15.5px/1.6 var(--serif);color:var(--mute)}
+.datef{max-width:560px;margin:34px auto 0}
+.datef input{font:18px var(--serif);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);width:100%;padding:6px 2px;outline:none;min-height:44px;border-radius:0}
+.datef input:focus{border-bottom-color:var(--mauve);box-shadow:0 2px 0 0 var(--yellow)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:40px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
+.tile{position:relative;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 14px 14px;min-height:140px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s,box-shadow .2s}
+.tile:hover,.tile:focus-visible{border-color:var(--mauve);transform:translateY(-2px);box-shadow:0 6px 18px rgba(62,44,78,.08);outline:none}
+.tile .n{font-family:var(--serif);font-size:30px;color:var(--mauve);line-height:1}
+.tile .t{font-size:15px;line-height:1.3;margin:10px 0 auto;color:var(--ink)}
+.tile .st{font-size:13px;color:var(--mute);margin-top:12px;display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--yellow);display:inline-block}
+.tile.done{background:var(--lavl);border-color:var(--lav)}
+.tile .sc{position:absolute;top:10px;right:12px;font:500 22px var(--serif);color:var(--mauve)}
+.wideb{display:block;width:100%;margin-top:12px;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;transition:border-color .2s}
+.wideb:hover,.wideb:focus-visible{border-color:var(--mauve);outline:none}
+.wideb b{font:400 21px var(--serif);color:var(--deep);display:block}
+.fin{display:block;width:100%;margin-top:12px;text-align:center;background:var(--deep);color:var(--cream);border:0;border-radius:14px;padding:24px 18px;transition:background .2s}
+.fin:hover,.fin:focus-visible{background:#4d3a5f;outline:none}
+.fin b{font:400 22px var(--serif);display:block;letter-spacing:.03em}
+.fin span{font-size:14px;color:var(--lav)}
+.foot{margin-top:40px;text-align:center;font-size:13.5px;color:var(--mute)}
+/* boutons */
+.btn{background:var(--mauve);color:#fff;border:0;border-radius:999px;padding:14px 26px;min-height:48px;font-size:16px;transition:background .2s}
+.btn:hover,.btn:focus-visible{background:var(--deep);outline:none}
+.btn.ghost{background:transparent;color:var(--mauve);border:1px solid var(--mauve)}
+.btn.ghost:hover,.btn.ghost:focus-visible{background:var(--lavl);color:var(--deep)}
+.bar{display:flex;flex-direction:column;gap:10px;margin-top:34px}
+@media(min-width:560px){.bar{flex-direction:row;justify-content:space-between}}
+/* écran sphère */
+.head{padding:40px 0 6px}
+.eyebrow{font-size:14px;color:var(--mute)}
+.head h1{font-size:clamp(30px,8vw,44px);margin-top:10px;color:var(--deep)}
+.head p{margin:12px 0 0;color:#4a3f55}
+.qcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px 22px;margin-top:22px}
+.lab{font-family:var(--serif);font-size:19px;color:var(--deep);margin:0 0 6px}
+.q{font-family:var(--serif);font-size:clamp(20px,5vw,24px);line-height:1.35;margin:0 0 14px;color:var(--deep)}
+.hint{color:var(--mute);font-size:15.5px;margin:0 0 24px}
+.score{display:flex;align-items:baseline;gap:10px;margin:2px 0 14px}
+.score b{font:400 64px/1 var(--serif);color:var(--mauve);min-width:.9em}
+.score span{font:400 26px var(--serif);color:var(--mute)}
+.btns{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:26px}
+@media(min-width:620px){.btns{grid-template-columns:repeat(10,1fr)}}
+.btns button{aspect-ratio:1;min-height:44px;border-radius:50%;border:1px solid var(--lav);background:var(--paper);font:500 20px var(--serif);color:var(--mauve);transition:all .15s}
+.btns button:hover{border-color:var(--mauve)}
+.btns button.on{background:var(--mauve);color:#fff;border-color:var(--mauve);box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--yellow)}
+.ink{width:100%;display:block;border:0;border-bottom:1px solid var(--line);border-radius:0;background-color:transparent;font:18px/31px var(--serif);color:var(--ink);padding:0 2px 8px;resize:none;min-height:186px;outline:none;transition:border-color .2s;background-image:repeating-linear-gradient(transparent,transparent 30px,rgba(110,82,133,.16) 31px);background-attachment:local}
+.ink.one{min-height:0;height:40px;background-image:none;padding:4px 2px 6px}
+.ink.s{min-height:124px}
+.ink:focus{border-bottom-color:var(--mauve);box-shadow:0 2px 0 0 var(--yellow)}
+.ink::placeholder{color:#b3a8bd}
+.opt{font-style:italic;color:var(--mute);font-size:14.5px;margin:14px 0 0}
+.blk+.blk{margin-top:30px}
+.keep{background:var(--lavl);border-radius:18px;border-top:3px solid var(--yellow);padding:26px 22px;margin-top:28px;color:#4a3f55}
+.dates{display:grid;gap:22px;margin-top:22px}
+.dates input{font:18px var(--serif);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);width:100%;padding:6px 2px;outline:none;min-height:44px}
+.dates input:focus{border-bottom-color:var(--mauve);box-shadow:0 2px 0 0 var(--yellow)}
+.confirm{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:14px;font-size:15px}
+/* priorité (calme) */
+body.calm{background:var(--deep);color:var(--cream)}
+body.calm .top{background:rgba(62,44,78,.94);border-color:#57436a}
+body.calm .link,body.calm .saved{color:var(--lav)}
+.fhead{text-align:center;padding:56px 0 10px}
+.fhead h1{font-size:clamp(28px,7.5vw,42px);letter-spacing:.04em;color:var(--cream)}
+.fhead p{color:var(--lav);max-width:520px;margin:0 auto}
+.ph{margin-top:44px}
+.ph .lab{color:var(--cream);font-size:clamp(20px,5vw,25px);font-style:italic;margin-bottom:10px}
+.calm .ink{color:var(--cream);border-bottom-color:#6f5a84;background-image:repeating-linear-gradient(transparent,transparent 30px,rgba(217,205,228,.18) 31px)}
+.calm .ink.one{background-image:none}
+.calm .ink:focus{border-bottom-color:var(--yellow);box-shadow:none}
+.calm .ink::placeholder{color:#8f7ca4}
+.calm .score b{color:var(--yellow)}.calm .score span{color:var(--lav)}
+.calm .btns button{background:transparent;border-color:#6f5a84;color:var(--cream)}
+.calm .btns button.on{background:var(--yellow);color:var(--deep);border-color:var(--yellow);box-shadow:0 0 0 3px var(--deep),0 0 0 5px var(--lav)}
+.acts{display:grid;gap:14px}
+.act{display:flex;gap:14px;align-items:baseline}
+.act b{font:400 26px var(--serif);color:var(--yellow)}
+.calm .btn{background:var(--yellow);color:var(--deep)}
+.calm .btn:hover{background:#f1d47c}
+.calm .btn.ghost{background:transparent;color:var(--cream);border:1px solid var(--lav)}
+/* bilan imprimable */
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:44px 28px;margin-top:28px}
+@media(min-width:620px){.sheet{padding:60px 56px}}
+.sheet .kick{font-size:14px;color:var(--mute);letter-spacing:.08em}
+.sheet h1{font-size:clamp(28px,6vw,38px);margin:10px 0 0;color:var(--deep)}
+.sheet .yb{width:36px;height:2px;background:var(--yellow);margin:22px 0 8px}
+.sheet .dts{font-size:14px;color:var(--mute)}
+.sheet h3{font:500 13.5px var(--sans);letter-spacing:.1em;color:var(--mauve);margin:38px 0 6px;text-transform:uppercase}
+.sheet .nt{font:400 34px var(--serif);color:var(--deep);line-height:1.2}
+.sheet .nt small{font-size:20px;color:var(--mute)}
+.sheet .txt{font:19px/1.75 var(--serif);white-space:pre-wrap;word-wrap:break-word;margin:6px 0 0}
+.sheet .qq{font:italic 14px var(--sans);color:var(--mute);margin:20px 0 2px}
+.sheet .empty{color:var(--mute);font:italic 15px var(--sans)}
+.sheet .pr{margin-top:44px;padding:26px 22px;background:var(--lavl);border-top:3px solid var(--yellow);border-radius:6px}
+.sheet .pr h3{margin-top:0}
+@media print{
+ @page{margin:16mm}
+ body,body.calm{background:#fff!important;color:#2B2233!important;font-size:12pt}
+ .noprint,.top{display:none!important}
+ .wrap{padding:0;max-width:none}
+ .sheet{border:0;padding:0;margin:0;background:#fff!important}
+ .sheet h3,.sheet .qq,.sheet .pr{break-after:avoid}
+ .sheet .blk2{break-inside:avoid}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const S=[
+["Santé physique","Pense notamment à ta santé physique, ton énergie, ton sommeil, ton alimentation, ton entraînement, ton image corporelle."],
+["Projets, passions, activités","Analyse de ce qui fait battre ton cœur et de tes intérêts."],
+["Santé financière","Pense à ta situation financière actuelle, ton sentiment de sécurité, ta gestion de l’argent, ton épargne, tes dettes et ta capacité à atteindre tes objectifs financiers."],
+["Vie professionnelle","Pense à ton travail ou ton entreprise, ton niveau de satisfaction, ta progression, tes ambitions, tes responsabilités et l’équilibre que ta carrière occupe dans ta vie."],
+["Relation de couple / amoureuse","Pense à la qualité de ta relation, votre communication, votre connexion, le temps passé ensemble et ton niveau de satisfaction dans ton couple.","Si cette sphère ne s’applique pas à ta situation actuelle, tu peux simplement l’indiquer."],
+["Relation avec soi","Es-tu fière de toi? As-tu une belle relation avec toi-même? Comment te parles-tu?"],
+["Famille","Pense à tes relations familiales, leur qualité, la place qu’elles occupent dans ta vie et ton niveau de satisfaction actuel."],
+["Ma sphère au choix","Choisis une sphère importante de ta vie qui n’est pas représentée plus haut : loisirs, spiritualité, environnement de vie, parentalité, créativité, contribution, etc."]
+];
+const R=["Qu’est-ce qui ressort le plus de ce bilan ?","Quelle sphère demande le plus mon attention en ce moment ? Pourquoi ?","Dans quelle sphère un changement pourrait-il avoir le plus d’impact positif sur le reste de ma vie ?","Qu’est-ce que j’aimerais voir évoluer d’ici mon prochain bilan trimestriel ?"];
+const seq=[...S.map((_,i)=>'s'+i),'recul','prio','fin'];
+const K='les7y-bilan';
+let st={},view='home',armed=0,tm;
+try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+const esc=t=>String(t||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const $=s=>document.querySelector(s);
+function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}
+  const el=$('#sv');if(el){el.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>el.classList.remove('on'),1400)}}
+function go(v){view=v;armed=0;render();window.scrollTo(0,0)}
+const scoreUI=k=>`<div class="score"><b id="v-${k}">${st[k]||'–'}</b><span>/ 10</span></div>
+<div class="btns" data-sc="${k}" role="group" aria-label="Note de 1 à 10">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" data-n="${n}" class="${st[k]===n?'on':''}" aria-pressed="${st[k]===n}">${n}</button>`).join('')}</div>`;
+const ta=(k,cls='',ph='Écris ici…')=>`<textarea class="ink ${cls}" data-k="${k}" placeholder="${ph}">${esc(st[k])}</textarea>`;
+const line=(k,label)=>`<input class="ink one" type="text" data-k="${k}" aria-label="${label}" value="${esc(st[k])}" autocomplete="off">`;
+function nav(v){
+  const i=seq.indexOf(v),p=i>0?seq[i-1]:'home',n=seq[i+1];
+  const nl={recul:'Prendre du recul',prio:'Ma priorité',fin:'Au prochain bilan'}[n]||'Suivant';
+  return `<div class="bar noprint"><button class="btn ghost" data-go="${p}">Précédent</button>${n?`<button class="btn" data-go="${n}">${nl}</button>`:''}</div>`;
+}
+function home(){
+  return `<div class="wrap">
+<div class="hero"><h1>LES 7Y</h1><div class="sub">Mon bilan trimestriel</div></div><hr class="rule">
+<div class="intro"><p>Cet exercice est à refaire tous les 3 mois.</p>
+<p>L’objectif est de prendre un moment pour regarder ta vie dans son ensemble, faire le point sur chacune de ses sphères et déterminer où ton énergie aurait le plus d’impact pour les prochains mois.</p>
+<p style="margin-top:20px"><b>Pour chaque sphère :</b></p></div>
+<div class="how"><div><b class="n">1</b><span>Donne-toi une note de <b>1 à 10</b> selon ton niveau de satisfaction actuel.</span></div>
+<div><b class="n">2</b><span><b>Justifier rationnellement ce score</b> : identifier ce qui ne fonctionne pas, ce qui freine, ce qui rend impuissant et ce qui est souhaité</span></div></div>
+<div class="privacy"><p>Il ne s’agit pas d’avoir 10/10 partout. L’objectif est simplement d’avoir une image honnête de ta situation actuelle afin de mieux choisir tes priorités.</p></div>
+<p class="note">Note : Un score faible n’est pas une fatalité, mais une opportunité. Plus le score est bas, plus la marge de manœuvre est grande et plus le gain potentiel est important pour un investissement énergétique moindre.</p>
+<div class="datef"><label class="lab" for="d1">Date du jour</label><input type="date" id="d1" data-k="d1" value="${esc(st.d1)}"></div>
+<div class="grid">${S.map((s,i)=>{const v=st['n'+i];return `<button class="tile ${v?'done':''}" data-go="s${i}"><span class="n">${i+1}</span>${v?`<span class="sc">${v}/10</span>`:''}<span class="t">${s[0]}</span><span class="st">${v?'Complétée':'<i class="dot"></i>À remplir'}</span></button>`}).join('')}</div>
+<button class="wideb" data-go="recul"><b>Prendre du recul</b></button>
+<button class="fin" data-go="prio"><b>Ma priorité pour les 3 prochains mois</b></button>
+<button class="wideb" data-go="fin"><b>Au prochain bilan</b></button>
+<p class="foot">Tes réponses restent sur cet appareil.</p></div>`;
+}
+function sphere(i){
+  const s=S[i],k='n'+i;
+  return `<div class="wrap"><div class="head"><div class="eyebrow">Sphère ${i+1} sur 8</div><h1>${s[0]}</h1></div>
+<div class="qcard">
+${i===7?`<div class="blk"><p class="lab">Ma sphère</p>${line('c7','Nom de ma sphère')}</div>`:''}
+<p class="lab">Ma note</p>${scoreUI(k)}
+<p class="hint">${s[1]}</p>
+<p class="q">Pourquoi est-ce que je me donne cette note ?</p>${ta('t'+i)}
+${s[2]?`<p class="opt">${s[2]}</p>`:''}</div>${nav('s'+i)}</div>`;
+}
+function recul(){
+  return `<div class="wrap"><div class="head"><h1>Prendre du recul</h1><p>Après avoir évalué les différentes sphères de ta vie, regarde maintenant l’ensemble de tes réponses.</p></div>
+${R.map((q,i)=>`<div class="qcard"><p class="q">${q}</p>${ta('r'+i,'s')}</div>`).join('')}${nav('recul')}</div>`;
+}
+function prio(){
+  return `<div class="wrap"><div class="fhead"><h1>Ma priorité pour les 3 prochains mois</h1><hr class="rule"><p>Je ne peux pas tout changer en même temps. Je choisis donc consciemment où mettre davantage de mon énergie.</p></div>
+<div class="ph"><p class="lab">La sphère que je choisis de prioriser :</p>${line('ps','Sphère prioritaire')}</div>
+<div class="ph"><p class="lab">Ma note actuelle</p>${scoreUI('pn')}</div>
+<div class="ph"><p class="lab">À quoi ressemblerait une amélioration réaliste dans cette sphère au cours des 3 prochains mois ?</p>${ta('pa')}</div>
+<div class="ph"><p class="lab">Quelles sont les 1 à 3 actions concrètes que je veux mettre en place ?</p>
+<div class="acts">${[1,2,3].map(n=>`<div class="act"><b>${n}</b>${line('a'+n,'Action '+n)}</div>`).join('')}</div></div>${nav('prio')}</div>`;
+}
+function fin(){
+  return `<div class="wrap"><div class="head"><h1>Au prochain bilan</h1></div>
+<div class="keep">Conserve ce bilan. Dans trois mois, refais l’exercice avant de relire tes réponses afin de pouvoir comparer ton évolution.</div>
+<div class="bar noprint" style="flex-direction:column"><button class="btn" data-go="sheet">Voir mon bilan et le télécharger en PDF</button>
+<button class="btn ghost" data-go="prio">Précédent</button></div>
+<p class="foot">Tes réponses restent sur cet appareil.</p>
+<p class="foot" style="margin-top:14px"><button class="link" id="rs">${armed?'Confirmer : tout effacer':'Effacer mes réponses'}</button></p></div>`;
+}
+function sheet(){
+  const t=(k,e='Non rempli')=>st[k]?`<div class="txt">${esc(st[k])}</div>`:`<div class="empty">${e}</div>`;
+  const d=x=>st[x]?new Date(st[x]+'T12:00:00').toLocaleDateString('fr-CA',{day:'numeric',month:'long',year:'numeric'}):'';
+  return `<div class="wrap"><div class="bar noprint" style="margin-top:22px"><button class="btn ghost" data-go="fin">Retour</button><button class="btn" id="pdf">Télécharger en PDF</button></div>
+<p class="foot noprint" id="pmsg" role="status" style="margin:12px 0 0"></p>
+<div class="sheet"><div class="kick">LES 7Y</div><h1>Mon bilan trimestriel</h1><div class="yb"></div>
+<div class="dts">${d('d1')?'Bilan du '+d('d1'):''}</div>
+${S.map((s,i)=>`<div class="blk2"><h3>${i+1}. ${i===7&&st.c7?esc(st.c7):s[0]}</h3><div class="nt">${st['n'+i]||'–'} <small>/ 10</small></div>${t('t'+i,'Aucune explication')}</div>`).join('')}
+<h3>Prendre du recul</h3>${R.map((q,i)=>`<div class="blk2"><div class="qq">${q}</div>${t('r'+i)}</div>`).join('')}
+<div class="pr"><h3>Ma priorité pour les 3 prochains mois</h3><div class="txt" style="margin:0">${st.ps?esc(st.ps):'<span class="empty">Non rempli</span>'}</div><div class="nt">${st.pn||'–'} <small>/ 10</small></div>
+<div class="qq">Amélioration réaliste</div>${t('pa')}<div class="qq">Actions concrètes</div>
+${[1,2,3].map(n=>st['a'+n]?`<div class="txt">${n}. ${esc(st['a'+n])}</div>`:'').join('')||'<div class="empty">Non rempli</div>'}</div></div></div>`;
+}
+function render(){
+  document.body.classList.toggle('calm',view==='prio');
+  const V={home,recul,prio,fin,sheet};
+  const body=view[0]==='s'&&view.length===2?sphere(+view[1]):V[view]();
+  $('#app').innerHTML=`<div class="top noprint"><div class="in">${view==='home'?'<span></span>':'<button class="link" data-go="home">← Accueil</button>'}<span class="saved" id="sv">Enregistré</span></div></div>`+body;
+  document.querySelectorAll('textarea').forEach(grow);
+}
+function grow(t){t.style.height='auto';t.style.height=Math.max(t.scrollHeight,t.offsetHeight)+'px'}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+  const b=e.target.closest('.btns button');
+  if(b){const k=b.parentNode.dataset.sc,n=+b.dataset.n;st[k]=st[k]===n?0:n;save();
+    b.parentNode.querySelectorAll('button').forEach(x=>{const on=+x.dataset.n===st[k];x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)});
+    $('#v-'+k).textContent=st[k]||'–';return}
+  if(e.target.id==='pdf'){exportPdf();return}
+  if(e.target.id==='rs'){if(!armed){armed=1;e.target.textContent='Confirmer : tout effacer';setTimeout(()=>{if(armed&&view==='fin'){armed=0;const r=$('#rs');if(r)r.textContent='Effacer mes réponses'}},4000)}
+    else{st={};save();go('home')}}
+});
+document.addEventListener('input',e=>{
+  const f=e.target;if(!f.dataset||!f.dataset.k)return;
+  st[f.dataset.k]=f.value;save();if(f.tagName==='TEXTAREA')grow(f);
+});
+window.addEventListener('beforeprint',()=>document.querySelectorAll('textarea').forEach(grow));
+
+function buildPdf(J){
+ const doc=new J({unit:'mm',format:'letter'}),W=215.9,H=279.4,M=22,TW=W-2*M;let y=M+6,bg=false;
+ const clean=x=>String(x||'').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/…/g,'...').replace(/[^\x09\x0A\x20-\x7E -ÿ]/g,'');
+ const paint=()=>{if(bg){doc.setFillColor(239,232,245);doc.rect(0,0,W,H,'F');doc.setFillColor(232,199,101);doc.rect(0,0,W,3,'F')}};
+ const np=()=>{doc.addPage();paint();y=M};
+ const need=h=>{if(y+h>H-M)np()};
+ const w=(t,size,font,style,col,lh)=>{doc.setFont(font,style);doc.setFontSize(size);doc.setTextColor(col[0],col[1],col[2]);
+  doc.splitTextToSize(clean(t),TW).forEach(l=>{need(lh);doc.text(l,M,y);y+=lh})};
+ const MU=[111,100,120],DP=[62,44,78],MA=[110,82,133],IN=[43,34,51];
+ const dt=x=>st[x]?new Date(st[x]+'T12:00:00').toLocaleDateString('fr-CA',{day:'numeric',month:'long',year:'numeric'}):'';
+ const body=(k,e)=>st[k]&&st[k].trim()?w(st[k],11.5,'times','normal',IN,6.2):w(e,10.5,'times','italic',MU,6);
+ w('LES 7Y',34,'times','normal',DP,14);y+=1;
+ w('Mon bilan trimestriel',17,'times','italic',MA,8);y+=3;
+ doc.setFillColor(232,199,101);doc.rect(M,y,14,.9,'F');y+=7;
+ if(dt('d1'))w('Bilan du '+dt('d1'),9.5,'helvetica','normal',MU,5);
+ S.forEach((s,i)=>{y+=9;need(46);
+  w((i+1)+'.  '+(i===7&&st.c7?st.c7:s[0]).toUpperCase(),9,'helvetica','bold',MA,5);y+=2;
+  w((st['n'+i]||'-')+' / 10',26,'times','normal',DP,11);y+=1;
+  body('t'+i,'Aucune explication')});
+ y+=12;need(30);
+ w('PRENDRE DU RECUL',9,'helvetica','bold',MA,5);y+=3;
+ R.forEach((q,i)=>{need(24);w(q,9.5,'times','italic',MU,5);y+=1;body('r'+i,'Non rempli');y+=6});
+ bg=true;np();y=M+6;
+ w('Ma priorité pour les 3 prochains mois',22,'times','normal',DP,10);y+=2;
+ doc.setFillColor(232,199,101);doc.rect(M,y,14,.9,'F');y+=9;
+ w('La sphère que je choisis de prioriser',9.5,'times','italic',MU,5);y+=1;body('ps','Non rempli');y+=5;
+ w('Ma note actuelle',9.5,'times','italic',MU,5);y+=1;
+ w((st.pn||'-')+' / 10',26,'times','normal',DP,11);y+=5;
+ w('Amélioration réaliste dans les 3 prochains mois',9.5,'times','italic',MU,5);y+=1;body('pa','Non rempli');y+=5;
+ w('Actions concrètes',9.5,'times','italic',MU,5);y+=1;
+ const ac=[1,2,3].filter(n=>st['a'+n]&&st['a'+n].trim());
+ if(ac.length)ac.forEach(n=>w(n+'.  '+st['a'+n],11.5,'times','normal',IN,6.4));else w('Non rempli',10.5,'times','italic',MU,6);
+ const N=doc.getNumberOfPages();
+ for(let p=1;p<=N;p++){doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(MU[0],MU[1],MU[2]);
+  doc.text('LES 7Y · Mon bilan trimestriel',M,H-11);doc.text(String(p),W-M,H-11,{align:'right'})}
+ return doc}
+async function exportPdf(){
+ const msg=t=>{const m=$('#pmsg');if(m)m.textContent=t};
+ const viaPrint=()=>{try{window.print();msg('Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ».')}catch(_){msg('Impossible de créer le PDF ici. Ouvre cette page dans Safari ou Chrome, puis réessaie.')}};
+ if(!window.jspdf)return viaPrint();
+ const name='les-7y-mon-bilan-trimestriel.pdf';let blob;
+ try{msg('Création du PDF…');blob=buildPdf(window.jspdf.jsPDF).output('blob')}catch(_){return viaPrint()}
+ const ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),inApp=/; wv\)|FBAN|FBAV|Instagram|Messenger|Line\//i.test(ua);
+ const file=new File([blob],name,{type:'application/pdf'}),url=URL.createObjectURL(blob),later=()=>setTimeout(()=>URL.revokeObjectURL(url),60000);
+ const open=()=>{const w=window.open(url,'_blank');if(w){later();msg('Ton PDF s’ouvre dans un nouvel onglet. Utilise le bouton Partager pour l’enregistrer dans Fichiers.')}else{location.href=url}};
+ if((ios||inApp)&&navigator.canShare&&navigator.canShare({files:[file]})){
+  try{await navigator.share({files:[file],title:'LES 7Y · Mon bilan trimestriel'});msg('Ton PDF est prêt.');return}
+  catch(e){if(e&&e.name==='AbortError'){msg('Partage annulé. Tu peux réessayer quand tu veux.');return}return open()}}
+ if(!ios&&!inApp&&'download'in HTMLAnchorElement.prototype){
+  const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();later();msg('Ton PDF est prêt.');return}
+ open()}
+render();
+</script>
+</body>
+</html>

@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         source: '/guide/etre-a-son-meilleur',
         destination: '/guide/etre-a-son-meilleur.html',
       },
+      {
+        source: '/guide/les-7y',
+        destination: '/guide/les-7y.html',
+      },
     ]
   },
   async redirects() {
