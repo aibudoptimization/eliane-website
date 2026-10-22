@@ -5,7 +5,7 @@
  *
  * Run: node scripts/generate-brand-icons.mjs
  */
-import {readFileSync, writeFileSync} from 'node:fs'
+import {writeFileSync} from 'node:fs'
 import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import sharp from 'sharp'

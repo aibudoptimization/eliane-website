@@ -12,6 +12,7 @@ import {
 } from 'framer-motion'
 import {useCallback, useEffect, useId, useMemo, useRef, useState} from 'react'
 import {createPortal} from 'react-dom'
+import {useMediaQuery} from '@/lib/use-media-query'
 
 export type AppScreenItem = {
   _key?: string
@@ -179,10 +180,9 @@ export function AccompAppCarousel({screens}: AccompAppCarouselProps) {
   const total = items.length
   const loop = total >= 3
 
-  const [isNarrow, setIsNarrow] = useState(false)
+  const isNarrow = useMediaQuery('(max-width: 920px)')
   const [active, setActive] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const titleId = useId()
 
   const reduceMotion = useReducedMotion()
@@ -195,15 +195,6 @@ export function AccompAppCarousel({screens}: AccompAppCarouselProps) {
   const spacing = Math.round(centerW * SPACING_RATIO)
   // Vertical position of the nav buttons: fully below the (scaled) side phones.
   const navY = Math.round(centerH / 2 + (centerH * SIDE_SCALE) / 2 + 22)
-
-  useEffect(() => {
-    setMounted(true)
-    const mq = window.matchMedia('(max-width: 920px)')
-    setIsNarrow(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsNarrow(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
 
   // Keep `active` (used for caption, dots, lightbox) synced to the animated position.
   useMotionValueEvent(position, 'change', (value) => {
@@ -384,7 +375,7 @@ export function AccompAppCarousel({screens}: AccompAppCarouselProps) {
         </div>
       ) : null}
 
-      {mounted && lightboxOpen
+      {lightboxOpen
         ? createPortal(
             <div
               className="accomp-lightbox"

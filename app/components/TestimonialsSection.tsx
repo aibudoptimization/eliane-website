@@ -11,11 +11,8 @@ import {
   type PanInfo,
 } from 'framer-motion'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {
-  headingPortableTextComponents,
-  RichText,
-  type PortableTextValue,
-} from '@/lib/portableTextComponents'
+import {headingPortableTextComponents, RichText} from '@/lib/portableTextComponents'
+import {useMediaQuery} from '@/lib/use-media-query'
 
 export type TestimonialVideoItem = {
   _key?: string
@@ -108,17 +105,9 @@ function NavArrow({direction}: {direction: 'prev' | 'next'}) {
   )
 }
 
-function useMobileDetect() {
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)')
-    setIsMobile(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-  return isMobile
-}
+// iOS Safari only exposes video fullscreen under webkit-prefixed names.
+type WebkitDocument = Document & {webkitFullscreenElement?: Element | null}
+type WebkitVideoElement = HTMLVideoElement & {webkitEnterFullscreen?: () => void}
 
 function VideoCard({
   item,
@@ -206,7 +195,7 @@ function VideoCard({
     const handleFullscreenChange = () => {
       const isFullscreen =
         document.fullscreenElement === video ||
-        (document as any).webkitFullscreenElement === video
+        (document as WebkitDocument).webkitFullscreenElement === video
       onFullscreenChange(isFullscreen)
       if (!isFullscreen) handleExit()
     }
@@ -235,8 +224,9 @@ function VideoCard({
     onFullscreenChange(true)
     // Native controls so the fullscreen player has play/pause/exit UI (esp. Android)
     video.controls = true
-    if (typeof (video as any).webkitEnterFullscreen === 'function') {
-      ;(video as any).webkitEnterFullscreen()
+    const webkitVideo = video as WebkitVideoElement
+    if (typeof webkitVideo.webkitEnterFullscreen === 'function') {
+      webkitVideo.webkitEnterFullscreen()
     } else if (typeof video.requestFullscreen === 'function') {
       void video.requestFullscreen()
     }
@@ -356,9 +346,9 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
 
   const total = items.length
   const loop = total >= 3
-  const isMobile = useMobileDetect()
+  const isMobile = useMediaQuery('(max-width: 767px)')
+  const isNarrow = useMediaQuery('(max-width: 768px)')
 
-  const [isNarrow, setIsNarrow] = useState(false)
   const [active, setActive] = useState(0)
   const [muted, setMuted] = useState(true)
   const [settled, setSettled] = useState(true)
@@ -378,14 +368,6 @@ export function TestimonialsSection({eyebrow, title, videos, instagramUrl}: Test
   const spacing = Math.round(centerW * SPACING_RATIO)
   // Nav buttons sit just under the (scaled) side cards, matching the original layout.
   const navY = Math.round(centerH * SIDE_SCALE + 14)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)')
-    setIsNarrow(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsNarrow(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
 
   useMotionValueEvent(position, 'change', (value) => {
     if (total < 1) return

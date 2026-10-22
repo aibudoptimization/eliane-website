@@ -60,12 +60,15 @@ async function migrateSingleton(
     {draftId: `drafts.${currentId}`},
   )
 
+  // _rev is dropped so the copies are written as new documents.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {_rev, ...published} = doc
   let tx = client
     .transaction()
     .createOrReplace({...published, _id: targetId} as typeof doc & {_id: string})
 
   if (draft) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {_rev: draftRev, ...draftBody} = draft
     tx = tx.createOrReplace({...draftBody, _id: `drafts.${targetId}`} as typeof draft & {_id: string})
     tx = tx.delete(`drafts.${currentId}`)

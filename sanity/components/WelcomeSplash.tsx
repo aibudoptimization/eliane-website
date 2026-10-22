@@ -1,25 +1,31 @@
 'use client'
 
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useSyncExternalStore} from 'react'
 
 const STORAGE_KEY = 'eliane-studio-welcome-v1'
 const DISPLAY_MS = 2600
 
+const subscribeNever = () => () => {}
+
 export function WelcomeSplash() {
-  const [visible, setVisible] = useState(false)
+  // Read sessionStorage only in the browser; the server render treats the splash as already seen.
+  const alreadySeen = useSyncExternalStore(
+    subscribeNever,
+    () => sessionStorage.getItem(STORAGE_KEY) === '1',
+    () => true,
+  )
+  const [dismissed, setDismissed] = useState(false)
+  const visible = !alreadySeen && !dismissed
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (sessionStorage.getItem(STORAGE_KEY) === '1') return
-
-    setVisible(true)
+    if (!visible) return
     const timer = window.setTimeout(() => {
       sessionStorage.setItem(STORAGE_KEY, '1')
-      setVisible(false)
+      setDismissed(true)
     }, DISPLAY_MS)
 
     return () => window.clearTimeout(timer)
-  }, [])
+  }, [visible])
 
   if (!visible) return null
 
