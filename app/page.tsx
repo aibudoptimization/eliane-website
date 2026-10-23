@@ -2,6 +2,7 @@ import type {ReactNode} from 'react'
 import {PortableText, type PortableTextComponents} from '@portabletext/react'
 import type {TypedObject} from '@portabletext/types'
 import Image from 'next/image'
+import Link from 'next/link'
 import {headingPortableTextComponents, RichText, SectionTitle} from '@/lib/portableTextComponents'
 import {portableTextToPlainText} from '@/lib/portableTextPlainText'
 import {MeetTrainerSection} from '@/app/components/MeetTrainerSection'
@@ -409,10 +410,10 @@ export default async function Home() {
                       />
                     </div>
                     <div className="hero-cta-stack">
-                      <a className="btn btn-primary" href="/#accompagnement">
+                      <Link className="btn btn-primary" href="/#accompagnement">
                         {heroCtaLabel}
                         <HeroCtaArrow />
-                      </a>
+                      </Link>
                       <p className="hero-cta-note">{heroCtaSubtext}</p>
                     </div>
                   </div>

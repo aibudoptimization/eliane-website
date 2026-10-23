@@ -1,6 +1,6 @@
 import type {Metadata} from 'next'
 import {urlFor} from '@/sanity/imageUrl'
-import {SITE_URL, DEFAULT_OG_IMAGE_PATH} from '@/lib/site-config'
+import {SITE_URL} from '@/lib/site-config'
 
 type SanityImage = Parameters<typeof urlFor>[0]
 
